@@ -2,8 +2,8 @@ const CACHE_NAME = "science-glass-v1";
 const urlsToCache = [
   "./",                         // your main page
   "manifest.json",
-  "icons/icon-192.png",
-  "icons/icon-512.png"
+  "icon-192.png",
+  "icon-512.png"
   // add any other critical assets (CSS, JS) that you host separately
 ];
 
