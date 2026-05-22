@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Science Glass · iOS Dashboard</title>
+    <!-- Google Fonts + Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: radial-gradient(circle at 10% 20%, #0c1a2a, #040a14);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            padding: 2rem 1.8rem;
+            min-height: 100vh;
+        }
+
+        /* main container */
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* ========= TOP ROW: HORIZONTAL TIMERS (full width, side by side) ========= */
+        .timers-row {
+            display: flex;
+            gap: 1.8rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .timer-horiz-card {
+            flex: 1;
+            background: rgba(25, 35, 55, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 2rem;
+            border: 0.5px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.4);
+            padding: 1.5rem 1.8rem;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .timer-horiz-card:hover {
+            transform: translateY(-2px);
+            background: rgba(35, 48, 70, 0.7);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+        .timer-info {
+            flex: 2;
+        }
+        .dday-badge {
+            display: inline-block;
+            background: rgba(255, 149, 0, 0.85);
+            backdrop-filter: blur(4px);
+            color: #000;
+            font-weight: 800;
+            font-size: 0.75rem;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.6rem;
+        }
+        .exam-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: -0.3px;
+        }
+        .exam-date {
+            color: #bfd6ff;
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+        .timer-digits-large {
+            font-size: 2.6rem;
+            font-weight: 800;
+            font-family: 'Inter', monospace;
+            background: linear-gradient(135deg, #ffffff, #d9e6ff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .timer-unit {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #b9d0ff;
+            margin-left: 4px;
+        }
+        .timer-clock {
+            text-align: right;
+            min-width: 240px;
+        }
+
+        /* Smaller timers row (prep classes) */
+        .small-timers-row {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+        }
+        .small-timer-card {
+            flex: 1;
+            background: rgba(20, 30, 48, 0.6);
+            backdrop-filter: blur(16px);
+            border-radius: 1.5rem;
+            border: 0.5px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem 1.2rem;
+            transition: 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .small-timer-card:hover {
+            background: rgba(35, 48, 70, 0.7);
+            transform: translateY(-2px);
+        }
+        .small-timer-info {
+            flex: 2;
+        }
+        .prep-badge {
+            display: inline-block;
+            background: rgba(100, 150, 250, 0.8);
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            color: white;
+            margin-bottom: 0.3rem;
+        }
+        .prep-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+        }
+        .prep-date {
+            font-size: 0.7rem;
+            color: #bbd0ff;
+        }
+        .timer-digits-small {
+            font-size: 1.4rem;
+            font-weight: 700;
+            font-family: monospace;
+            background: linear-gradient(135deg, #f0f4ff, #c6deff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .small-clock {
+            text-align: right;
+            min-width: 160px;
+        }
+
+        @media (max-width: 780px) {
+            .timer-horiz-card, .small-timer-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .timer-clock, .small-clock {
+                text-align: left;
+                width: 100%;
+            }
+        }
+
+        /* ========= MAIN GRID (balanced columns) ========= */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 1.8rem;
+            margin-top: 0.5rem;
+        }
+
+        /* universal glass card (iOS style) */
+        .glass-card {
+            background: rgba(20, 30, 45, 0.55);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 2rem;
+            border: 0.5px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.3);
+            padding: 1.6rem;
+            transition: all 0.2s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .glass-card:hover {
+            background: rgba(30, 42, 62, 0.65);
+            border-color: rgba(255, 255, 255, 0.35);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            font-size: 1.4rem;
+            color: white;
+            border-bottom: 1.5px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 0.7rem;
+            margin-bottom: 1.3rem;
+        }
+        .card-header i {
+            font-size: 1.7rem;
+            color: #ffb347;
+        }
+
+        /* enhanced google drive card */
+        .drive-card {
+            background: linear-gradient(135deg, rgba(25, 35, 55, 0.7), rgba(15, 25, 45, 0.7));
+            border-radius: 1.5rem;
+            padding: 1.2rem;
+            margin: 0.5rem 0 0.8rem;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .drive-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .drive-icon {
+            background: rgba(255, 180, 70, 0.2);
+            width: 48px;
+            height: 48px;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: #ffb347;
+        }
+        .drive-info h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 0.2rem;
+        }
+        .drive-info p {
+            font-size: 0.75rem;
+            color: #b0c8ff;
+            opacity: 0.9;
+        }
+        .folder-stats {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            font-size: 0.75rem;
+            color: #cce0ff;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            width: fit-content;
+        }
+        .drive-link {
+            background: rgba(0, 0, 0, 0.35);
+            border-radius: 1rem;
+            padding: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 0.5rem;
+        }
+        .drive-link a {
+            color: #ffcd85;
+            text-decoration: none;
+            font-size: 0.8rem;
+            word-break: break-all;
+            flex: 1;
+            font-family: monospace;
+        }
+        .open-drive-btn {
+            background: rgba(255, 180, 70, 0.9);
+            border: none;
+            border-radius: 2rem;
+            padding: 0.5rem 1.2rem;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #1a1a1a;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .open-drive-btn:hover {
+            background: #ffb347;
+            transform: scale(1.02);
+        }
+        .drive-footer {
+            margin-top: 1rem;
+            font-size: 0.7rem;
+            color: #9cb2e0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 0.8rem;
+        }
+
+        /* tools grid */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 14px;
+            margin: 1rem 0;
+        }
+        .tool-item {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(4px);
+            border: 0.5px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1.4rem;
+            padding: 0.7rem 0.3rem;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+        .tool-item i {
+            font-size: 1.6rem;
+            color: #ffbc6e;
+        }
+        .tool-item span {
+            font-size: 0.8rem;
+        }
+        .tool-item:hover {
+            background: rgba(255, 180, 100, 0.25);
+            transform: translateY(-4px);
+            border-color: #ffbc6e;
+        }
+
+        /* calendar mini with tooltips */
+        .calendar-twins {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 0.8rem;
+        }
+        .month-card {
+            background: rgba(0, 0, 0, 0.35);
+            border-radius: 1.4rem;
+            padding: 0.7rem;
+            flex: 1;
+        }
+        .month-title {
+            font-weight: 700;
+            text-align: center;
+            color: #ffd9a5;
+        }
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: #b9ceff;
+        }
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+        .cal-day {
+            text-align: center;
+            font-size: 0.7rem;
+            padding: 4px 0;
+            border-radius: 20px;
+            color: #eef3ff;
+            position: relative;
+            cursor: default;
+        }
+        .cal-day.highlight-exam {
+            background: #ffb347;
+            color: #0a0a0a;
+            font-weight: 800;
+            box-shadow: 0 0 4px #ffb347;
+        }
+        .cal-day.highlight-class {
+            background: #4f9eff;
+            color: white;
+            font-weight: 700;
+            box-shadow: 0 0 3px #4f9eff;
+        }
+        .cal-day[data-tooltip]:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #000000cc;
+            backdrop-filter: blur(8px);
+            color: #ffefcf;
+            font-size: 0.7rem;
+            padding: 4px 8px;
+            border-radius: 12px;
+            white-space: nowrap;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        /* todo list */
+        .todo-list {
+            margin: 1rem 0;
+        }
+        .todo-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(0, 0, 0, 0.35);
+            border-radius: 3rem;
+            margin-bottom: 10px;
+            padding: 0.6rem 1rem;
+        }
+        .todo-check {
+            width: 1.2rem;
+            height: 1.2rem;
+            accent-color: #ffb347;
+        }
+        .todo-text {
+            flex: 1;
+            color: white;
+            font-weight: 500;
+        }
+        .completed {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+        .add-todo {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+        }
+        .add-todo input {
+            flex: 1;
+            background: #0f1a2ed9;
+            border: 1px solid #ffb347;
+            border-radius: 2rem;
+            padding: 0.6rem 1rem;
+            color: white;
+        }
+        .add-todo button {
+            background: #ffb347;
+            border: none;
+            border-radius: 2rem;
+            padding: 0 1.2rem;
+            font-weight: bold;
+            color: #1f1a0a;
+            cursor: pointer;
+        }
+
+        /* converter */
+        .converter {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .conv-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 1.2rem;
+            padding: 0.6rem;
+        }
+        .conv-row input, .conv-row select {
+            background: #101d31;
+            border: 1px solid #ffb86b;
+            border-radius: 2rem;
+            padding: 0.4rem 0.8rem;
+            color: white;
+        }
+        .result-badge {
+            background: #233055;
+            padding: 0.2rem 0.9rem;
+            border-radius: 2rem;
+            font-weight: 600;
+        }
+
+        .science-fact {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 1.2rem;
+            padding: 0.8rem;
+            margin-top: 1rem;
+            border-left: 4px solid #ffb347;
+            color: #eef3ff;
+            font-size: 0.85rem;
+        }
+
+        hr {
+            margin: 12px 0;
+            border-color: rgba(255,255,200,0.15);
+        }
+
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #99b0e0;
+        }
+        .class-note {
+            font-size: 0.7rem;
+            margin-top: 0.5rem;
+            background: rgba(79, 158, 255, 0.2);
+            border-radius: 1rem;
+            padding: 0.4rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="dashboard">
+    <!-- MAIN EXAM TIMERS (Physics & Chemistry) -->
+    <div class="timers-row">
+        <div class="timer-horiz-card">
+            <div class="timer-info">
+                <div class="dday-badge"><i class="fas fa-skull-crosswalk"></i> D-DAY 1 · PHYSICS</div>
+                <div class="exam-title">📘 Science Final · Paper 1 (Physics)</div>
+                <div class="exam-date">🗓️ May 27, 2026 · 9:00 AM</div>
+            </div>
+            <div class="timer-clock">
+                <div class="timer-digits-large" id="timer1Display">--d --h --m --s</div>
+                <div class="timer-unit">until exam</div>
+            </div>
+        </div>
+        <div class="timer-horiz-card">
+            <div class="timer-info">
+                <div class="dday-badge"><i class="fas fa-flask"></i> D-DAY 2 · CHEMISTRY</div>
+                <div class="exam-title">🧪 Science Final · Paper 2 (Chemistry)</div>
+                <div class="exam-date">🗓️ June 12, 2026 · 9:00 AM</div>
+            </div>
+            <div class="timer-clock">
+                <div class="timer-digits-large" id="timer2Display">--d --h --m --s</div>
+                <div class="timer-unit">until exam</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SMALLER PREP CLASS TIMERS (Physics prep & Chemistry prep) -->
+    <div class="small-timers-row">
+        <div class="small-timer-card">
+            <div class="small-timer-info">
+                <div class="prep-badge"><i class="fas fa-chalkboard"></i> PREP CLASS · PHYSICS</div>
+                <div class="prep-title">⚡ Exam Cram: Physics Focus</div>
+                <div class="prep-date">🗓️ May 22, 2026 · 12:30 – 14:30</div>
+            </div>
+            <div class="small-clock">
+                <div class="timer-digits-small" id="prepTimer1">--d --h --m --s</div>
+                <div class="timer-unit" style="font-size:0.7rem;">until session</div>
+            </div>
+        </div>
+        <div class="small-timer-card">
+            <div class="small-timer-info">
+                <div class="prep-badge"><i class="fas fa-chalkboard"></i> PREP CLASS · CHEMISTRY</div>
+                <div class="prep-title">🧪 Final Review: Chemistry</div>
+                <div class="prep-date">🗓️ June 11, 2026 · 12:00 – 14:00</div>
+            </div>
+            <div class="small-clock">
+                <div class="timer-digits-small" id="prepTimer2">--d --h --m --s</div>
+                <div class="timer-unit" style="font-size:0.7rem;">until session</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN GRID: other tools -->
+    <div class="grid">
+        <!-- Calendar card + countdown context with extra class info -->
+        <div class="glass-card">
+            <div class="card-header"><i class="fas fa-calendar-alt"></i> Exam & Prep Calendar</div>
+            <div class="calendar-twins" id="dynamicCalendars"></div>
+            <div class="class-note">
+                <i class="fas fa-info-circle"></i> <strong>Prep sessions:</strong> May 22 (Physics, 12:30–14:30) & June 11 (Chemistry, 12:00–14:00) — highlighted in blue.
+            </div>
+            <div class="science-fact">
+                <i class="fas fa-stopwatch"></i> <strong>Paper 1 = Physics</strong> · <strong>Paper 2 = Chemistry</strong> · Prep classes mirror the subjects.
+            </div>
+        </div>
+
+        <!-- Google Drive card (enhanced, non-editable) -->
+        <div class="glass-card">
+            <div class="card-header"><i class="fab fa-google-drive"></i> Class Drive Vault</div>
+            <div class="drive-card">
+                <div class="drive-header">
+                    <div class="drive-icon">
+                        <i class="fas fa-folder-open"></i>
+                    </div>
+                    <div class="drive-info">
+                        <h3>📁 Science Class Folder</h3>
+                        <p>All notes, labs, worksheets & past papers</p>
+                    </div>
+                </div>
+                <div class="folder-stats">
+                    <span><i class="fas fa-file-alt"></i> Mock exams</span>
+                    <span><i class="fas fa-chalkboard-user"></i> Lecture slides</span>
+                    <span><i class="fas fa-flask"></i> Lab guides</span>
+                </div>
+                <div class="drive-link">
+                    <a href="https://drive.google.com/drive/folders/1xcCQcmYHC4Tr8Gm9P40BwNqDALL7SLwQ?usp=drive_link" target="_blank" id="driveFolderLink">
+                        https://drive.google.com/drive/folders/1xcCQcmYHC4Tr8Gm9P40BwNqDALL7SLwQ
+                    </a>
+                    <button class="open-drive-btn" onclick="window.open('https://drive.google.com/drive/folders/1xcCQcmYHC4Tr8Gm9P40BwNqDALL7SLwQ?usp=drive_link', '_blank')">
+                        <i class="fas fa-external-link-alt"></i> Open Folder
+                    </button>
+                </div>
+                <div class="drive-footer">
+                    <i class="fas fa-database"></i> 40+ resources · updated weekly
+                </div>
+            </div>
+            <div class="science-fact" style="margin-top: 0rem;">
+                <i class="fas fa-upload"></i> Keep homework & group projects here.
+            </div>
+        </div>
+
+        <!-- Tools & Links -->
+        <div class="glass-card">
+            <div class="card-header"><i class="fas fa-toolbox"></i> Science Toolkit</div>
+            <div class="tools-grid">
+                <a href="https://zperiod.app/" target="_blank" class="tool-item"><i class="fas fa-chart-line"></i><span>Z-period.app</span></a>
+                <a href="https://phet.colorado.edu/" target="_blank" class="tool-item"><i class="fas fa-atom"></i><span>PhET Sims</span></a>
+                <a href="https://www.desmos.com/scientific" target="_blank" class="tool-item"><i class="fas fa-calculator"></i><span>Desmos Sci</span></a>
+                <a href="https://www.khanacademy.org/science" target="_blank" class="tool-item"><i class="fas fa-graduation-cap"></i><span>Khan Academy</span></a>
+                <a href="https://ptable.com/" target="_blank" class="tool-item"><i class="fas fa-border-all"></i><span>Periodic Table</span></a>
+                <a href="https://quizlet.com/" target="_blank" class="tool-item"><i class="fas fa-cards-blank"></i><span>Quizlet</span></a>
+                <a href="https://www.wolframalpha.com/" target="_blank" class="tool-item"><i class="fas fa-robot"></i><span>Wolfram Alpha</span></a>
+                <div id="pomodoroTrigger" class="tool-item" style="cursor:pointer;"><i class="fas fa-hourglass-half"></i><span>🍅 Pomodoro</span></div>
+            </div>
+            <div id="factBox" class="science-fact" style="margin-top: 0rem;">
+                <i class="fas fa-lightbulb"></i> <span id="randomFactText">loading fun fact...</span>
+            </div>
+        </div>
+
+        <!-- To-do Manager -->
+        <div class="glass-card">
+            <div class="card-header"><i class="fas fa-list-check"></i> Study Sprint</div>
+            <div class="todo-list" id="todoListContainer"></div>
+            <div class="add-todo">
+                <input type="text" id="newTodoInput" placeholder="e.g., Review thermodynamics">
+                <button id="addTodoBtn"><i class="fas fa-plus"></i> Add</button>
+            </div>
+            <hr>
+            <div style="font-size:0.8rem; color:#bbd4ff;"><i class="fas fa-database"></i> Tasks saved locally</div>
+        </div>
+
+        <!-- Unit converter -->
+        <div class="glass-card">
+            <div class="card-header"><i class="fas fa-weight-hanging"></i> Lab Converter</div>
+            <div class="converter">
+                <div class="conv-row">
+                    <span>⚖️ Mass:</span>
+                    <input type="number" id="massInput" value="1" step="any">
+                    <select id="massFrom"><option value="kg">kg</option><option value="g">g</option><option value="mg">mg</option></select>
+                    <span>→</span>
+                    <select id="massTo"><option value="kg">kg</option><option value="g" selected>g</option><option value="mg">mg</option></select>
+                    <span id="massResult" class="result-badge">--</span>
+                </div>
+                <div class="conv-row">
+                    <span>📏 Length:</span>
+                    <input type="number" id="lengthInput" value="1">
+                    <select id="lengthFrom"><option value="m">m</option><option value="cm">cm</option><option value="mm">mm</option></select>
+                    <span>→</span>
+                    <select id="lengthTo"><option value="m">m</option><option value="cm" selected>cm</option><option value="mm">mm</option></select>
+                    <span id="lengthResult" class="result-badge">--</span>
+                </div>
+            </div>
+            <div class="science-fact" style="margin-top: 1rem;">
+                <i class="fas fa-chart-simple"></i> density = mass / volume  |  speed = distance/time
+            </div>
+        </div>
+    </div>
+    <footer>NEXON Eco-system by Divan Barnard</footer>
+</div>
+
+<script>
+    // ---------- EXAM TIMERS (May 27 & June 12, 2026) ----------
+    const examDate1 = new Date(2026, 4, 27, 9, 0, 0);
+    const examDate2 = new Date(2026, 5, 12, 9, 0, 0);
+    const timer1El = document.getElementById("timer1Display");
+    const timer2El = document.getElementById("timer2Display");
+    
+    // Prep timers: May 22, 12:30 ; June 11, 12:00
+    const prepDate1 = new Date(2026, 4, 22, 12, 30, 0);
+    const prepDate2 = new Date(2026, 5, 11, 12, 0, 0);
+    const prepTimer1El = document.getElementById("prepTimer1");
+    const prepTimer2El = document.getElementById("prepTimer2");
+
+    function formatCountdown(distance) {
+        if (distance < 0) return "🎉 Session started!";
+        const days = Math.floor(distance / (1000*60*60*24));
+        const hours = Math.floor((distance % (86400000)) / 3600000);
+        const mins = Math.floor((distance % 3600000) / 60000);
+        const secs = Math.floor((distance % 60000) / 1000);
+        return `${days}d ${hours}h ${mins}m ${secs}s`;
+    }
+    
+    function updateAllTimers() {
+        const now = new Date().getTime();
+        if (timer1El) timer1El.innerText = formatCountdown(examDate1.getTime() - now);
+        if (timer2El) timer2El.innerText = formatCountdown(examDate2.getTime() - now);
+        if (prepTimer1El) prepTimer1El.innerText = formatCountdown(prepDate1.getTime() - now);
+        if (prepTimer2El) prepTimer2El.innerText = formatCountdown(prepDate2.getTime() - now);
+    }
+    updateAllTimers();
+    setInterval(updateAllTimers, 1000);
+    
+    // ---------- CALENDARS: May & June 2026 with exam AND prep highlights + tooltips ----------
+    function buildMonthCalendar(monthIndex, year, examDays, prepDaysWithTooltip) {
+        // prepDaysWithTooltip: { day: string, tooltip: string }
+        const firstDay = new Date(year, monthIndex, 1);
+        const startWeek = firstDay.getDay();
+        const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+        const monthName = firstDay.toLocaleString('default', { month: 'long' });
+        let html = `<div class="month-card"><div class="month-title">${monthName} ${year}</div>`;
+        html += `<div class="weekdays"><span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span></div><div class="calendar-days">`;
+        let dayCounter = 1;
+        for (let i = 0; i < 42; i++) {
+            if (i < startWeek || dayCounter > daysInMonth) {
+                html += `<div class="cal-day"></div>`;
+            } else {
+                let isExam = examDays.includes(dayCounter);
+                let prepInfo = prepDaysWithTooltip[dayCounter];
+                let additionalClass = "";
+                let tooltipAttr = "";
+                if (isExam) {
+                    additionalClass = "highlight-exam";
+                } else if (prepInfo) {
+                    additionalClass = "highlight-class";
+                    tooltipAttr = ` data-tooltip="${prepInfo.tooltip}"`;
+                }
+                html += `<div class="cal-day ${additionalClass}"${tooltipAttr}>${dayCounter}</div>`;
+                dayCounter++;
+            }
+        }
+        html += `</div></div>`;
+        return html;
+    }
+    
+    function renderCalendars() {
+        const examDaysMay = [27];
+        const examDaysJune = [12];
+        const prepMay = { 22: { tooltip: "Prep Class: Physics · 12:30–14:30" } };
+        const prepJune = { 11: { tooltip: "Prep Class: Chemistry · 12:00–14:00" } };
+        const mayCal = buildMonthCalendar(4, 2026, examDaysMay, prepMay);
+        const juneCal = buildMonthCalendar(5, 2026, examDaysJune, prepJune);
+        document.getElementById("dynamicCalendars").innerHTML = mayCal + juneCal;
+    }
+    renderCalendars();
+    
+    // ---------- TO-DO LIST (unchanged) ----------
+    let todos = [];
+    const todoContainer = document.getElementById("todoListContainer");
+    const newTodoInput = document.getElementById("newTodoInput");
+    const addTodoBtn = document.getElementById("addTodoBtn");
+    function saveTodosLocal() { localStorage.setItem("science_todo_list", JSON.stringify(todos)); }
+    function loadTodos() {
+        const stored = localStorage.getItem("science_todo_list");
+        if (stored) {
+            todos = JSON.parse(stored);
+        } else {
+            todos = [
+                { text: "🧪 Finish lab report (reaction rates)", completed: false },
+                { text: "📖 Review periodic trends", completed: false },
+                { text: "📂 Check Google Drive for mock exam", completed: true },
+                { text: "⚛️ Practice balancing equations", completed: false }
+            ];
+            saveTodosLocal();
+        }
+        renderTodos();
+    }
+    function renderTodos() {
+        if (!todoContainer) return;
+        todoContainer.innerHTML = "";
+        todos.forEach((todo, idx) => {
+            const div = document.createElement("div");
+            div.className = "todo-item";
+            const cb = document.createElement("input");
+            cb.type = "checkbox";
+            cb.className = "todo-check";
+            cb.checked = todo.completed;
+            cb.addEventListener("change", () => {
+                todos[idx].completed = cb.checked;
+                saveTodosLocal();
+                renderTodos();
+            });
+            const textSpan = document.createElement("span");
+            textSpan.className = `todo-text ${todo.completed ? "completed" : ""}`;
+            textSpan.innerText = todo.text;
+            const delBtn = document.createElement("button");
+            delBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+            delBtn.style.background = "none";
+            delBtn.style.border = "none";
+            delBtn.style.color = "#ffaa66";
+            delBtn.style.cursor = "pointer";
+            delBtn.addEventListener("click", () => {
+                todos.splice(idx, 1);
+                saveTodosLocal();
+                renderTodos();
+            });
+            div.appendChild(cb);
+            div.appendChild(textSpan);
+            div.appendChild(delBtn);
+            todoContainer.appendChild(div);
+        });
+    }
+    addTodoBtn.addEventListener("click", () => {
+        const text = newTodoInput.value.trim();
+        if (text === "") return;
+        todos.push({ text: text, completed: false });
+        saveTodosLocal();
+        renderTodos();
+        newTodoInput.value = "";
+    });
+    loadTodos();
+    
+    // ---------- UNIT CONVERTER ----------
+    function convertMass() {
+        let val = parseFloat(document.getElementById("massInput").value);
+        if (isNaN(val)) val = 0;
+        const from = document.getElementById("massFrom").value;
+        const to = document.getElementById("massTo").value;
+        let inKg = from === "kg" ? val : (from === "g" ? val/1000 : val/1e6);
+        let result = to === "kg" ? inKg : (to === "g" ? inKg*1000 : inKg*1e6);
+        document.getElementById("massResult").innerHTML = result.toFixed(4) + " " + to;
+    }
+    function convertLength() {
+        let val = parseFloat(document.getElementById("lengthInput").value);
+        if (isNaN(val)) val = 0;
+        const from = document.getElementById("lengthFrom").value;
+        const to = document.getElementById("lengthTo").value;
+        let inM = from === "m" ? val : (from === "cm" ? val/100 : val/1000);
+        let result = to === "m" ? inM : (to === "cm" ? inM*100 : inM*1000);
+        document.getElementById("lengthResult").innerHTML = result.toFixed(4) + " " + to;
+    }
+    document.getElementById("massInput").addEventListener("input", convertMass);
+    document.getElementById("massFrom").addEventListener("change", convertMass);
+    document.getElementById("massTo").addEventListener("change", convertMass);
+    document.getElementById("lengthInput").addEventListener("input", convertLength);
+    document.getElementById("lengthFrom").addEventListener("change", convertLength);
+    document.getElementById("lengthTo").addEventListener("change", convertLength);
+    convertMass(); convertLength();
+    
+    // ---------- RANDOM SCIENCE FACTS ----------
+    const factsArray = [
+        "🧬 Humans share 60% of their DNA with bananas.",
+        "⚡ A single bolt of lightning can power 100,000 light bulbs.",
+        "🌌 One teaspoon of a neutron star weighs 6 billion tons.",
+        "❄️ Hot water freezes faster than cold water (Mpemba effect).",
+        "🦑 Octopuses have three hearts and blue blood.",
+        "🔬 The periodic table has 118 elements, and 'J' is the only letter not used.",
+        "💧 About 99% of the human body is made of 6 elements.",
+        "🧪 DNA can store 215 petabytes of data per gram."
+    ];
+    function updateRandomFact() {
+        const factSpan = document.getElementById("randomFactText");
+        if (factSpan) {
+            const randomIndex = Math.floor(Math.random() * factsArray.length);
+            factSpan.innerText = factsArray[randomIndex];
+        }
+    }
+    updateRandomFact();
+    setInterval(updateRandomFact, 16000);
+    
+    // Pomodoro helper
+    const pomodoroDiv = document.getElementById("pomodoroTrigger");
+    if (pomodoroDiv) {
+        pomodoroDiv.addEventListener("click", () => {
+            alert("🍅 25 minutes deep focus + 5 min break. Stay locked for science finals! Use your phone or a timer.");
+        });
+    }
+</script>
+</body>
+</html>
