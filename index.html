@@ -3,1287 +3,759 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Science Glass</title>
-    <!-- Apple PWA -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Science Glass">
-    <link rel="manifest" href="manifest.json">
-    <!-- Fonts + Icons -->
+    <meta name="apple-mobile-web-app-title" content="NEXON Science">
+    <title>NEXON · Physics & Chemistry | Glass Dashboard</title>
+    <!-- Google Fonts + Font Awesome 6 -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="manifest" href="manifest.json">
     <style>
-        :root {
-            --bg-deep: #0A1628;
-            --bg-card: rgba(15, 25, 45, 0.8);
-            --accent: #00B4D8;
-            --accent2: #0077B6;
-            --text: #E0F2FE;
-            --text-muted: #90A4AE;
-            --nav-bg: rgba(10, 22, 40, 0.95);
-            --gradient: linear-gradient(135deg, #0077B6, #00B4D8);
-            --danger: #ff6b6b;
-            --success: #4ade80;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
+            background: radial-gradient(ellipse at 30% 10%, #0f172a 0%, #020617 100%);
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: radial-gradient(circle at 20% 10%, #0A1628, #020810);
-            color: var(--text);
+            padding: 1.2rem;
             min-height: 100vh;
-            padding-bottom: 85px; /* for bottom nav */
-            -webkit-tap-highlight-color: transparent;
+            color: #fff;
             position: relative;
-            overflow-x: hidden;
         }
-
-        /* Watermark logo */
-        .logo-watermark {
+        
+        /* premium glass overlay pattern */
+        body::before {
+            content: "";
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 60vw;
-            max-width: 350px;
-            opacity: 0.03;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle at 20% 40%, rgba(212, 175, 55, 0.08) 1px, transparent 1px);
+            background-size: 28px 28px;
             pointer-events: none;
             z-index: 0;
         }
 
-        /* Header */
-        .app-header {
+        .dashboard {
+            max-width: 1440px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ========= LUXURY HEADER ========= */
+        .luxury-header {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            padding: 0.8rem 1.5rem;
-            background: var(--nav-bg);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border-bottom: 1px solid rgba(0, 180, 216, 0.2);
-            position: sticky;
-            top: 0;
-            z-index: 10;
+            align-items: flex-end;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 0 0.2rem;
         }
-        .header-logo {
-            height: 36px;
-            margin-right: 10px;
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
-        .app-title {
-            font-weight: 700;
-            font-size: 1.3rem;
-            background: var(--gradient);
+        .nexon-logo {
+            background: linear-gradient(135deg, #E5B13B, #B8860B);
+            width: 52px;
+            height: 52px;
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 12px 25px -8px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.3);
+        }
+        .nexon-logo i {
+            font-size: 2rem;
+            color: #0a0f1f;
+            text-shadow: 0 1px 0 rgba(255,255,200,0.3);
+        }
+        .brand-text h1 {
+            font-weight: 800;
+            font-size: 1.8rem;
+            letter-spacing: -0.5px;
+            background: linear-gradient(120deg, #FFF8E7, #E5B13B);
+            background-clip: text;
             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: transparent;
         }
-        .header-right {
-            display: flex;
-            gap: 12px;
-            align-items: center;
+        .brand-text p {
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            font-weight: 500;
+            color: #D4AF37;
+            text-transform: uppercase;
         }
-        .icon-btn {
-            background: none;
-            border: none;
-            color: var(--accent);
-            font-size: 1.3rem;
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 50%;
-            transition: 0.2s;
+        .date-luxury {
+            background: rgba(10, 20, 40, 0.5);
+            backdrop-filter: blur(12px);
+            padding: 0.5rem 1.2rem;
+            border-radius: 60px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: 0.5px solid rgba(212, 175, 55, 0.3);
         }
-        .icon-btn:hover { background: rgba(0,180,216,0.15); }
 
-        /* Bottom Navigation */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0; right: 0;
-            background: var(--nav-bg);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border-top: 1px solid rgba(0,180,216,0.25);
-            display: flex;
-            justify-content: space-around;
-            padding: 0.4rem 0 0.6rem;
-            z-index: 10;
+        /* premium glass cards (base) */
+        .glass-premium {
+            background: rgba(12, 20, 35, 0.55);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-radius: 2rem;
+            border: 0.5px solid rgba(212, 175, 55, 0.25);
+            box-shadow: 0 25px 40px -18px rgba(0, 0, 0, 0.6), inset 0 0.5px 0 rgba(255,255,255,0.1);
+            transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
         }
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: var(--text-muted);
-            font-size: 0.65rem;
-            text-decoration: none;
-            cursor: pointer;
-            transition: 0.2s;
-            padding: 4px 8px;
-            border-radius: 12px;
+        .glass-premium:hover {
+            background: rgba(18, 30, 48, 0.7);
+            border-color: rgba(212, 175, 55, 0.5);
+            transform: translateY(-3px);
+            box-shadow: 0 28px 45px -18px black;
         }
-        .nav-item i { font-size: 1.4rem; margin-bottom: 2px; }
-        .nav-item.active { color: var(--accent); }
 
-        /* Pages */
-        .page { display: none; padding: 1.2rem 1.5rem; }
-        .page.active { display: block; }
-
-        /* Cards & components – exactly your original styles, just updated colours */
+        /* hero timers row (premium big cards) */
         .timers-row {
             display: flex;
             gap: 1.8rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
             flex-wrap: wrap;
         }
-        .timer-horiz-card {
+        .timer-hero {
             flex: 1;
-            background: var(--bg-card);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 2rem;
-            border: 0.5px solid rgba(0, 180, 216, 0.35);
-            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.4);
-            padding: 1.5rem 1.8rem;
-            transition: all 0.2s ease;
+            background: linear-gradient(125deg, rgba(15, 25, 45, 0.7), rgba(10, 18, 32, 0.8));
+            backdrop-filter: blur(28px);
+            border-radius: 2.2rem;
+            border: 1px solid rgba(229, 177, 59, 0.35);
+            padding: 1.6rem 2rem;
+            transition: 0.3s;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 1rem;
+            gap: 1.5rem;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.5);
         }
-        .timer-horiz-card:hover {
-            transform: translateY(-2px);
-            border-color: rgba(0, 180, 216, 0.6);
+        .timer-hero:hover {
+            border-color: #E5B13B;
+            box-shadow: 0 25px 40px -12px rgba(229,177,59,0.15);
         }
-        .timer-info { flex: 2; }
-        .dday-badge {
+        .hero-info .exam-icon {
+            background: rgba(229, 177, 59, 0.2);
             display: inline-block;
-            background: var(--gradient);
-            color: white;
-            font-weight: 800;
-            font-size: 0.75rem;
             padding: 0.2rem 1rem;
             border-radius: 40px;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.6rem;
-        }
-        .exam-title {
-            font-size: 1.5rem;
+            font-size: 0.7rem;
             font-weight: 700;
-            color: white;
-            letter-spacing: -0.3px;
+            color: #F5D78C;
+            margin-bottom: 0.8rem;
+            backdrop-filter: blur(4px);
         }
-        .exam-date { color: #bfd6ff; font-size: 0.9rem; margin-top: 0.25rem; }
+        .hero-info .exam-title {
+            font-size: clamp(1.4rem, 4vw, 2rem);
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            background: linear-gradient(to right, #ffffff, #ffe6b3);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .hero-date {
+            font-size: 0.85rem;
+            color: #BDC9F0;
+            margin-top: 0.4rem;
+        }
+        .timer-gold {
+            text-align: right;
+        }
         .timer-digits-large {
-            font-size: 2.6rem;
+            font-size: clamp(2rem, 6vw, 3.2rem);
             font-weight: 800;
-            font-family: monospace;
-            background: linear-gradient(135deg, #ffffff, #00B4D8);
+            font-family: 'Inter', monospace;
+            background: linear-gradient(135deg, #FFE9C7, #F5C542);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
             letter-spacing: 2px;
         }
-        .timer-unit { font-size: 0.9rem; font-weight: 500; color: #b9d0ff; margin-left: 4px; }
-        .timer-clock { text-align: right; min-width: 240px; }
+        .timer-unit {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #F0D895;
+            letter-spacing: 0.5px;
+        }
 
-        /* Smaller timers */
+        /* prep classes (elegant secondary) */
         .small-timers-row {
             display: flex;
             gap: 1.5rem;
             margin-bottom: 2.5rem;
             flex-wrap: wrap;
         }
-        .small-timer-card {
+        .prep-card {
             flex: 1;
-            background: var(--bg-card);
-            backdrop-filter: blur(16px);
-            border-radius: 1.5rem;
-            border: 0.5px solid rgba(0, 180, 216, 0.25);
-            padding: 1rem 1.2rem;
-            transition: 0.2s;
+            background: rgba(12, 22, 40, 0.65);
+            backdrop-filter: blur(18px);
+            border-radius: 1.6rem;
+            border: 0.5px solid rgba(229, 177, 59, 0.4);
+            padding: 1rem 1.5rem;
+            transition: all 0.25s;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 1rem;
             flex-wrap: wrap;
+            gap: 1rem;
         }
-        .small-timer-card:hover { border-color: rgba(0, 180, 216, 0.5); }
-        .prep-badge {
-            display: inline-block;
-            background: rgba(0, 180, 216, 0.3);
+        .prep-card:hover {
+            background: rgba(25, 40, 62, 0.8);
+            border-color: #E5B13B;
+        }
+        .prep-badge-lux {
+            background: rgba(212, 175, 55, 0.25);
             font-size: 0.65rem;
             font-weight: 700;
-            padding: 0.2rem 0.8rem;
-            border-radius: 30px;
-            color: white;
-            margin-bottom: 0.3rem;
+            padding: 0.2rem 0.9rem;
+            border-radius: 40px;
+            color: #FAD974;
+            display: inline-block;
         }
-        .prep-title { font-size: 1rem; font-weight: 600; color: white; }
-        .prep-date { font-size: 0.7rem; color: #bbd0ff; }
+        .prep-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+        }
         .timer-digits-small {
             font-size: 1.4rem;
             font-weight: 700;
             font-family: monospace;
-            background: linear-gradient(135deg, #f0f4ff, #00B4D8);
+            background: linear-gradient(135deg, #FDE5B4, #E5B13B);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
         }
-        .small-clock { text-align: right; min-width: 160px; }
 
-        .grid {
+        /* GRID: beautiful 2/3 columns responsive */
+        .premium-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-            gap: 1.8rem;
-            margin-top: 0.5rem;
+            gap: 2rem;
+            margin-top: 0.2rem;
         }
-        .glass-card {
-            background: var(--bg-card);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            border-radius: 2rem;
-            border: 0.5px solid rgba(0, 180, 216, 0.2);
-            box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.3);
-            padding: 1.6rem;
-            transition: all 0.2s;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-        .glass-card:hover { border-color: rgba(0, 180, 216, 0.4); }
-        .card-header {
+        .card-header-lux {
             display: flex;
             align-items: center;
             gap: 12px;
-            font-weight: 600;
-            font-size: 1.4rem;
-            color: white;
-            border-bottom: 1.5px solid rgba(0, 180, 216, 0.25);
-            padding-bottom: 0.7rem;
+            font-weight: 700;
+            font-size: 1.35rem;
+            color: #F5DEB3;
+            border-bottom: 1.5px solid rgba(229, 177, 59, 0.35);
+            padding-bottom: 0.9rem;
             margin-bottom: 1.3rem;
         }
-        .card-header i { font-size: 1.7rem; color: var(--accent); }
+        .card-header-lux i {
+            font-size: 1.6rem;
+            color: #E5B13B;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
 
-        /* Drive card */
-        .drive-card {
-            background: linear-gradient(135deg, rgba(25, 35, 55, 0.7), rgba(15, 25, 45, 0.7));
+        /* drive card premium */
+        .drive-premium {
+            background: linear-gradient(125deg, rgba(25, 35, 55, 0.65), rgba(10, 20, 35, 0.7));
             border-radius: 1.5rem;
             padding: 1.2rem;
-            margin: 0.5rem 0 0.8rem;
-            transition: all 0.2s ease;
-            border: 1px solid rgba(0, 180, 216, 0.2);
+            margin: 0.5rem 0 1rem;
+            border: 0.5px solid rgba(212, 175, 55, 0.3);
         }
-        .drive-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
-        .drive-icon {
-            background: rgba(0, 180, 216, 0.2);
-            width: 48px;
-            height: 48px;
-            border-radius: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            color: var(--accent);
-        }
-        .drive-info h3 { font-size: 1.2rem; font-weight: 600; color: white; }
-        .folder-stats {
-            display: flex;
-            gap: 1rem;
-            margin: 1rem 0;
+        .drive-link a {
+            color: #FADB85;
+            word-break: break-all;
             font-size: 0.75rem;
-            color: #cce0ff;
-            background: rgba(0, 0, 0, 0.25);
-            padding: 0.5rem 1rem;
-            border-radius: 2rem;
-            width: fit-content;
         }
-        .drive-link {
-            background: rgba(0, 0, 0, 0.35);
-            border-radius: 1rem;
-            padding: 0.8rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 0.5rem;
-        }
-        .drive-link a { color: var(--accent); text-decoration: none; font-size: 0.8rem; word-break: break-all; }
         .open-drive-btn {
-            background: var(--gradient);
+            background: linear-gradient(105deg, #E5B13B, #C9921E);
             border: none;
             border-radius: 2rem;
-            padding: 0.5rem 1.2rem;
-            font-weight: 600;
-            font-size: 0.8rem;
-            color: white;
-            cursor: pointer;
+            padding: 0.5rem 1.4rem;
+            font-weight: 700;
+            color: #121212;
             transition: 0.2s;
         }
-        .drive-footer {
-            margin-top: 1rem;
-            font-size: 0.7rem;
-            color: #9cb2e0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 0.8rem;
-        }
 
-        /* Tools grid */
+        /* tools grid glossy */
         .tools-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
             gap: 14px;
             margin: 1rem 0;
         }
         .tool-item {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(4px);
-            border: 0.5px solid rgba(0, 180, 216, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(8px);
+            border: 0.5px solid rgba(229, 177, 59, 0.3);
             border-radius: 1.4rem;
             padding: 0.7rem 0.3rem;
             text-align: center;
-            text-decoration: none;
-            color: white;
-            font-weight: 500;
             transition: all 0.2s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
         }
-        .tool-item i { font-size: 1.6rem; color: var(--accent); }
-        .tool-item span { font-size: 0.8rem; }
-        .tool-item:hover { background: rgba(0, 180, 216, 0.25); transform: translateY(-4px); }
-
-        /* Calendar mini */
-        .calendar-twins { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 0.8rem; }
-        .month-card { background: rgba(0, 0, 0, 0.35); border-radius: 1.4rem; padding: 0.7rem; flex: 1; }
-        .month-title { font-weight: 700; text-align: center; color: var(--accent); }
-        .weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 0.65rem; font-weight: 600; color: #b9ceff; }
-        .calendar-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
-        .cal-day { text-align: center; font-size: 0.7rem; padding: 4px 0; border-radius: 20px; color: #eef3ff; position: relative; }
-        .cal-day.highlight-exam { background: var(--accent); color: #000; font-weight: 800; }
-        .cal-day.highlight-class { background: var(--accent2); color: white; font-weight: 700; }
-        .cal-day[data-tooltip]:hover::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: 120%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #000000cc;
-            backdrop-filter: blur(8px);
-            color: #ffefcf;
-            font-size: 0.7rem;
-            padding: 4px 8px;
-            border-radius: 12px;
-            white-space: nowrap;
-            z-index: 10;
-            pointer-events: none;
+        .tool-item:hover {
+            background: rgba(229, 177, 59, 0.2);
+            transform: translateY(-5px);
+            border-color: #E5B13B;
+        }
+        .tool-item i {
+            font-size: 1.6rem;
+            color: #F7CD7C;
         }
 
-        /* Todo list */
-        .todo-list { margin: 1rem 0; }
-        .todo-item {
+        /* calendar enhanced */
+        .calendar-twins {
             display: flex;
-            align-items: center;
-            gap: 12px;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+        }
+        .month-card {
             background: rgba(0, 0, 0, 0.35);
+            border-radius: 1.6rem;
+            padding: 0.9rem;
+            flex: 1;
+            backdrop-filter: blur(4px);
+        }
+        .cal-day {
+            font-size: 0.7rem;
+            padding: 5px 0;
+            border-radius: 30px;
+        }
+        .cal-day.highlight-exam {
+            background: linear-gradient(145deg, #E5B13B, #B47C10);
+            color: #0A0A0A;
+            font-weight: 800;
+            box-shadow: 0 0 6px rgba(229,177,59,0.7);
+        }
+        .cal-day.highlight-class {
+            background: #2C5F8A;
+            color: white;
+            font-weight: 600;
+        }
+
+        /* todo list refinements */
+        .todo-item {
+            background: rgba(0, 0, 0, 0.4);
             border-radius: 3rem;
             margin-bottom: 10px;
-            padding: 0.6rem 1rem;
+            padding: 0.7rem 1rem;
+            backdrop-filter: blur(4px);
         }
-        .todo-check { width: 1.2rem; height: 1.2rem; accent-color: var(--accent); }
-        .todo-text { flex: 1; color: white; font-weight: 500; }
-        .completed { text-decoration: line-through; opacity: 0.6; }
-        .add-todo { display: flex; gap: 10px; margin-top: 8px; }
         .add-todo input {
-            flex: 1;
-            background: #0f1a2ed9;
-            border: 1px solid var(--accent);
-            border-radius: 2rem;
-            padding: 0.6rem 1rem;
+            background: #0a1022e5;
+            border: 1px solid #E5B13B;
+            border-radius: 3rem;
+            padding: 0.7rem 1rem;
             color: white;
         }
         .add-todo button {
-            background: var(--gradient);
-            border: none;
-            border-radius: 2rem;
-            padding: 0 1.2rem;
+            background: #E5B13B;
+            border-radius: 3rem;
             font-weight: bold;
-            color: white;
-            cursor: pointer;
         }
 
-        /* Converter */
-        .converter { display: flex; flex-direction: column; gap: 1rem; }
+        /* converter & facts */
         .conv-row {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 8px;
-            background: rgba(0, 0, 0, 0.25);
-            border-radius: 1.2rem;
-            padding: 0.6rem;
-        }
-        .conv-row input, .conv-row select {
-            background: #101d31;
-            border: 1px solid var(--accent);
+            background: rgba(0, 0, 0, 0.35);
             border-radius: 2rem;
-            padding: 0.4rem 0.8rem;
-            color: white;
+            padding: 0.7rem;
         }
-        .result-badge { background: #233055; padding: 0.2rem 0.9rem; border-radius: 2rem; font-weight: 600; }
-
         .science-fact {
             background: rgba(0, 0, 0, 0.3);
-            border-radius: 1.2rem;
-            padding: 0.8rem;
-            margin-top: 1rem;
-            border-left: 4px solid var(--accent);
-            color: #eef3ff;
-            font-size: 0.85rem;
+            border-left: 4px solid #E5B13B;
         }
-
-        hr { margin: 12px 0; border-color: rgba(255,255,200,0.15); }
-
-        .class-note {
+        footer {
+            margin-top: 3rem;
+            text-align: center;
             font-size: 0.7rem;
-            margin-top: 0.5rem;
-            background: rgba(0, 180, 216, 0.2);
-            border-radius: 1rem;
-            padding: 0.4rem;
-            text-align: center;
+            font-weight: 400;
+            color: #c9b37c;
+            letter-spacing: 1px;
         }
 
-        /* Equation solver etc. (rest unchanged) */
-        .eq-select {
-            width: 100%;
-            background: #101d31;
-            border: 1px solid var(--accent);
-            border-radius: 2rem;
-            padding: 0.6rem 1rem;
-            color: white;
-            font-size: 0.9rem;
-            font-family: 'Inter', sans-serif;
+        /* responsive superior */
+        @media (max-width: 800px) {
+            body {
+                padding: 0.9rem;
+            }
+            .timers-row, .small-timers-row {
+                flex-direction: column;
+            }
+            .timer-hero, .prep-card {
+                width: 100%;
+            }
+            .timer-hero {
+                flex-direction: column;
+                align-items: flex-start;
+                text-align: left;
+            }
+            .timer-gold {
+                text-align: left;
+                width: 100%;
+            }
+            .premium-grid {
+                grid-template-columns: 1fr;
+                gap: 1.3rem;
+            }
+            .card-header-lux {
+                font-size: 1.2rem;
+            }
+            .tools-grid {
+                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            }
+        }
+        @media (max-width: 480px) {
+            .brand-text h1 {
+                font-size: 1.3rem;
+            }
+            .timer-digits-small {
+                font-size: 1.1rem;
+            }
+        }
+        /* custom scroll */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0e1a24;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E5B13B;
+            border-radius: 10px;
+        }
+        button, .tool-item, .open-drive-btn {
             cursor: pointer;
-            margin-bottom: 1rem;
-            appearance: none;
-            -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2300B4D8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 1rem center;
         }
-        .eq-input-group { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 0.8rem; align-items: center; }
-        .eq-input-group label { color: #cce0ff; font-size: 0.8rem; font-weight: 500; min-width: 80px; }
-        .eq-input-group input {
-            flex: 1;
-            min-width: 100px;
-            background: #0f1a2ed9;
-            border: 1px solid rgba(0, 180, 216, 0.5);
-            border-radius: 2rem;
-            padding: 0.5rem 1rem;
-            color: white;
+        .prep-card, .timer-hero, .glass-premium {
+            transition: all 0.25s ease-out;
         }
-        .eq-formula-display { background: rgba(0, 180, 216, 0.15); border-radius: 1rem; padding: 0.6rem 1rem; text-align: center; color: var(--accent); font-weight: 600; }
-        .eq-result {
-            background: rgba(0,0,0,0.4);
-            border-radius: 1.2rem;
-            padding: 0.8rem;
-            text-align: center;
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--accent);
-            margin-top: 0.5rem;
-            border: 1px solid rgba(0,180,216,0.3);
-        }
-        .eq-calc-btn {
-            width: 100%;
-            background: var(--gradient);
-            border: none;
-            border-radius: 2rem;
-            padding: 0.6rem;
-            font-weight: 700;
-            color: white;
-            cursor: pointer;
-            font-size: 0.85rem;
-            transition: 0.2s;
-        }
-        .chem-tabs { display: flex; gap: 6px; margin-bottom: 1rem; flex-wrap: wrap; }
-        .chem-tab {
-            flex: 1;
-            min-width: 70px;
-            background: rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 2rem;
-            padding: 0.5rem;
-            color: #b0c8ff;
-            font-size: 0.7rem;
-            cursor: pointer;
-            text-align: center;
-            font-weight: 600;
-            transition: 0.2s;
-        }
-        .chem-tab.active { background: var(--gradient); color: white; border-color: transparent; }
-        .chem-panel { display: none; }
-        .chem-panel.active { display: block; }
-
-        .grade-input-row { display: flex; align-items: center; gap: 10px; margin-bottom: 0.8rem; flex-wrap: wrap; }
-        .grade-input-row label { color: #cce0ff; font-size: 0.8rem; font-weight: 500; flex: 1; min-width: 100px; }
-        .grade-input-row input { width: 100px; background: #0f1a2ed9; border: 1px solid rgba(0,180,216,0.5); border-radius: 2rem; padding: 0.5rem 0.8rem; color: white; text-align: center; }
-        .grade-result-big { background: rgba(0,0,0,0.4); border-radius: 1.2rem; padding: 1rem; text-align: center; font-size: 1.1rem; font-weight: 700; color: var(--accent); }
-        .big-num { font-size: 2.4rem; font-weight: 800; display: block; background: var(--gradient); background-clip: text; -webkit-background-clip: text; color: transparent; }
-
-        details.formula-section { background: rgba(0,0,0,0.3); border-radius: 1rem; margin-bottom: 0.6rem; border: 1px solid rgba(255,255,255,0.1); overflow: hidden; }
-        details.formula-section summary { padding: 0.7rem 1rem; cursor: pointer; font-weight: 600; color: var(--accent); font-size: 0.85rem; list-style: none; display: flex; align-items: center; gap: 8px; }
-        details.formula-section summary::before { content: '▸'; display: inline-block; transition: transform 0.2s; color: var(--accent); }
-        details.formula-section[open] summary::before { transform: rotate(90deg); }
-        .formula-item { padding: 0.4rem 1.2rem; color: #d0dfff; font-size: 0.78rem; border-top: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; flex-wrap: wrap; }
-        .formula-item .f-eq { font-family: monospace; color: var(--accent); font-weight: 600; }
-        .formula-item .f-desc { color: #b0c8ff; font-size: 0.7rem; }
-
-        footer { margin-top: 2rem; text-align: center; font-size: 0.75rem; color: #99b0e0; }
     </style>
 </head>
 <body>
-    <!-- Watermark -->
-    <img src="logo.png" alt="" class="logo-watermark">
-
-    <!-- Header -->
-    <header class="app-header">
-        <div style="display:flex; align-items:center;">
-            <img src="logo.png" alt="Nexon" class="header-logo">
-            <span class="app-title">Science Glass</span>
-        </div>
-        <div class="header-right">
-            <button class="icon-btn" id="testNotifyBtn" title="Test notification"><i class="fas fa-bell"></i></button>
-        </div>
-    </header>
-
-    <!-- ===================== PAGES ===================== -->
-
-    <!-- HOME (Dashboard) – contains all main timers + drive card + enable reminders button -->
-    <div id="homePage" class="page active">
-        <!-- MAIN EXAM TIMERS -->
-        <div class="timers-row">
-            <div class="timer-horiz-card">
-                <div class="timer-info">
-                    <div class="dday-badge"><i class="fas fa-skull-crosswalk"></i> D-DAY 1 · PHYSICS</div>
-                    <div class="exam-title">📘 Science Final · Paper 1 (Physics)</div>
-                    <div class="exam-date">🗓️ May 27, 2026 · 9:00 AM</div>
-                </div>
-                <div class="timer-clock">
-                    <div class="timer-digits-large" id="timer1Display">--d --h --m --s</div>
-                    <div class="timer-unit">until exam</div>
-                </div>
+<div class="dashboard">
+    <!-- luxury header inspired by NEXON logo -->
+    <div class="luxury-header">
+        <div class="brand">
+            <div class="nexon-logo">
+                <i class="fas fa-flask"></i>
             </div>
-            <div class="timer-horiz-card">
-                <div class="timer-info">
-                    <div class="dday-badge"><i class="fas fa-flask"></i> D-DAY 2 · CHEMISTRY</div>
-                    <div class="exam-title">🧪 Science Final · Paper 2 (Chemistry)</div>
-                    <div class="exam-date">🗓️ June 12, 2026 · 9:00 AM</div>
-                </div>
-                <div class="timer-clock">
-                    <div class="timer-digits-large" id="timer2Display">--d --h --m --s</div>
-                    <div class="timer-unit">until exam</div>
-                </div>
+            <div class="brand-text">
+                <h1>NEXON · SCIENCE</h1>
+                <p>PHYSICS & CHEMISTRY · ELITE DASH</p>
             </div>
         </div>
+        <div class="date-luxury">
+            <i class="fas fa-star-of-life"></i> 2026 FINALS PREP
+        </div>
+    </div>
 
-        <!-- PREP CLASS TIMERS -->
-        <div class="small-timers-row">
-            <div class="small-timer-card">
-                <div class="small-timer-info">
-                    <div class="prep-badge"><i class="fas fa-chalkboard"></i> PREP CLASS · PHYSICS</div>
-                    <div class="prep-title">⚡ Exam Cram: Physics Focus</div>
-                    <div class="prep-date">🗓️ May 22, 2026 · 12:30 – 14:30</div>
-                </div>
-                <div class="small-clock">
-                    <div class="timer-digits-small" id="prepTimer1">--d --h --m --s</div>
-                    <div class="timer-unit" style="font-size:0.7rem;">until session</div>
-                </div>
+    <!-- Hero timers: Physics / Chemistry main exams -->
+    <div class="timers-row">
+        <div class="timer-hero">
+            <div class="hero-info">
+                <div class="exam-icon"><i class="fas fa-skull-crosswalk"></i> D-DAY · PAPER 1</div>
+                <div class="exam-title">📘 Physics Final</div>
+                <div class="hero-date">🗓️ May 27, 2026 · 9:00 AM</div>
             </div>
-            <div class="small-timer-card">
-                <div class="small-timer-info">
-                    <div class="prep-badge"><i class="fas fa-chalkboard"></i> PREP CLASS · CHEMISTRY</div>
-                    <div class="prep-title">🧪 Final Review: Chemistry</div>
-                    <div class="prep-date">🗓️ June 11, 2026 · 12:00 – 14:00</div>
-                </div>
-                <div class="small-clock">
-                    <div class="timer-digits-small" id="prepTimer2">--d --h --m --s</div>
-                    <div class="timer-unit" style="font-size:0.7rem;">until session</div>
-                </div>
+            <div class="timer-gold">
+                <div class="timer-digits-large" id="timer1Display">--d --h --m --s</div>
+                <div class="timer-unit">until exam</div>
+            </div>
+        </div>
+        <div class="timer-hero">
+            <div class="hero-info">
+                <div class="exam-icon"><i class="fas fa-flask"></i> D-DAY · PAPER 2</div>
+                <div class="exam-title">🧪 Chemistry Final</div>
+                <div class="hero-date">🗓️ June 12, 2026 · 9:00 AM</div>
+            </div>
+            <div class="timer-gold">
+                <div class="timer-digits-large" id="timer2Display">--d --h --m --s</div>
+                <div class="timer-unit">until exam</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prep classes (refined layout) -->
+    <div class="small-timers-row">
+        <div class="prep-card">
+            <div>
+                <div class="prep-badge-lux"><i class="fas fa-chalkboard-user"></i> PREP · PHYSICS CRAM</div>
+                <div class="prep-title">⚡ Exam Focus: Mechanics & Waves</div>
+                <div class="hero-date" style="font-size:0.7rem;">🗓️ May 22, 2026 · 12:30 – 14:30</div>
+            </div>
+            <div>
+                <div class="timer-digits-small" id="prepTimer1">--d --h --m --s</div>
+                <div class="timer-unit" style="font-size:0.65rem;">until session</div>
+            </div>
+        </div>
+        <div class="prep-card">
+            <div>
+                <div class="prep-badge-lux"><i class="fas fa-chalkboard-user"></i> PREP · CHEMISTRY BOOST</div>
+                <div class="prep-title">🧬 Stoichiometry & Kinetics</div>
+                <div class="hero-date" style="font-size:0.7rem;">🗓️ June 11, 2026 · 12:00 – 14:00</div>
+            </div>
+            <div>
+                <div class="timer-digits-small" id="prepTimer2">--d --h --m --s</div>
+                <div class="timer-unit" style="font-size:0.65rem;">until session</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- main premium grid -->
+    <div class="premium-grid">
+        <!-- Calendar + details card -->
+        <div class="glass-premium">
+            <div class="card-header-lux"><i class="fas fa-calendar-alt"></i> Academic Horizon</div>
+            <div id="dynamicCalendars" class="calendar-twins"></div>
+            <div class="class-note" style="margin-top: 1rem; font-size:0.7rem; background: rgba(212,175,55,0.15); border-radius: 1rem; padding: 0.5rem;">
+                <i class="fas fa-info-circle"></i> Prep sessions: Physics May 22 & Chemistry June 11 (blue highlight). Exams in radiant gold.
+            </div>
+            <div class="science-fact" style="margin-top: 1rem;">
+                <i class="fas fa-chart-line"></i> Paper 1 = Physics · Paper 2 = Chemistry · 2hrs each
             </div>
         </div>
 
-        <!-- Google Drive quick access -->
-        <div class="glass-card" style="margin-bottom: 1.5rem;">
-            <div class="card-header"><i class="fab fa-google-drive"></i> Class Drive Vault</div>
-            <div class="drive-card">
-                <div class="drive-header">
-                    <div class="drive-icon"><i class="fas fa-folder-open"></i></div>
-                    <div class="drive-info">
-                        <h3>📁 Science Class Folder</h3>
-                        <p>All notes, labs, worksheets & past papers</p>
-                    </div>
+        <!-- Google Drive Vault (luxury) -->
+        <div class="glass-premium">
+            <div class="card-header-lux"><i class="fab fa-google-drive"></i> Class Drive Vault</div>
+            <div class="drive-premium">
+                <div style="display:flex; gap:1rem; align-items:center; margin-bottom:1rem;">
+                    <div style="background:rgba(212,175,55,0.2); border-radius: 30px; padding:0.6rem;"><i class="fas fa-folder-open" style="font-size:1.7rem; color:#E5B13B;"></i></div>
+                    <div><h3 style="font-weight:700;">NEXON Science Core</h3><p style="font-size:0.7rem;">All notes, lab worksheets & past papers</p></div>
                 </div>
-                <div class="folder-stats">
+                <div class="folder-stats" style="display: flex; gap: 12px; font-size:0.7rem; background: rgba(0,0,0,0.4); border-radius: 40px; padding: 0.3rem 1rem;">
                     <span><i class="fas fa-file-alt"></i> Mock exams</span>
-                    <span><i class="fas fa-chalkboard-user"></i> Lecture slides</span>
-                    <span><i class="fas fa-flask"></i> Lab guides</span>
+                    <span><i class="fas fa-chalkboard"></i> Slides</span>
+                    <span><i class="fas fa-dna"></i> Labs</span>
                 </div>
-                <div class="drive-link">
-                    <a href="https://drive.google.com/drive/folders/1xcCQcmYHC4Tr8Gm9P40BwNqDALL7SLwQ?usp=drive_link" target="_blank">
-                        https://drive.google.com/drive/folders/1xcCQcmYHC4Tr8Gm9P40BwNqDALL7SLwQ
-                    </a>
-                    <button class="open-drive-btn" onclick="window.open('https://drive.google.com/drive/folders/1xcCQcmYHC4Tr8Gm9P40BwNqDALL7SLwQ?usp=drive_link', '_blank')">
-                        <i class="fas fa-external-link-alt"></i> Open Folder
-                    </button>
+                <div class="drive-link" style="background: #0a1022a0; border-radius: 1rem; padding:0.7rem; margin-top: 1rem; display: flex; justify-content: space-between; flex-wrap:wrap; gap: 0.5rem;">
+                    <a href="https://drive.google.com/drive/folders/1xcCQcmYHC4Tr8Gm9P40BwNqDALL7SLwQ?usp=drive_link" target="_blank" style="font-size:0.7rem; flex:1;">drive.google.com/nexon_science</a>
+                    <button class="open-drive-btn" onclick="window.open('https://drive.google.com/drive/folders/1xcCQcmYHC4Tr8Gm9P40BwNqDALL7SLwQ?usp=drive_link', '_blank')"><i class="fas fa-external-link-alt"></i> Open Vault</button>
                 </div>
-                <div class="drive-footer"><i class="fas fa-database"></i> 40+ resources · updated weekly</div>
             </div>
+            <div class="science-fact" style="margin-top: 0.5rem;"><i class="fas fa-cloud-upload-alt"></i> 40+ resources · Updated weekly</div>
         </div>
 
-        <button class="eq-calc-btn" onclick="requestNotificationPermission()" style="margin: 1rem 0;">
-            <i class="fas fa-bell"></i> Enable Reminders
-        </button>
-    </div>
-
-    <!-- TOOLS page: contains Science Toolkit, Physics Solver, Chemistry Lab, Converter, Grade Predictor, Formula Reference -->
-    <div id="toolsPage" class="page">
-        <div class="grid">
-            <!-- Science Toolkit card (unchanged) -->
-            <div class="glass-card">
-                <div class="card-header"><i class="fas fa-toolbox"></i> Science Toolkit</div>
-                <div class="tools-grid">
-                    <a href="https://zperiod.app/" target="_blank" class="tool-item"><i class="fas fa-chart-line"></i><span>Z-period.app</span></a>
-                    <a href="https://phet.colorado.edu/" target="_blank" class="tool-item"><i class="fas fa-atom"></i><span>PhET Sims</span></a>
-                    <a href="https://www.desmos.com/scientific" target="_blank" class="tool-item"><i class="fas fa-calculator"></i><span>Desmos Sci</span></a>
-                    <a href="https://www.khanacademy.org/science" target="_blank" class="tool-item"><i class="fas fa-graduation-cap"></i><span>Khan Academy</span></a>
-                    <a href="https://ptable.com/" target="_blank" class="tool-item"><i class="fas fa-border-all"></i><span>Periodic Table</span></a>
-                    <a href="https://quizlet.com/" target="_blank" class="tool-item"><i class="fas fa-cards-blank"></i><span>Quizlet</span></a>
-                    <a href="https://www.wolframalpha.com/" target="_blank" class="tool-item"><i class="fas fa-robot"></i><span>Wolfram Alpha</span></a>
-                    <a href="https://hyperphysics.phy-astr.gsu.edu/hphys.html" target="_blank" class="tool-item"><i class="fas fa-magnet"></i><span>HyperPhysics</span></a>
-                    <a href="https://www.chemguide.co.uk/" target="_blank" class="tool-item"><i class="fas fa-vial"></i><span>ChemGuide</span></a>
-                    <a href="https://www.symbolab.com/" target="_blank" class="tool-item"><i class="fas fa-square-root-variable"></i><span>Symbolab</span></a>
-                    <a href="https://www.physicsclassroom.com/" target="_blank" class="tool-item"><i class="fas fa-book-open"></i><span>PhysicsClass</span></a>
-                    <a href="https://webbook.nist.gov/chemistry/" target="_blank" class="tool-item"><i class="fas fa-database"></i><span>NIST Chem</span></a>
-                    <div id="pomodoroTrigger" class="tool-item" style="cursor:pointer;"><i class="fas fa-hourglass-half"></i><span>🍅 Pomodoro</span></div>
-                </div>
-                <div id="factBox" class="science-fact" style="margin-top: 0rem;">
-                    <i class="fas fa-lightbulb"></i> <span id="randomFactText">loading fun fact...</span>
-                </div>
+        <!-- Toolkit + fact + pomodoro -->
+        <div class="glass-premium">
+            <div class="card-header-lux"><i class="fas fa-toolbox"></i> Science Arsenal</div>
+            <div class="tools-grid">
+                <a href="https://zperiod.app/" target="_blank" class="tool-item"><i class="fas fa-chart-line"></i><span>Z-period</span></a>
+                <a href="https://phet.colorado.edu/" target="_blank" class="tool-item"><i class="fas fa-atom"></i><span>PhET Sims</span></a>
+                <a href="https://www.desmos.com/scientific" target="_blank" class="tool-item"><i class="fas fa-calculator"></i><span>Desmos</span></a>
+                <a href="https://www.khanacademy.org/science" target="_blank" class="tool-item"><i class="fas fa-graduation-cap"></i><span>Khan Acad</span></a>
+                <a href="https://ptable.com/" target="_blank" class="tool-item"><i class="fas fa-border-all"></i><span>Periodic</span></a>
+                <a href="https://quizlet.com/" target="_blank" class="tool-item"><i class="fas fa-cards-blank"></i><span>Quizlet</span></a>
+                <a href="https://www.wolframalpha.com/" target="_blank" class="tool-item"><i class="fas fa-robot"></i><span>Wolfram</span></a>
+                <div id="pomodoroTrigger" class="tool-item" style="cursor:pointer;"><i class="fas fa-hourglass-half"></i><span>🍅 Pomodoro</span></div>
             </div>
-
-            <!-- Physics Equation Solver -->
-            <div class="glass-card">
-                <div class="card-header"><i class="fas fa-calculator"></i> Physics Equation Solver</div>
-                <select class="eq-select" id="physicsEqSelect">
-                    <option value="F=ma">F = m × a (Newton's 2nd Law)</option>
-                    <option value="KE">KE = ½mv² (Kinetic Energy)</option>
-                    <option value="PE">PE = mgh (Gravitational Potential Energy)</option>
-                    <option value="V=IR">V = I × R (Ohm's Law)</option>
-                    <option value="v=fλ">v = f × λ (Wave Speed)</option>
-                    <option value="p=mv">p = m × v (Momentum)</option>
-                    <option value="W=Fd">W = F × d (Work Done)</option>
-                    <option value="P=Wt">P = W / t (Power)</option>
-                    <option value="a=Fm">a = F / m (Acceleration)</option>
-                    <option value="rho=mV">ρ = m / V (Density)</option>
-                </select>
-                <div class="eq-formula-display" id="eqFormulaDisplay">F = m × a</div>
-                <div id="eqInputsContainer"></div>
-                <button class="eq-calc-btn" id="eqCalcBtn"><i class="fas fa-play"></i> Calculate</button>
-                <div class="eq-result" id="eqResult">Enter values and tap Calculate</div>
-            </div>
-
-            <!-- Chemistry Lab Calculator -->
-            <div class="glass-card">
-                <div class="card-header"><i class="fas fa-flask"></i> Chemistry Lab Calculator</div>
-                <div class="chem-tabs">
-                    <div class="chem-tab active" data-chem-panel="molesPanel">🧮 Moles & Mass</div>
-                    <div class="chem-tab" data-chem-panel="concPanel">🧪 Concentration</div>
-                    <div class="chem-tab" data-chem-panel="dilutionPanel">💧 Dilution</div>
-                    <div class="chem-tab" data-chem-panel="phpPanel">⚗️ pH</div>
-                </div>
-                <div class="chem-panel active" id="molesPanel">
-                    <div class="eq-input-group">
-                        <label>Mass (g):</label>
-                        <input type="number" id="molesMass" value="10" step="any" placeholder="Mass in grams">
-                    </div>
-                    <div class="eq-input-group">
-                        <label>Molar Mass (g/mol):</label>
-                        <input type="number" id="molesMolarMass" value="58.44" step="any" placeholder="e.g., NaCl = 58.44">
-                    </div>
-                    <button class="eq-calc-btn" id="molesCalcBtn"><i class="fas fa-play"></i> Calculate Moles</button>
-                    <div class="eq-result" id="molesResult">n = m / M</div>
-                </div>
-                <div class="chem-panel" id="concPanel">
-                    <div class="eq-input-group">
-                        <label>Solute (mol):</label>
-                        <input type="number" id="concMoles" value="0.5" step="any">
-                    </div>
-                    <div class="eq-input-group">
-                        <label>Volume (L):</label>
-                        <input type="number" id="concVolume" value="1" step="any">
-                    </div>
-                    <button class="eq-calc-btn" id="concCalcBtn">Calculate Concentration</button>
-                    <div class="eq-result" id="concResult">C = n / V</div>
-                </div>
-                <div class="chem-panel" id="dilutionPanel">
-                    <div class="eq-input-group">
-                        <label>C₁ (mol/L):</label>
-                        <input type="number" id="dilC1" value="2" step="any">
-                    </div>
-                    <div class="eq-input-group">
-                        <label>V₁ (L):</label>
-                        <input type="number" id="dilV1" value="0.1" step="any">
-                    </div>
-                    <div class="eq-input-group">
-                        <label>C₂ (mol/L):</label>
-                        <input type="number" id="dilC2" value="0.5" step="any">
-                    </div>
-                    <button class="eq-calc-btn" id="dilCalcBtn">Find V₂</button>
-                    <div class="eq-result" id="dilResult">C₁V₁ = C₂V₂ → solve for V₂</div>
-                </div>
-                <div class="chem-panel" id="phpPanel">
-                    <div class="eq-input-group">
-                        <label>[H⁺] (mol/L):</label>
-                        <input type="number" id="phHplus" value="0.0001" step="any">
-                    </div>
-                    <button class="eq-calc-btn" id="phCalcBtn">Calculate pH</button>
-                    <div class="eq-result" id="phResult">pH = -log₁₀[H⁺]</div>
-                </div>
-                <div class="science-fact" style="margin-top:0.8rem;font-size:0.7rem;">
-                    <i class="fas fa-info-circle"></i> Use <a href="https://ptable.com/" target="_blank" style="color:var(--accent);">ptable.com</a> to look up molar masses.
-                </div>
-            </div>
-
-            <!-- Unit Converter -->
-            <div class="glass-card">
-                <div class="card-header"><i class="fas fa-weight-hanging"></i> Lab Converter</div>
-                <div class="converter">
-                    <div class="conv-row">
-                        <span>⚖️ Mass:</span>
-                        <input type="number" id="massInput" value="1" step="any">
-                        <select id="massFrom"><option value="kg">kg</option><option value="g">g</option><option value="mg">mg</option></select>
-                        <span>→</span>
-                        <select id="massTo"><option value="kg">kg</option><option value="g" selected>g</option><option value="mg">mg</option></select>
-                        <span id="massResult" class="result-badge">--</span>
-                    </div>
-                    <div class="conv-row">
-                        <span>📏 Length:</span>
-                        <input type="number" id="lengthInput" value="1">
-                        <select id="lengthFrom"><option value="m">m</option><option value="cm">cm</option><option value="mm">mm</option></select>
-                        <span>→</span>
-                        <select id="lengthTo"><option value="m">m</option><option value="cm" selected>cm</option><option value="mm">mm</option></select>
-                        <span id="lengthResult" class="result-badge">--</span>
-                    </div>
-                </div>
-                <div class="science-fact"><i class="fas fa-chart-simple"></i> density = mass / volume  |  speed = distance/time</div>
-            </div>
-
-            <!-- Grade Predictor -->
-            <div class="glass-card">
-                <div class="card-header"><i class="fas fa-chart-pie"></i> Grade Predictor</div>
-                <p style="color:#b0c8ff;font-size:0.8rem;margin-bottom:1rem;">What score do you need on the final exam?</p>
-                <div class="grade-input-row">
-                    <label>📊 Current Grade (%):</label>
-                    <input type="number" id="gradeCurrent" value="75" min="0" max="100" step="any">
-                </div>
-                <div class="grade-input-row">
-                    <label>🎯 Desired Grade (%):</label>
-                    <input type="number" id="gradeDesired" value="85" min="0" max="100" step="any">
-                </div>
-                <div class="grade-input-row">
-                    <label>📝 Final Exam Weight (%):</label>
-                    <input type="number" id="gradeWeight" value="30" min="1" max="100" step="any">
-                </div>
-                <button class="eq-calc-btn" id="gradeCalcBtn">Calculate Required Score</button>
-                <div class="grade-result-big" id="gradeResult"><span style="color:#b0c8ff;">Enter your numbers above</span></div>
-                <div class="science-fact" style="margin-top:0.8rem;font-size:0.7rem;">
-                    <i class="fas fa-lightbulb"></i> Formula: Needed = (Desired − Current × (1 − Weight/100)) / (Weight/100)
-                </div>
-            </div>
-
-            <!-- Quick Formula Reference -->
-            <div class="glass-card">
-                <div class="card-header"><i class="fas fa-book"></i> Quick Formula Reference</div>
-                <details class="formula-section" open>
-                    <summary><i class="fas fa-magnet"></i> Physics Formulas</summary>
-                    <div class="formula-item"><span class="f-eq">v = u + at</span><span class="f-desc">Kinematics</span></div>
-                    <div class="formula-item"><span class="f-eq">F = ma</span><span class="f-desc">Newton's 2nd</span></div>
-                    <div class="formula-item"><span class="f-eq">KE = ½mv²</span><span class="f-desc">Kinetic Energy</span></div>
-                    <div class="formula-item"><span class="f-eq">PE = mgh</span><span class="f-desc">Grav. Potential</span></div>
-                    <div class="formula-item"><span class="f-eq">W = Fd</span><span class="f-desc">Work</span></div>
-                    <div class="formula-item"><span class="f-eq">P = W/t</span><span class="f-desc">Power</span></div>
-                    <div class="formula-item"><span class="f-eq">V = IR</span><span class="f-desc">Ohm's Law</span></div>
-                    <div class="formula-item"><span class="f-eq">v = fλ</span><span class="f-desc">Wave Speed</span></div>
-                    <div class="formula-item"><span class="f-eq">ρ = m/V</span><span class="f-desc">Density</span></div>
-                </details>
-                <details class="formula-section">
-                    <summary><i class="fas fa-vial"></i> Chemistry Formulas</summary>
-                    <div class="formula-item"><span class="f-eq">n = m/M</span><span class="f-desc">Moles from mass</span></div>
-                    <div class="formula-item"><span class="f-eq">C = n/V</span><span class="f-desc">Molarity</span></div>
-                    <div class="formula-item"><span class="f-eq">C₁V₁ = C₂V₂</span><span class="f-desc">Dilution</span></div>
-                    <div class="formula-item"><span class="f-eq">PV = nRT</span><span class="f-desc">Ideal Gas</span></div>
-                    <div class="formula-item"><span class="f-eq">pH = −log[H⁺]</span><span class="f-desc">pH</span></div>
-                    <div class="formula-item"><span class="f-eq">% yield = (actual/theoretical)×100</span><span class="f-desc">Percent Yield</span></div>
-                </details>
-                <details class="formula-section">
-                    <summary><i class="fas fa-greek-capital"></i> Useful Constants</summary>
-                    <div class="formula-item"><span class="f-eq">g = 9.81 m/s²</span><span class="f-desc">Gravity</span></div>
-                    <div class="formula-item"><span class="f-eq">c = 3.00×10⁸ m/s</span><span class="f-desc">Speed of light</span></div>
-                    <div class="formula-item"><span class="f-eq">R = 8.314 J/(mol·K)</span><span class="f-desc">Gas constant</span></div>
-                    <div class="formula-item"><span class="f-eq">Nₐ = 6.022×10²³</span><span class="f-desc">Avogadro's number</span></div>
-                </details>
-            </div>
+            <div class="science-fact" style="margin-top:0.6rem;"><i class="fas fa-lightbulb"></i> <span id="randomFactText">loading insight...</span></div>
         </div>
-    </div>
 
-    <!-- CALENDAR page -->
-    <div id="calendarPage" class="page">
-        <div class="glass-card">
-            <div class="card-header"><i class="fas fa-calendar-alt"></i> Exam & Prep Calendar</div>
-            <div class="calendar-twins" id="dynamicCalendars"></div>
-            <div class="class-note">
-                <i class="fas fa-info-circle"></i> <strong>Prep sessions:</strong> May 22 (Physics, 12:30–14:30) & June 11 (Chemistry, 12:00–14:00) — highlighted in blue.
-            </div>
-            <div class="science-fact">
-                <i class="fas fa-stopwatch"></i> <strong>Paper 1 = Physics</strong> · <strong>Paper 2 = Chemistry</strong> · Prep classes mirror the subjects.
-            </div>
-        </div>
-    </div>
-
-    <!-- TO-DO page -->
-    <div id="todoPage" class="page">
-        <div class="glass-card">
-            <div class="card-header"><i class="fas fa-list-check"></i> Study Sprint</div>
+        <!-- To-Do: Study sprint -->
+        <div class="glass-premium">
+            <div class="card-header-lux"><i class="fas fa-list-check"></i> Study Sprint</div>
             <div class="todo-list" id="todoListContainer"></div>
-            <div class="add-todo">
-                <input type="text" id="newTodoInput" placeholder="e.g., Review thermodynamics">
+            <div class="add-todo" style="display: flex; gap: 0.5rem;">
+                <input type="text" id="newTodoInput" placeholder="Add a task ...">
                 <button id="addTodoBtn"><i class="fas fa-plus"></i> Add</button>
             </div>
-            <hr>
-            <div style="font-size:0.8rem; color:#bbd4ff;"><i class="fas fa-database"></i> Tasks saved locally</div>
+            <div style="font-size:0.7rem; margin-top: 1rem; color:#e0cba0;"><i class="fas fa-save"></i> tasks saved locally</div>
         </div>
-    </div>
 
-    <!-- SETTINGS page (notifications, about) -->
-    <div id="settingsPage" class="page">
-        <div class="glass-card">
-            <h2 style="margin-bottom:1rem;">⚙️ Settings</h2>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                <span>Notification Permission</span>
-                <span id="permStatus">checking...</span>
+        <!-- Lab converter premium -->
+        <div class="glass-premium">
+            <div class="card-header-lux"><i class="fas fa-weight-hanging"></i> Lab Converter</div>
+            <div class="converter">
+                <div class="conv-row" style="display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center;">
+                    <span>⚖️ Mass</span>
+                    <input type="number" id="massInput" value="1" style="width:80px;">
+                    <select id="massFrom"><option value="kg">kg</option><option value="g">g</option><option value="mg">mg</option></select> → 
+                    <select id="massTo"><option value="kg">kg</option><option value="g" selected>g</option><option value="mg">mg</option></select>
+                    <span id="massResult" class="result-badge" style="background:#1f2b46;">--</span>
+                </div>
+                <div class="conv-row" style="display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center;">
+                    <span>📏 Length</span>
+                    <input type="number" id="lengthInput" value="1" style="width:80px;">
+                    <select id="lengthFrom"><option value="m">m</option><option value="cm">cm</option><option value="mm">mm</option></select> → 
+                    <select id="lengthTo"><option value="m">m</option><option value="cm" selected>cm</option><option value="mm">mm</option></select>
+                    <span id="lengthResult" class="result-badge">--</span>
+                </div>
             </div>
-            <button class="eq-calc-btn" onclick="requestNotificationPermission()">Request Permission</button>
-            <button class="eq-calc-btn" onclick="scheduleAllNotifications()" style="margin-top:0.5rem;">Reschedule All Reminders</button>
-            <p style="margin-top:1rem; font-size:0.8rem; color:var(--text-muted);">NEXON Eco-system by Divan Barnard</p>
+            <div class="science-fact" style="margin-top: 1rem;">density = mass/volume | speed = distance/time</div>
         </div>
     </div>
+    <footer>NEXON Eco-system by Divan Barnard · <i class="fas fa-microchip"></i> iOS 26 Glass Morph</footer>
+</div>
 
-    <!-- Bottom Navigation -->
-    <nav class="bottom-nav">
-        <div class="nav-item active" data-page="homePage"><i class="fas fa-home"></i><span>Home</span></div>
-        <div class="nav-item" data-page="toolsPage"><i class="fas fa-tools"></i><span>Tools</span></div>
-        <div class="nav-item" data-page="calendarPage"><i class="fas fa-calendar"></i><span>Calendar</span></div>
-        <div class="nav-item" data-page="todoPage"><i class="fas fa-list"></i><span>To-Do</span></div>
-        <div class="nav-item" data-page="settingsPage"><i class="fas fa-cog"></i><span>Settings</span></div>
-    </nav>
+<script>
+    // ---------- TIMER LOGIC (exact same dates, premium UI) ----------
+    const examDate1 = new Date(2026, 4, 27, 9, 0, 0);
+    const examDate2 = new Date(2026, 5, 12, 9, 0, 0);
+    const prepDate1 = new Date(2026, 4, 22, 12, 30, 0);
+    const prepDate2 = new Date(2026, 5, 11, 12, 0, 0);
+    const timer1El = document.getElementById("timer1Display");
+    const timer2El = document.getElementById("timer2Display");
+    const prepTimer1El = document.getElementById("prepTimer1");
+    const prepTimer2El = document.getElementById("prepTimer2");
 
-    <!-- ===================== SCRIPTS ===================== -->
-    <script>
-        // ========== NAVIGATION ==========
-        const navItems = document.querySelectorAll('.nav-item');
-        const pages = document.querySelectorAll('.page');
-        navItems.forEach(item => {
-            item.addEventListener('click', () => {
-                const pageId = item.dataset.page;
-                navItems.forEach(n => n.classList.remove('active'));
-                item.classList.add('active');
-                pages.forEach(p => p.classList.remove('active'));
-                document.getElementById(pageId).classList.add('active');
-            });
-        });
+    function formatCountdown(distance) {
+        if (distance < 0) return "⚡ Active now!";
+        const days = Math.floor(distance / (1000*60*60*24));
+        const hours = Math.floor((distance % (86400000)) / 3600000);
+        const mins = Math.floor((distance % 3600000) / 60000);
+        const secs = Math.floor((distance % 60000) / 1000);
+        return `${days}d ${hours}h ${mins}m ${secs}s`;
+    }
 
-        // ========== EXAM TIMERS ==========
-        const examDate1 = new Date(2026, 4, 27, 9, 0, 0);
-        const examDate2 = new Date(2026, 5, 12, 9, 0, 0);
-        const timer1El = document.getElementById("timer1Display");
-        const timer2El = document.getElementById("timer2Display");
+    function updateAllTimers() {
+        const now = new Date().getTime();
+        if(timer1El) timer1El.innerText = formatCountdown(examDate1.getTime() - now);
+        if(timer2El) timer2El.innerText = formatCountdown(examDate2.getTime() - now);
+        if(prepTimer1El) prepTimer1El.innerText = formatCountdown(prepDate1.getTime() - now);
+        if(prepTimer2El) prepTimer2El.innerText = formatCountdown(prepDate2.getTime() - now);
+    }
+    updateAllTimers();
+    setInterval(updateAllTimers, 1000);
 
-        const prepDate1 = new Date(2026, 4, 22, 12, 30, 0);
-        const prepDate2 = new Date(2026, 5, 11, 12, 0, 0);
-        const prepTimer1El = document.getElementById("prepTimer1");
-        const prepTimer2El = document.getElementById("prepTimer2");
-
-        function formatCountdown(distance) {
-            if (distance < 0) return "🎉 Session started!";
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (86400000)) / 3600000);
-            const mins = Math.floor((distance % 3600000) / 60000);
-            const secs = Math.floor((distance % 60000) / 1000);
-            return `${days}d ${hours}h ${mins}m ${secs}s`;
-        }
-
-        function updateAllTimers() {
-            const now = new Date().getTime();
-            if (timer1El) timer1El.innerText = formatCountdown(examDate1.getTime() - now);
-            if (timer2El) timer2El.innerText = formatCountdown(examDate2.getTime() - now);
-            if (prepTimer1El) prepTimer1El.innerText = formatCountdown(prepDate1.getTime() - now);
-            if (prepTimer2El) prepTimer2El.innerText = formatCountdown(prepDate2.getTime() - now);
-        }
-        updateAllTimers();
-        setInterval(updateAllTimers, 1000);
-
-        // ========== CALENDARS ==========
-        function buildMonthCalendar(monthIndex, year, examDays, prepDaysWithTooltip) {
-            const firstDay = new Date(year, monthIndex, 1);
-            const startWeek = firstDay.getDay();
-            const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
-            const monthName = firstDay.toLocaleString('default', { month: 'long' });
-            let html = `<div class="month-card"><div class="month-title">${monthName} ${year}</div>`;
-            html += `<div class="weekdays"><span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span></div><div class="calendar-days">`;
-            let dayCounter = 1;
-            for (let i = 0; i < 42; i++) {
-                if (i < startWeek || dayCounter > daysInMonth) {
-                    html += `<div class="cal-day"></div>`;
-                } else {
-                    let isExam = examDays.includes(dayCounter);
-                    let prepInfo = prepDaysWithTooltip[dayCounter];
-                    let additionalClass = "";
-                    let tooltipAttr = "";
-                    if (isExam) {
-                        additionalClass = "highlight-exam";
-                    } else if (prepInfo) {
-                        additionalClass = "highlight-class";
-                        tooltipAttr = ` data-tooltip="${prepInfo.tooltip}"`;
-                    }
-                    html += `<div class="cal-day ${additionalClass}"${tooltipAttr}>${dayCounter}</div>`;
-                    dayCounter++;
+    // ---------- CALENDAR (May & June 2026, exam + prep highlights) ----------
+    function buildMonthCalendar(monthIndex, year, examDays, prepDaysMap) {
+        const firstDay = new Date(year, monthIndex, 1);
+        const startWeek = firstDay.getDay();
+        const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+        const monthName = firstDay.toLocaleString('default', { month: 'long' });
+        let html = `<div class="month-card"><div class="month-title" style="font-weight:700; margin-bottom:6px;">${monthName} ${year}</div>`;
+        html += `<div class="weekdays" style="display:grid; grid-template-columns:repeat(7,1fr); text-align:center; font-size:0.6rem;">Su Mo Tu We Th Fr Sa</div><div class="calendar-days" style="display:grid; grid-template-columns:repeat(7,1fr); gap:2px;">`;
+        let dayCounter = 1;
+        for (let i = 0; i < 42; i++) {
+            if (i < startWeek || dayCounter > daysInMonth) {
+                html += `<div class="cal-day"></div>`;
+            } else {
+                let isExam = examDays.includes(dayCounter);
+                let prepInfo = prepDaysMap[dayCounter];
+                let extraClass = "";
+                let tooltipAttr = "";
+                if (isExam) {
+                    extraClass = "highlight-exam";
+                    tooltipAttr = ` data-tooltip="📌 Exam Day"`;
+                } else if (prepInfo) {
+                    extraClass = "highlight-class";
+                    tooltipAttr = ` data-tooltip="${prepInfo.tooltip}"`;
                 }
-            }
-            html += `</div></div>`;
-            return html;
-        }
-
-        function renderCalendars() {
-            const examDaysMay = [27];
-            const examDaysJune = [12];
-            const prepMay = { 22: { tooltip: "Prep Class: Physics · 12:30–14:30" } };
-            const prepJune = { 11: { tooltip: "Prep Class: Chemistry · 12:00–14:00" } };
-            const mayCal = buildMonthCalendar(4, 2026, examDaysMay, prepMay);
-            const juneCal = buildMonthCalendar(5, 2026, examDaysJune, prepJune);
-            document.getElementById("dynamicCalendars").innerHTML = mayCal + juneCal;
-        }
-        renderCalendars();
-
-        // ========== TO-DO LIST ==========
-        let todos = [];
-        const todoContainer = document.getElementById("todoListContainer");
-        const newTodoInput = document.getElementById("newTodoInput");
-        const addTodoBtn = document.getElementById("addTodoBtn");
-
-        function saveTodosLocal() { localStorage.setItem("science_todo_list", JSON.stringify(todos)); }
-        function loadTodos() {
-            const stored = localStorage.getItem("science_todo_list");
-            if (stored) {
-                todos = JSON.parse(stored);
-            } else {
-                todos = [
-                    { text: "🧪 Finish lab report (reaction rates)", completed: false },
-                    { text: "📖 Review periodic trends", completed: false },
-                    { text: "📂 Check Google Drive for mock exam", completed: true },
-                    { text: "⚛️ Practice balancing equations", completed: false }
-                ];
-                saveTodosLocal();
-            }
-            renderTodos();
-        }
-        function renderTodos() {
-            if (!todoContainer) return;
-            todoContainer.innerHTML = "";
-            todos.forEach((todo, idx) => {
-                const div = document.createElement("div");
-                div.className = "todo-item";
-                const cb = document.createElement("input");
-                cb.type = "checkbox";
-                cb.className = "todo-check";
-                cb.checked = todo.completed;
-                cb.addEventListener("change", () => {
-                    todos[idx].completed = cb.checked;
-                    saveTodosLocal();
-                    renderTodos();
-                });
-                const textSpan = document.createElement("span");
-                textSpan.className = `todo-text ${todo.completed ? "completed" : ""}`;
-                textSpan.innerText = todo.text;
-                const delBtn = document.createElement("button");
-                delBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
-                delBtn.style.background = "none";
-                delBtn.style.border = "none";
-                delBtn.style.color = "#ffaa66";
-                delBtn.style.cursor = "pointer";
-                delBtn.addEventListener("click", () => {
-                    todos.splice(idx, 1);
-                    saveTodosLocal();
-                    renderTodos();
-                });
-                div.appendChild(cb);
-                div.appendChild(textSpan);
-                div.appendChild(delBtn);
-                todoContainer.appendChild(div);
-            });
-        }
-        addTodoBtn.addEventListener("click", () => {
-            const text = newTodoInput.value.trim();
-            if (text === "") return;
-            todos.push({ text: text, completed: false });
-            saveTodosLocal();
-            renderTodos();
-            newTodoInput.value = "";
-        });
-        loadTodos();
-
-        // ========== UNIT CONVERTER ==========
-        function convertMass() {
-            let val = parseFloat(document.getElementById("massInput").value);
-            if (isNaN(val)) val = 0;
-            const from = document.getElementById("massFrom").value;
-            const to = document.getElementById("massTo").value;
-            let inKg = from === "kg" ? val : (from === "g" ? val / 1000 : val / 1e6);
-            let result = to === "kg" ? inKg : (to === "g" ? inKg * 1000 : inKg * 1e6);
-            document.getElementById("massResult").innerHTML = result.toFixed(4) + " " + to;
-        }
-        function convertLength() {
-            let val = parseFloat(document.getElementById("lengthInput").value);
-            if (isNaN(val)) val = 0;
-            const from = document.getElementById("lengthFrom").value;
-            const to = document.getElementById("lengthTo").value;
-            let inM = from === "m" ? val : (from === "cm" ? val / 100 : val / 1000);
-            let result = to === "m" ? inM : (to === "cm" ? inM * 100 : inM * 1000);
-            document.getElementById("lengthResult").innerHTML = result.toFixed(4) + " " + to;
-        }
-        document.getElementById("massInput").addEventListener("input", convertMass);
-        document.getElementById("massFrom").addEventListener("change", convertMass);
-        document.getElementById("massTo").addEventListener("change", convertMass);
-        document.getElementById("lengthInput").addEventListener("input", convertLength);
-        document.getElementById("lengthFrom").addEventListener("change", convertLength);
-        document.getElementById("lengthTo").addEventListener("change", convertLength);
-        convertMass();
-        convertLength();
-
-        // ========== RANDOM SCIENCE FACTS ==========
-        const factsArray = [
-            "🧬 Humans share 60% of their DNA with bananas.",
-            "⚡ A single bolt of lightning can power 100,000 light bulbs.",
-            "🌌 One teaspoon of a neutron star weighs 6 billion tons.",
-            "❄️ Hot water freezes faster than cold water (Mpemba effect).",
-            "🦑 Octopuses have three hearts and blue blood.",
-            "🔬 The periodic table has 118 elements, and 'J' is the only letter not used.",
-            "💧 About 99% of the human body is made of 6 elements.",
-            "🧪 DNA can store 215 petabytes of data per gram."
-        ];
-        function updateRandomFact() {
-            const factSpan = document.getElementById("randomFactText");
-            if (factSpan) {
-                const randomIndex = Math.floor(Math.random() * factsArray.length);
-                factSpan.innerText = factsArray[randomIndex];
+                html += `<div class="cal-day ${extraClass}"${tooltipAttr}>${dayCounter}</div>`;
+                dayCounter++;
             }
         }
-        updateRandomFact();
-        setInterval(updateRandomFact, 16000);
+        html += `</div></div>`;
+        return html;
+    }
 
-        // Pomodoro
-        document.getElementById("pomodoroTrigger")?.addEventListener("click", () => {
-            alert("🍅 25 minutes deep focus + 5 min break. Stay locked for science finals!");
+    function renderCalendars() {
+        const examDaysMay = [27];
+        const examDaysJune = [12];
+        const prepMay = { 22: { tooltip: "Physics Prep Class · 12:30–14:30" } };
+        const prepJune = { 11: { tooltip: "Chemistry Prep Class · 12:00–14:00" } };
+        const mayCal = buildMonthCalendar(4, 2026, examDaysMay, prepMay);
+        const juneCal = buildMonthCalendar(5, 2026, examDaysJune, prepJune);
+        const container = document.getElementById("dynamicCalendars");
+        if (container) container.innerHTML = mayCal + juneCal;
+    }
+    renderCalendars();
+
+    // ---------- TO-DO LIST (preserve local storage) ----------
+    let todos = [];
+    const todoContainer = document.getElementById("todoListContainer");
+    const newTodoInput = document.getElementById("newTodoInput");
+    const addTodoBtn = document.getElementById("addTodoBtn");
+
+    function saveTodosLocal() { localStorage.setItem("science_todo_list", JSON.stringify(todos)); }
+    function renderTodos() {
+        if (!todoContainer) return;
+        todoContainer.innerHTML = "";
+        todos.forEach((todo, idx) => {
+            const div = document.createElement("div"); div.className = "todo-item";
+            const cb = document.createElement("input"); cb.type = "checkbox"; cb.className = "todo-check"; cb.checked = todo.completed;
+            cb.addEventListener("change", () => { todos[idx].completed = cb.checked; saveTodosLocal(); renderTodos(); });
+            const textSpan = document.createElement("span"); textSpan.className = `todo-text ${todo.completed ? "completed" : ""}`; textSpan.innerText = todo.text; textSpan.style.flex = "1"; textSpan.style.marginLeft = "8px";
+            const delBtn = document.createElement("button"); delBtn.innerHTML = '<i class="fas fa-trash-alt"></i>'; delBtn.style.background = "none"; delBtn.style.border = "none"; delBtn.style.color = "#F5CD7A"; delBtn.style.cursor = "pointer";
+            delBtn.addEventListener("click", () => { todos.splice(idx,1); saveTodosLocal(); renderTodos(); });
+            div.appendChild(cb); div.appendChild(textSpan); div.appendChild(delBtn);
+            todoContainer.appendChild(div);
         });
-
-        // ========== PHYSICS EQUATION SOLVER ==========
-        const equationDefs = {
-            'F=ma': { formula: 'F = m × a', inputs:[{id:'eqVar1',label:'Mass (kg):',placeholder:'10'},{id:'eqVar2',label:'Acceleration (m/s²):',placeholder:'9.8'}], solve:(v1,v2)=>v1*v2, unit:'N' },
-            'KE': { formula: 'KE = ½mv²', inputs:[{id:'eqVar1',label:'Mass (kg):',placeholder:'2'},{id:'eqVar2',label:'Velocity (m/s):',placeholder:'5'}], solve:(v1,v2)=>0.5*v1*v2*v2, unit:'J' },
-            'PE': { formula: 'PE = mgh', inputs:[{id:'eqVar1',label:'Mass (kg):',placeholder:'5'},{id:'eqVar2',label:'Height (m):',placeholder:'10'}], solve:(v1,v2)=>v1*9.81*v2, unit:'J (g=9.81)' },
-            'V=IR': { formula: 'V = I × R', inputs:[{id:'eqVar1',label:'Current (A):',placeholder:'2'},{id:'eqVar2',label:'Resistance (Ω):',placeholder:'5'}], solve:(v1,v2)=>v1*v2, unit:'V' },
-            'v=fλ': { formula: 'v = f × λ', inputs:[{id:'eqVar1',label:'Frequency (Hz):',placeholder:'440'},{id:'eqVar2',label:'Wavelength (m):',placeholder:'0.78'}], solve:(v1,v2)=>v1*v2, unit:'m/s' },
-            'p=mv': { formula: 'p = m × v', inputs:[{id:'eqVar1',label:'Mass (kg):',placeholder:'3'},{id:'eqVar2',label:'Velocity (m/s):',placeholder:'4'}], solve:(v1,v2)=>v1*v2, unit:'kg·m/s' },
-            'W=Fd': { formula: 'W = F × d', inputs:[{id:'eqVar1',label:'Force (N):',placeholder:'50'},{id:'eqVar2',label:'Distance (m):',placeholder:'3'}], solve:(v1,v2)=>v1*v2, unit:'J' },
-            'P=Wt': { formula: 'P = W / t', inputs:[{id:'eqVar1',label:'Work (J):',placeholder:'100'},{id:'eqVar2',label:'Time (s):',placeholder:'5'}], solve:(v1,v2)=>v2!==0?v1/v2:NaN, unit:'W' },
-            'a=Fm': { formula: 'a = F / m', inputs:[{id:'eqVar1',label:'Force (N):',placeholder:'20'},{id:'eqVar2',label:'Mass (kg):',placeholder:'4'}], solve:(v1,v2)=>v2!==0?v1/v2:NaN, unit:'m/s²' },
-            'rho=mV': { formula: 'ρ = m / V', inputs:[{id:'eqVar1',label:'Mass (kg):',placeholder:'2'},{id:'eqVar2',label:'Volume (m³):',placeholder:'0.5'}], solve:(v1,v2)=>v2!==0?v1/v2:NaN, unit:'kg/m³' }
-        };
-        const physicsEqSelect = document.getElementById('physicsEqSelect');
-        const eqFormulaDisplay = document.getElementById('eqFormulaDisplay');
-        const eqInputsContainer = document.getElementById('eqInputsContainer');
-        const eqCalcBtn = document.getElementById('eqCalcBtn');
-        const eqResult = document.getElementById('eqResult');
-
-        function renderEquationInputs() {
-            const key = physicsEqSelect.value;
-            const def = equationDefs[key];
-            if (!def) return;
-            eqFormulaDisplay.textContent = def.formula;
-            let html = '';
-            def.inputs.forEach(inp => {
-                html += `<div class="eq-input-group"><label>${inp.label}</label><input type="number" id="${inp.id}" value="" step="any" placeholder="${inp.placeholder}"></div>`;
-            });
-            eqInputsContainer.innerHTML = html;
-            eqResult.innerHTML = '<span style="color:#b0c8ff;">Enter values and tap Calculate</span>';
-        }
-        function calculateEquation() {
-            const key = physicsEqSelect.value;
-            const def = equationDefs[key];
-            const v1 = parseFloat(document.getElementById('eqVar1')?.value);
-            const v2 = parseFloat(document.getElementById('eqVar2')?.value);
-            if (isNaN(v1) || isNaN(v2)) { eqResult.innerHTML = '<span style="color:#ff6b6b;">⚠️ Please enter both values</span>'; return; }
-            const result = def.solve(v1, v2);
-            if (isNaN(result) || !isFinite(result)) { eqResult.innerHTML = '<span style="color:#ff6b6b;">⚠️ Cannot divide by zero</span>'; return; }
-            eqResult.innerHTML = `<strong>${result.toFixed(4)}</strong> <span style="font-size:0.85rem;">${def.unit}</span>`;
-        }
-        physicsEqSelect.addEventListener('change', renderEquationInputs);
-        eqCalcBtn.addEventListener('click', calculateEquation);
-        renderEquationInputs();
-
-        // ========== CHEMISTRY LAB ==========
-        document.querySelectorAll('.chem-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                const panelId = tab.getAttribute('data-chem-panel');
-                document.querySelectorAll('.chem-tab').forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                document.querySelectorAll('.chem-panel').forEach(p => p.classList.remove('active'));
-                document.getElementById(panelId).classList.add('active');
-            });
-        });
-
-        document.getElementById('molesCalcBtn').addEventListener('click', () => {
-            const mass = parseFloat(document.getElementById('molesMass').value);
-            const molarMass = parseFloat(document.getElementById('molesMolarMass').value);
-            const r = document.getElementById('molesResult');
-            if (isNaN(mass)||isNaN(molarMass)||molarMass===0) r.innerHTML='<span style="color:#ff6b6b;">⚠️ Invalid</span>';
-            else r.innerHTML = `<strong>n = ${(mass/molarMass).toFixed(4)} mol</strong>`;
-        });
-        document.getElementById('concCalcBtn').addEventListener('click', () => {
-            const n = parseFloat(document.getElementById('concMoles').value);
-            const V = parseFloat(document.getElementById('concVolume').value);
-            const r = document.getElementById('concResult');
-            if (isNaN(n)||isNaN(V)||V===0) r.innerHTML='<span style="color:#ff6b6b;">⚠️ Invalid</span>';
-            else r.innerHTML = `<strong>C = ${(n/V).toFixed(4)} mol/L</strong>`;
-        });
-        document.getElementById('dilCalcBtn').addEventListener('click', () => {
-            const c1 = parseFloat(document.getElementById('dilC1').value);
-            const v1 = parseFloat(document.getElementById('dilV1').value);
-            const c2 = parseFloat(document.getElementById('dilC2').value);
-            const r = document.getElementById('dilResult');
-            if (isNaN(c1)||isNaN(v1)||isNaN(c2)||c2===0) r.innerHTML='<span style="color:#ff6b6b;">⚠️ Invalid</span>';
-            else r.innerHTML = `<strong>V₂ = ${(c1*v1/c2).toFixed(4)} L</strong>`;
-        });
-        document.getElementById('phCalcBtn').addEventListener('click', () => {
-            const h = parseFloat(document.getElementById('phHplus').value);
-            const r = document.getElementById('phResult');
-            if (isNaN(h)||h<=0) r.innerHTML='<span style="color:#ff6b6b;">[H⁺] > 0</span>';
-            else {
-                const ph = -Math.log10(h);
-                r.innerHTML = `<strong>pH = ${ph.toFixed(2)}</strong> ${ph<7?'Acidic':ph>7?'Basic':'Neutral'}`;
-            }
-        });
-
-        // ========== GRADE PREDICTOR ==========
-        document.getElementById('gradeCalcBtn').addEventListener('click', () => {
-            const cur = parseFloat(document.getElementById('gradeCurrent').value);
-            const des = parseFloat(document.getElementById('gradeDesired').value);
-            const w = parseFloat(document.getElementById('gradeWeight').value);
-            const r = document.getElementById('gradeResult');
-            if (isNaN(cur)||isNaN(des)||isNaN(w)||w<=0||w>100) {
-                r.innerHTML = '<span style="color:#ff6b6b;">Enter valid % (weight 1-100)</span>';
-                return;
-            }
-            const need = (des - cur*(1-w/100)) / (w/100);
-            if (need > 100) r.innerHTML = `<span class="big-num" style="color:#ff6b6b;">${need.toFixed(1)}%</span><span style="color:#ff6b6b;"> Impossible 😔</span>`;
-            else if (need < 0) r.innerHTML = `<span class="big-num" style="color:var(--success);">0%</span><span> Already secured! 🎉</span>`;
-            else r.innerHTML = `<span class="big-num">${need.toFixed(1)}%</span><span> needed on the final exam</span>`;
-        });
-
-        // ========== NOTIFICATIONS ==========
-        function updatePermStatus() {
-            const s = document.getElementById('permStatus');
-            if (s) s.innerText = Notification.permission || 'unknown';
-        }
-        updatePermStatus();
-
-        async function requestNotificationPermission() {
-            if (!('Notification' in window)) { alert('Notifications not supported'); return; }
-            const perm = await Notification.requestPermission();
-            updatePermStatus();
-            if (perm === 'granted') {
-                scheduleAllNotifications();
-            }
-        }
-
-        function scheduleAllNotifications() {
-            if (!('serviceWorker' in navigator) || !navigator.serviceWorker.controller) {
-                alert('Service worker not ready. Please reload the page once.');
-                return;
-            }
-            const now = Date.now();
-            const events = [
-                { id: 'daily', title: '📚 Daily Reminder', body: getDaysRemainingText(), time: getNextDaily(8,0) },
-                { id: 'prep1-2h', title: '⚡ Physics Prep in 2 hours', body: '22 May, 12:30', time: prepDate1.getTime() - 2*3600000 },
-                { id: 'prep1-1h', title: '⚡ Physics Prep in 1 hour', body: 'Get ready!', time: prepDate1.getTime() - 3600000 },
-                { id: 'prep1-30m', title: '⚡ Physics Prep in 30 min', body: 'Almost time!', time: prepDate1.getTime() - 1800000 },
-                { id: 'prep1-start', title: '⚡ Physics Prep starts NOW', body: 'Join the class!', time: prepDate1.getTime() },
-                { id: 'prep2-2h', title: '🧪 Chemistry Prep in 2 hours', body: '11 June, 12:00', time: prepDate2.getTime() - 2*3600000 },
-                { id: 'prep2-1h', title: '🧪 Chemistry Prep in 1 hour', body: 'Get ready!', time: prepDate2.getTime() - 3600000 },
-                { id: 'prep2-30m', title: '🧪 Chemistry Prep in 30 min', body: 'Almost time!', time: prepDate2.getTime() - 1800000 },
-                { id: 'prep2-start', title: '🧪 Chemistry Prep starts NOW', body: 'Join the class!', time: prepDate2.getTime() },
-                { id: 'exam1-day', title: '📘 Physics Exam tomorrow!', body: '27 May, 9:00 AM', time: examDate1.getTime() - 86400000 },
-                { id: 'exam2-day', title: '🧪 Chemistry Exam tomorrow!', body: '12 June, 9:00 AM', time: examDate2.getTime() - 86400000 }
+    }
+    function loadTodos() {
+        const stored = localStorage.getItem("science_todo_list");
+        if (stored) { todos = JSON.parse(stored); } 
+        else {
+            todos = [
+                { text: "🧪 Finish reaction rates lab", completed: false },
+                { text: "📖 Review periodic trends & bonding", completed: false },
+                { text: "📂 Check Google Drive mock exams", completed: true },
+                { text: "⚛️ Practice thermodynamics problems", completed: false }
             ];
-            const future = events.filter(e => e.time > now);
-            navigator.serviceWorker.controller.postMessage({
-                action: 'scheduleNotifications',
-                events: future
-            });
-            alert(`${future.length} reminders scheduled. You'll be notified at the right times.`);
+            saveTodosLocal();
         }
+        renderTodos();
+    }
+    loadTodos();
+    addTodoBtn.addEventListener("click", () => {
+        const text = newTodoInput.value.trim();
+        if (text === "") return;
+        todos.push({ text: text, completed: false });
+        saveTodosLocal(); renderTodos(); newTodoInput.value = "";
+    });
 
-        function getDaysRemainingText() {
-            const now = Date.now();
-            const d1 = Math.ceil((examDate1.getTime() - now) / 86400000);
-            const d2 = Math.ceil((examDate2.getTime() - now) / 86400000);
-            return `Physics: ${d1} days, Chemistry: ${d2} days left. Keep studying!`;
-        }
+    // Unit converter
+    function convertMass() {
+        let val = parseFloat(document.getElementById("massInput").value); if(isNaN(val)) val=0;
+        const from = document.getElementById("massFrom").value, to = document.getElementById("massTo").value;
+        let inKg = from === "kg" ? val : (from === "g" ? val/1000 : val/1e6);
+        let result = to === "kg" ? inKg : (to === "g" ? inKg*1000 : inKg*1e6);
+        document.getElementById("massResult").innerHTML = result.toFixed(4) + " " + to;
+    }
+    function convertLength() {
+        let val = parseFloat(document.getElementById("lengthInput").value); if(isNaN(val)) val=0;
+        const from = document.getElementById("lengthFrom").value, to = document.getElementById("lengthTo").value;
+        let inM = from === "m" ? val : (from === "cm" ? val/100 : val/1000);
+        let result = to === "m" ? inM : (to === "cm" ? inM*100 : inM*1000);
+        document.getElementById("lengthResult").innerHTML = result.toFixed(4) + " " + to;
+    }
+    document.getElementById("massInput").addEventListener("input", convertMass);
+    document.getElementById("massFrom").addEventListener("change", convertMass);
+    document.getElementById("massTo").addEventListener("change", convertMass);
+    document.getElementById("lengthInput").addEventListener("input", convertLength);
+    document.getElementById("lengthFrom").addEventListener("change", convertLength);
+    document.getElementById("lengthTo").addEventListener("change", convertLength);
+    convertMass(); convertLength();
 
-        function getNextDaily(h, m) {
-            const now = new Date();
-            const target = new Date(now);
-            target.setHours(h, m, 0, 0);
-            if (target <= now) target.setDate(target.getDate() + 1);
-            return target.getTime();
-        }
+    // Science facts premium
+    const factsArray = [
+        "🧬 Humans share 60% of DNA with bananas.", "⚡ A lightning bolt could power 100k bulbs.", "🌌 Neutron star: 6 billion tons per teaspoon.", "❄️ Hot water freezes faster (Mpemba effect).", "🦑 Octopuses have three hearts & blue blood.", "🔬 Periodic table excludes letter J.", "💧 99% of body made of 6 elements.", "🧪 DNA can store 215 petabytes per gram."
+    ];
+    function updateRandomFact() {
+        const factSpan = document.getElementById("randomFactText");
+        if (factSpan) factSpan.innerText = factsArray[Math.floor(Math.random() * factsArray.length)];
+    }
+    updateRandomFact(); setInterval(updateRandomFact, 15000);
 
-        document.getElementById('testNotifyBtn').addEventListener('click', () => {
-            if (Notification.permission === 'granted') {
-                new Notification('🔔 Test', { body: 'Science Glass is working!', icon: 'icon-192.png' });
-            } else {
-                alert('Grant notification permission first.');
-            }
-        });
+    // Pomodoro handler
+    document.getElementById("pomodoroTrigger")?.addEventListener("click", () => alert("🍅 25 min deep focus + 5 min break. Stay locked for science finals!"));
 
-        // ========== SERVICE WORKER REGISTRATION ==========
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js')
-                    .then(reg => {
-                        console.log('SW registered');
-                        if (Notification.permission === 'granted') {
-                            setTimeout(scheduleAllNotifications, 1500);
-                        }
-                    })
-                    .catch(err => console.log('SW registration failed', err));
-            });
-        }
-    </script>
+    // service worker register
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => { navigator.serviceWorker.register("sw.js").catch(e=>console.log("SW:",e)); });
+    }
+</script>
 </body>
 </html>
