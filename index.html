@@ -19,13 +19,15 @@
 
         :root {
             --bg-deep: #0A0F1C;
-            --bg-card: rgba(18, 28, 40, 0.7);
+            --bg-card: rgba(18, 28, 40, 0.85);
             --accent-gold: #E5B13B;
+            --accent-gold-dark: #B47C10;
             --accent-blue: #00B4D8;
             --text-light: #F0F4FA;
             --text-muted: #A0B4D0;
-            --nav-bg: rgba(8, 14, 26, 0.94);
+            --nav-bg: rgba(8, 14, 26, 0.96);
             --gradient-gold: linear-gradient(135deg, #E5B13B, #B47C10);
+            --gradient-dark: linear-gradient(135deg, #1E2A3A, #0F1725);
             --glass-border: rgba(229, 177, 59, 0.35);
         }
 
@@ -38,7 +40,7 @@
             overflow-x: hidden;
         }
 
-        /* SPLASH SCREEN (logo animation) */
+        /* SPLASH SCREEN */
         .splash-screen {
             position: fixed;
             top: 0;
@@ -51,7 +53,6 @@
             justify-content: center;
             z-index: 9999;
             animation: fadeOutSplash 0.8s ease 2s forwards;
-            backdrop-filter: blur(4px);
         }
         .splash-logo {
             max-width: 180px;
@@ -67,24 +68,33 @@
             to { opacity: 0; visibility: hidden; }
         }
 
-        /* premium glass base */
+        /* Base glass card */
         .glass-card, .timer-horiz-card, .small-timer-card, .drive-card {
             background: var(--bg-card);
             backdrop-filter: blur(20px);
             border-radius: 2rem;
             border: 0.5px solid var(--glass-border);
-            transition: all 0.25s ease;
+            transition: all 0.2s ease;
+            overflow: hidden;
+            word-break: break-word;
+        }
+        .glass-card {
+            padding: 1.2rem;
+        }
+        .timer-horiz-card, .small-timer-card {
+            padding: 1.2rem 1.2rem;
         }
         .glass-card:hover, .timer-horiz-card:hover {
             transform: translateY(-3px);
             border-color: var(--accent-gold);
         }
-        /* header */
+
+        /* Header */
         .app-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0.8rem 1.5rem;
+            padding: 0.8rem 1.2rem;
             background: var(--nav-bg);
             backdrop-filter: blur(28px);
             border-bottom: 1px solid var(--glass-border);
@@ -93,18 +103,27 @@
             z-index: 10;
         }
         .header-logo {
-            height: 44px;
-            margin-right: 12px;
+            height: 40px;
+            margin-right: 10px;
         }
         .app-title {
             font-weight: 800;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             background: var(--gradient-gold);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
-        /* bottom nav */
+        .icon-btn {
+            background: rgba(229,177,59,0.2);
+            border: none;
+            border-radius: 40px;
+            padding: 6px 10px;
+            color: var(--accent-gold);
+            cursor: pointer;
+        }
+
+        /* Bottom Nav */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -114,7 +133,7 @@
             border-top: 1px solid var(--glass-border);
             display: flex;
             justify-content: space-around;
-            padding: 0.4rem 0 0.6rem;
+            padding: 0.3rem 0 0.5rem;
             z-index: 20;
         }
         .nav-item {
@@ -122,167 +141,569 @@
             flex-direction: column;
             align-items: center;
             color: var(--text-muted);
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             cursor: pointer;
-            padding: 4px 12px;
+            padding: 4px 8px;
             border-radius: 40px;
+            transition: 0.2s;
         }
-        .nav-item i { font-size: 1.4rem; }
+        .nav-item i { font-size: 1.3rem; }
         .nav-item.active { color: var(--accent-gold); background: rgba(229,177,59,0.2); }
-        /* pages */
-        .page { display: none; padding: 1.2rem 1.2rem; }
+
+        /* Pages */
+        .page { display: none; padding: 1rem; }
         .page.active { display: block; animation: fadeIn 0.3s; }
         @keyframes fadeIn { from { opacity:0; transform:translateY(5px);} to { opacity:1; transform:translateY(0);} }
-        /* timers */
-        .timers-row, .small-timers-row { display: flex; gap: 1.5rem; margin-bottom: 1.8rem; flex-wrap: wrap; }
-        .timer-horiz-card, .small-timer-card { flex: 1; padding: 1.2rem 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-        .dday-badge { background: var(--gradient-gold); color: #0A0F1C; font-weight: 800; font-size: 0.7rem; padding: 0.2rem 1rem; border-radius: 40px; display: inline-block; }
-        .exam-title { font-size: clamp(1.2rem, 4vw, 1.6rem); font-weight: 700; background: linear-gradient(135deg, #FFF, var(--accent-gold)); background-clip: text; -webkit-background-clip: text; color: transparent; }
-        .timer-digits-large { font-size: clamp(1.6rem, 5vw, 2.5rem); font-weight: 800; background: var(--gradient-gold); background-clip: text; -webkit-background-clip: text; color: transparent; }
-        .timer-digits-small { font-size: 1.2rem; font-weight: 700; background: linear-gradient(135deg, #fff, var(--accent-blue)); background-clip: text; -webkit-background-clip: text; color: transparent; }
-        /* grid */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.5rem; margin-top: 1rem; }
-        .card-header { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.3rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 0.6rem; margin-bottom: 1rem; }
-        .card-header i { color: var(--accent-gold); font-size: 1.5rem; }
-        /* tools grid (12+ items) */
-        .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; margin: 1rem 0; }
-        .tool-item { background: rgba(255,255,255,0.05); border: 0.5px solid rgba(229,177,59,0.3); border-radius: 1.4rem; padding: 0.6rem 0.2rem; text-align: center; text-decoration: none; color: white; transition: 0.2s; display: flex; flex-direction: column; align-items: center; gap: 6px; }
-        .tool-item i { font-size: 1.5rem; color: var(--accent-gold); }
-        .tool-item:hover { background: rgba(229,177,59,0.2); transform: translateY(-4px); }
-        /* calendar */
+
+        /* Timers - Mobile Stack Fix */
+        .timers-row, .small-timers-row {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        @media (min-width: 700px) {
+            .timers-row, .small-timers-row {
+                flex-direction: row;
+                gap: 1.2rem;
+            }
+        }
+        .timer-horiz-card, .small-timer-card {
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+        .timer-info, .small-timer-info { flex: 2; min-width: 120px; }
+        .timer-clock, .small-clock { text-align: right; min-width: 130px; }
+        @media (max-width: 550px) {
+            .timer-horiz-card, .small-timer-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .timer-clock, .small-clock {
+                text-align: left;
+                width: 100%;
+            }
+        }
+        .dday-badge {
+            background: var(--gradient-gold);
+            color: #0A0F1C;
+            font-weight: 800;
+            font-size: 0.7rem;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            display: inline-block;
+        }
+        .exam-title {
+            font-size: clamp(1rem, 4vw, 1.4rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFF, var(--accent-gold));
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            line-height: 1.3;
+        }
+        .timer-digits-large {
+            font-size: clamp(1.2rem, 5vw, 2rem);
+            font-weight: 800;
+            background: var(--gradient-gold);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            white-space: nowrap;
+        }
+        .timer-digits-small {
+            font-size: 1rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff, var(--accent-blue));
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            white-space: nowrap;
+        }
+        @media (max-width: 480px) {
+            .timer-digits-large, .timer-digits-small { white-space: normal; word-break: keep-all; }
+        }
+
+        /* Main Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.2rem;
+            margin-top: 1rem;
+        }
+        @media (min-width: 700px) {
+            .grid {
+                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            }
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 0.6rem;
+            margin-bottom: 1rem;
+        }
+        .card-header i { color: var(--accent-gold); font-size: 1.4rem; }
+
+        /* Tools Grid - Fixed */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin: 1rem 0;
+        }
+        .tool-item {
+            background: rgba(255,255,255,0.05);
+            border: 0.5px solid rgba(229,177,59,0.3);
+            border-radius: 1.2rem;
+            padding: 0.5rem 0.2rem;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            transition: 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            word-break: break-word;
+        }
+        .tool-item i { font-size: 1.3rem; color: var(--accent-gold); }
+        .tool-item span { font-size: 0.65rem; line-height: 1.2; max-width: 100%; overflow-wrap: break-word; }
+        .tool-item:hover { background: rgba(229,177,59,0.2); transform: translateY(-3px); }
+
+        /* Drive Card - New Gold/Dark Theme */
+        .drive-card {
+            background: var(--gradient-dark);
+            border: 1px solid rgba(229,177,59,0.4);
+            padding: 1rem;
+            border-radius: 1.5rem;
+        }
+        .drive-link {
+            background: rgba(0,0,0,0.5);
+            border-radius: 1rem;
+            padding: 0.6rem;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        /* Calendar */
         .calendar-twins { display: flex; flex-wrap: wrap; gap: 1rem; }
-        .month-card { background: rgba(0,0,0,0.4); border-radius: 1.5rem; padding: 0.8rem; flex: 1; }
-        .weekdays { display: grid; grid-template-columns: repeat(7,1fr); text-align: center; font-size: 0.65rem; font-weight: 600; color: #cce0ff; margin-bottom: 6px; }
-        .calendar-days { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; }
-        .cal-day { text-align: center; font-size: 0.7rem; padding: 5px 0; border-radius: 40px; }
+        .month-card {
+            background: rgba(0,0,0,0.4);
+            border-radius: 1.2rem;
+            padding: 0.8rem;
+            flex: 1;
+            min-width: 200px;
+        }
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: #cce0ff;
+            margin-bottom: 6px;
+        }
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 3px;
+        }
+        .cal-day {
+            text-align: center;
+            font-size: 0.7rem;
+            padding: 4px 0;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.05);
+        }
         .cal-day.highlight-exam { background: var(--gradient-gold); color: #0A0F1C; font-weight: 800; }
         .cal-day.highlight-class { background: #2C5F8A; color: white; font-weight: 600; }
-        /* converters, inputs, etc */
-        .conv-row, .eq-input-group { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; background: rgba(0,0,0,0.35); border-radius: 1.2rem; padding: 0.6rem; margin-bottom: 10px; }
-        input, select { background: #0f1a2ed9; border: 1px solid var(--accent-gold); border-radius: 2rem; padding: 0.5rem 0.8rem; color: white; }
-        .eq-calc-btn { background: var(--gradient-gold); border: none; border-radius: 2rem; padding: 0.6rem; font-weight: 700; color: #0A0F1C; width: 100%; cursor: pointer; margin-top: 0.5rem; }
-        .chem-tab { background: rgba(0,0,0,0.4); border-radius: 2rem; padding: 0.4rem 1rem; font-size: 0.75rem; cursor: pointer; display: inline-block; margin-right: 6px; }
+
+        /* Input rows */
+        .conv-row, .eq-input-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            background: rgba(0,0,0,0.35);
+            border-radius: 1.2rem;
+            padding: 0.6rem;
+            margin-bottom: 10px;
+        }
+        input, select {
+            background: #0f1a2ed9;
+            border: 1px solid var(--accent-gold);
+            border-radius: 2rem;
+            padding: 0.4rem 0.7rem;
+            color: white;
+            font-size: 0.8rem;
+            flex: 1;
+            min-width: 70px;
+        }
+        .eq-calc-btn {
+            background: var(--gradient-gold);
+            border: none;
+            border-radius: 2rem;
+            padding: 0.6rem;
+            font-weight: 700;
+            color: #0A0F1C;
+            width: 100%;
+            cursor: pointer;
+            margin-top: 0.5rem;
+        }
+        .chem-tab {
+            background: rgba(0,0,0,0.4);
+            border-radius: 2rem;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.7rem;
+            cursor: pointer;
+            display: inline-block;
+            margin-right: 6px;
+            margin-bottom: 6px;
+        }
         .chem-tab.active { background: var(--gradient-gold); color: #0A0F1C; }
         .chem-panel { display: none; margin-top: 1rem; }
         .chem-panel.active { display: block; }
-        .todo-item { background: rgba(0,0,0,0.4); border-radius: 3rem; padding: 0.6rem 1rem; display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-        .grade-result-big .big-num { font-size: 2rem; font-weight: 800; background: var(--gradient-gold); background-clip: text; -webkit-background-clip: text; color: transparent; }
-        .science-fact { background: rgba(0,0,0,0.3); border-left: 4px solid var(--accent-gold); border-radius: 1rem; padding: 0.7rem; margin-top: 1rem; }
-        @media (max-width: 700px) { .timer-horiz-card, .small-timer-card { flex-direction: column; align-items: flex-start; } .timer-clock { text-align: left; width: 100%; } }
-        footer { text-align: center; font-size: 0.7rem; margin-top: 1.5rem; color: var(--text-muted); }
+
+        /* Todo */
+        .todo-list { margin: 1rem 0; }
+        .todo-item {
+            background: rgba(0,0,0,0.4);
+            border-radius: 3rem;
+            padding: 0.6rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+        .todo-text { flex: 1; word-break: break-word; }
+        .completed { text-decoration: line-through; opacity: 0.6; }
+        .add-todo { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+        .add-todo input { flex: 1; }
+
+        /* Grade Result */
+        .grade-result-big .big-num {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: var(--gradient-gold);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .science-fact {
+            background: rgba(0,0,0,0.3);
+            border-left: 4px solid var(--accent-gold);
+            border-radius: 1rem;
+            padding: 0.7rem;
+            margin-top: 1rem;
+            font-size: 0.8rem;
+        }
+
+        /* Formula Reference - Improved Clarity */
+        .formula-section {
+            background: rgba(0,0,0,0.25);
+            border-radius: 1.2rem;
+            margin-bottom: 0.8rem;
+            border: 0.5px solid rgba(229,177,59,0.3);
+        }
+        .formula-section summary {
+            padding: 0.7rem 1rem;
+            cursor: pointer;
+            font-weight: 700;
+            color: var(--accent-gold);
+            font-size: 0.85rem;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 1.2rem;
+        }
+        .formula-section summary::before {
+            content: '▶';
+            display: inline-block;
+            transition: transform 0.2s;
+            font-size: 0.7rem;
+        }
+        .formula-section[open] summary::before {
+            transform: rotate(90deg);
+        }
+        .formula-item {
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+            border-top: 0.5px solid rgba(255,255,255,0.08);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            background: rgba(0,0,0,0.2);
+        }
+        .formula-item .f-eq {
+            font-family: monospace;
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+        .formula-item .f-desc {
+            color: #cce0ff;
+            font-size: 0.7rem;
+        }
+
+        footer { text-align: center; font-size: 0.7rem; margin-top: 1rem; color: var(--text-muted); }
     </style>
 </head>
 <body>
 
-<!-- SPLASH SCREEN WITH NEXON LOGO -->
+<!-- SPLASH SCREEN -->
 <div class="splash-screen" id="splashScreen">
     <img src="logo.png" alt="NEXON" class="splash-logo" onerror="this.src='https://placehold.co/180x180?text=NEXON'">
 </div>
 
-<!-- Main App (hidden until splash ends) -->
+<!-- Main App -->
 <div id="appContent" style="opacity:0; transition: opacity 0.3s;">
     <header class="app-header">
         <div style="display: flex; align-items: center;">
-            <img src="logo.png" alt="NEXON" class="header-logo" onerror="this.src='https://placehold.co/44x44?text=N'">
+            <img src="logo.png" alt="NEXON" class="header-logo" onerror="this.src='https://placehold.co/40x40?text=N'">
             <span class="app-title">NEXON Science</span>
         </div>
-        <button class="icon-btn" id="testNotifyBtn" style="background:rgba(229,177,59,0.2); border:none; padding:8px 12px; border-radius:40px; color:var(--accent-gold);"><i class="fas fa-bell"></i></button>
+        <button class="icon-btn" id="testNotifyBtn"><i class="fas fa-bell"></i></button>
     </header>
 
     <!-- HOME PAGE -->
     <div id="homePage" class="page active">
         <div class="timers-row">
-            <div class="timer-horiz-card"><div><div class="dday-badge">📘 PHYSICS PAPER 1</div><div class="exam-title">Physics Final</div><div class="exam-date">May 27, 2026 · 9:00 AM</div></div><div><div class="timer-digits-large" id="timer1Display">--d --h --m --s</div><div class="timer-unit">until exam</div></div></div>
-            <div class="timer-horiz-card"><div><div class="dday-badge">🧪 CHEMISTRY PAPER 2</div><div class="exam-title">Chemistry Final</div><div class="exam-date">June 12, 2026 · 9:00 AM</div></div><div><div class="timer-digits-large" id="timer2Display">--d --h --m --s</div><div class="timer-unit">until exam</div></div></div>
+            <div class="timer-horiz-card">
+                <div class="timer-info">
+                    <div class="dday-badge">📘 PHYSICS PAPER 1</div>
+                    <div class="exam-title">Physics Final</div>
+                    <div class="exam-date">May 27, 2026 · 9:00 AM</div>
+                </div>
+                <div class="timer-clock">
+                    <div class="timer-digits-large" id="timer1Display">--d --h --m --s</div>
+                    <div class="timer-unit">until exam</div>
+                </div>
+            </div>
+            <div class="timer-horiz-card">
+                <div class="timer-info">
+                    <div class="dday-badge">🧪 CHEMISTRY PAPER 2</div>
+                    <div class="exam-title">Chemistry Final</div>
+                    <div class="exam-date">June 12, 2026 · 9:00 AM</div>
+                </div>
+                <div class="timer-clock">
+                    <div class="timer-digits-large" id="timer2Display">--d --h --m --s</div>
+                    <div class="timer-unit">until exam</div>
+                </div>
+            </div>
         </div>
         <div class="small-timers-row">
-            <div class="small-timer-card"><div><div class="prep-badge" style="background:rgba(0,180,216,0.3); border-radius:40px; padding:2px 12px;">⚡ PHYSICS PREP</div><div class="exam-title" style="font-size:1rem;">Exam Cram: Physics</div><div class="exam-date">May 22, 2026 · 12:30</div></div><div><div class="timer-digits-small" id="prepTimer1">--d --h --m --s</div></div></div>
-            <div class="small-timer-card"><div><div class="prep-badge" style="background:rgba(0,180,216,0.3); border-radius:40px; padding:2px 12px;">🧪 CHEMISTRY PREP</div><div class="exam-title" style="font-size:1rem;">Final Review: Chemistry</div><div class="exam-date">June 11, 2026 · 12:00</div></div><div><div class="timer-digits-small" id="prepTimer2">--d --h --m --s</div></div></div>
+            <div class="small-timer-card">
+                <div class="small-timer-info">
+                    <div class="prep-badge" style="background:rgba(0,180,216,0.3); border-radius:40px; padding:2px 12px; display:inline-block;">⚡ PHYSICS PREP</div>
+                    <div class="exam-title" style="font-size:1rem;">Exam Cram: Physics</div>
+                    <div class="exam-date">May 22, 2026 · 12:30</div>
+                </div>
+                <div class="small-clock">
+                    <div class="timer-digits-small" id="prepTimer1">--d --h --m --s</div>
+                </div>
+            </div>
+            <div class="small-timer-card">
+                <div class="small-timer-info">
+                    <div class="prep-badge" style="background:rgba(0,180,216,0.3); border-radius:40px; padding:2px 12px; display:inline-block;">🧪 CHEMISTRY PREP</div>
+                    <div class="exam-title" style="font-size:1rem;">Final Review: Chemistry</div>
+                    <div class="exam-date">June 11, 2026 · 12:00</div>
+                </div>
+                <div class="small-clock">
+                    <div class="timer-digits-small" id="prepTimer2">--d --h --m --s</div>
+                </div>
+            </div>
         </div>
-        <!-- Google Drive Card (restored) -->
-        <div class="glass-card" style="padding:1.2rem; margin-bottom:1rem;">
+        <!-- Drive Card - Updated color (gold/dark) -->
+        <div class="glass-card" style="margin-bottom:1rem;">
             <div class="card-header"><i class="fab fa-google-drive"></i> Class Drive Vault</div>
-            <div class="drive-card" style="padding:1rem;"><div style="display:flex; gap:1rem;"><div><i class="fas fa-folder-open" style="font-size:2rem; color:var(--accent-gold);"></i></div><div><h3>📁 Science Class Folder</h3><p>All notes, labs, worksheets & past papers</p></div></div>
-            <div class="folder-stats" style="display:flex; gap:1rem; margin:0.8rem 0;"><span><i class="fas fa-file-alt"></i> Mock exams</span><span><i class="fas fa-chalkboard-user"></i> Slides</span><span><i class="fas fa-flask"></i> Labs</span></div>
-            <div class="drive-link" style="background:#0a1022a0; border-radius:1rem; padding:0.6rem; display:flex; justify-content:space-between; flex-wrap:wrap;"><a href="https://drive.google.com/drive/folders/1xcCQcmYHC4Tr8Gm9P40BwNqDALL7SLwQ?usp=drive_link" target="_blank">drive.google.com/nexon_science</a><button class="open-drive-btn" onclick="window.open('https://drive.google.com/drive/folders/1xcCQcmYHC4Tr8Gm9P40BwNqDALL7SLwQ?usp=drive_link','_blank')" style="background:var(--gradient-gold); border-radius:2rem; padding:0.4rem 1rem;">Open</button></div></div>
+            <div class="drive-card">
+                <div style="display:flex; gap:1rem; flex-wrap:wrap; align-items:center;">
+                    <div><i class="fas fa-folder-open" style="font-size:2rem; color:var(--accent-gold);"></i></div>
+                    <div><h3>📁 Science Class Folder</h3><p>All notes, labs, worksheets & past papers</p></div>
+                </div>
+                <div class="folder-stats" style="display:flex; gap:1rem; margin:0.8rem 0; flex-wrap:wrap;">
+                    <span><i class="fas fa-file-alt"></i> Mock exams</span>
+                    <span><i class="fas fa-chalkboard-user"></i> Slides</span>
+                    <span><i class="fas fa-flask"></i> Labs</span>
+                </div>
+                <div class="drive-link">
+                    <a href="https://drive.google.com/drive/folders/1xcCQcmYHC4Tr8Gm9P40BwNqDALL7SLwQ?usp=drive_link" target="_blank" style="font-size:0.75rem;">drive.google.com/nexon_science</a>
+                    <button class="open-drive-btn" onclick="window.open('https://drive.google.com/drive/folders/1xcCQcmYHC4Tr8Gm9P40BwNqDALL7SLwQ?usp=drive_link','_blank')" style="background:var(--gradient-gold); border:none; border-radius:2rem; padding:0.3rem 1rem;">Open</button>
+                </div>
+            </div>
         </div>
         <button class="eq-calc-btn" onclick="requestNotificationPermission()"><i class="fas fa-bell"></i> Enable Reminders</button>
     </div>
 
-    <!-- TOOLS PAGE (fully restored with all 12+ links, equation solver, chemistry, converter, grade, formulas) -->
+    <!-- TOOLS PAGE -->
     <div id="toolsPage" class="page">
         <div class="grid">
-            <!-- Toolkit with ALL original links -->
-            <div class="glass-card"><div class="card-header"><i class="fas fa-toolbox"></i> Science Toolkit</div>
-            <div class="tools-grid">
-                <a href="https://zperiod.app/" target="_blank" class="tool-item"><i class="fas fa-chart-line"></i><span>Z-period</span></a>
-                <a href="https://phet.colorado.edu/" target="_blank" class="tool-item"><i class="fas fa-atom"></i><span>PhET Sims</span></a>
-                <a href="https://www.desmos.com/scientific" target="_blank" class="tool-item"><i class="fas fa-calculator"></i><span>Desmos Sci</span></a>
-                <a href="https://www.khanacademy.org/science" target="_blank" class="tool-item"><i class="fas fa-graduation-cap"></i><span>Khan Academy</span></a>
-                <a href="https://ptable.com/" target="_blank" class="tool-item"><i class="fas fa-border-all"></i><span>Periodic Table</span></a>
-                <a href="https://quizlet.com/" target="_blank" class="tool-item"><i class="fas fa-cards-blank"></i><span>Quizlet</span></a>
-                <a href="https://www.wolframalpha.com/" target="_blank" class="tool-item"><i class="fas fa-robot"></i><span>Wolfram Alpha</span></a>
-                <a href="https://hyperphysics.phy-astr.gsu.edu/hphys.html" target="_blank" class="tool-item"><i class="fas fa-magnet"></i><span>HyperPhysics</span></a>
-                <a href="https://www.chemguide.co.uk/" target="_blank" class="tool-item"><i class="fas fa-vial"></i><span>ChemGuide</span></a>
-                <a href="https://www.symbolab.com/" target="_blank" class="tool-item"><i class="fas fa-square-root-variable"></i><span>Symbolab</span></a>
-                <a href="https://www.physicsclassroom.com/" target="_blank" class="tool-item"><i class="fas fa-book-open"></i><span>PhysicsClass</span></a>
-                <a href="https://webbook.nist.gov/chemistry/" target="_blank" class="tool-item"><i class="fas fa-database"></i><span>NIST Chem</span></a>
-                <div id="pomodoroTrigger" class="tool-item" style="cursor:pointer;"><i class="fas fa-hourglass-half"></i><span>🍅 Pomodoro</span></div>
-            </div>
-            <div class="science-fact"><i class="fas fa-lightbulb"></i> <span id="randomFactText">loading fact...</span></div>
-            </div>
-
-            <!-- Physics Equation Solver -->
-            <div class="glass-card"><div class="card-header"><i class="fas fa-calculator"></i> Physics Solver</div>
-            <select id="physicsEqSelect" style="width:100%; margin-bottom:0.6rem; background:#0f1a2e; border-color:var(--accent-gold); border-radius:2rem; padding:0.5rem;">
-                <option value="F=ma">F = m × a (Newton's 2nd)</option><option value="KE">KE = ½mv² (Kinetic Energy)</option><option value="PE">PE = mgh (GPE)</option><option value="V=IR">V = I × R (Ohm's Law)</option>
-                <option value="v=fλ">v = fλ (Wave Speed)</option><option value="p=mv">p = m × v (Momentum)</option><option value="W=Fd">W = F × d (Work)</option><option value="P=Wt">P = W / t (Power)</option><option value="rho=mV">ρ = m / V (Density)</option>
-            </select>
-            <div id="eqFormulaDisplay" style="text-align:center; background:rgba(0,0,0,0.4); border-radius:1.2rem; padding:0.4rem;">F = m × a</div>
-            <div id="eqInputsContainer"></div><button id="eqCalcBtn" class="eq-calc-btn">Calculate</button><div id="eqResult" class="eq-result" style="margin-top:0.5rem; background:rgba(0,0,0,0.4); border-radius:1rem; padding:0.6rem;"></div>
+            <!-- Toolkit -->
+            <div class="glass-card">
+                <div class="card-header"><i class="fas fa-toolbox"></i> Science Toolkit</div>
+                <div class="tools-grid">
+                    <a href="https://zperiod.app/" target="_blank" class="tool-item"><i class="fas fa-chart-line"></i><span>Z-period</span></a>
+                    <a href="https://phet.colorado.edu/" target="_blank" class="tool-item"><i class="fas fa-atom"></i><span>PhET Sims</span></a>
+                    <a href="https://www.desmos.com/scientific" target="_blank" class="tool-item"><i class="fas fa-calculator"></i><span>Desmos Sci</span></a>
+                    <a href="https://www.khanacademy.org/science" target="_blank" class="tool-item"><i class="fas fa-graduation-cap"></i><span>Khan Academy</span></a>
+                    <a href="https://ptable.com/" target="_blank" class="tool-item"><i class="fas fa-border-all"></i><span>Periodic Table</span></a>
+                    <a href="https://quizlet.com/" target="_blank" class="tool-item"><i class="fas fa-cards-blank"></i><span>Quizlet</span></a>
+                    <a href="https://www.wolframalpha.com/" target="_blank" class="tool-item"><i class="fas fa-robot"></i><span>Wolfram Alpha</span></a>
+                    <a href="https://hyperphysics.phy-astr.gsu.edu/hphys.html" target="_blank" class="tool-item"><i class="fas fa-magnet"></i><span>HyperPhysics</span></a>
+                    <a href="https://www.chemguide.co.uk/" target="_blank" class="tool-item"><i class="fas fa-vial"></i><span>ChemGuide</span></a>
+                    <a href="https://www.symbolab.com/" target="_blank" class="tool-item"><i class="fas fa-square-root-variable"></i><span>Symbolab</span></a>
+                    <a href="https://www.physicsclassroom.com/" target="_blank" class="tool-item"><i class="fas fa-book-open"></i><span>PhysicsClass</span></a>
+                    <a href="https://webbook.nist.gov/chemistry/" target="_blank" class="tool-item"><i class="fas fa-database"></i><span>NIST Chem</span></a>
+                    <div id="pomodoroTrigger" class="tool-item" style="cursor:pointer;"><i class="fas fa-hourglass-half"></i><span>🍅 Pomodoro</span></div>
+                </div>
+                <div class="science-fact"><i class="fas fa-lightbulb"></i> <span id="randomFactText">loading fact...</span></div>
             </div>
 
-            <!-- Chemistry Lab (full) -->
-            <div class="glass-card"><div class="card-header"><i class="fas fa-flask"></i> Chemistry Lab</div>
-            <div id="chemTabs"><span class="chem-tab active" data-panel="molesPanel">🧮 Moles & Mass</span><span class="chem-tab" data-panel="concPanel">🧪 Concentration</span><span class="chem-tab" data-panel="dilutionPanel">💧 Dilution</span><span class="chem-tab" data-panel="phpPanel">⚗️ pH</span></div>
-            <div id="molesPanel" class="chem-panel active"><div class="eq-input-group"><label>Mass (g):</label><input type="number" id="molesMass" value="10"></div><div class="eq-input-group"><label>Molar Mass (g/mol):</label><input type="number" id="molesMolarMass" value="58.44"></div><button id="molesCalcBtn" class="eq-calc-btn">Calculate Moles</button><div id="molesResult" class="eq-result">n = m/M</div></div>
-            <div id="concPanel" class="chem-panel"><div class="eq-input-group"><label>Solute (mol):</label><input type="number" id="concMoles" value="0.5"></div><div class="eq-input-group"><label>Volume (L):</label><input type="number" id="concVolume" value="1"></div><button id="concCalcBtn" class="eq-calc-btn">Concentration</button><div id="concResult" class="eq-result">C = n/V</div></div>
-            <div id="dilutionPanel" class="chem-panel"><div class="eq-input-group"><label>C₁ (M):</label><input type="number" id="dilC1" value="2"></div><div class="eq-input-group"><label>V₁ (L):</label><input type="number" id="dilV1" value="0.1"></div><div class="eq-input-group"><label>C₂ (M):</label><input type="number" id="dilC2" value="0.5"></div><button id="dilCalcBtn" class="eq-calc-btn">Find V₂</button><div id="dilResult" class="eq-result">C₁V₁ = C₂V₂</div></div>
-            <div id="phpPanel" class="chem-panel"><div class="eq-input-group"><label>[H⁺] (M):</label><input type="number" id="phHplus" value="0.0001"></div><button id="phCalcBtn" class="eq-calc-btn">Calculate pH</button><div id="phResult" class="eq-result">pH = -log[H⁺]</div></div>
+            <!-- Physics Solver -->
+            <div class="glass-card">
+                <div class="card-header"><i class="fas fa-calculator"></i> Physics Solver</div>
+                <select id="physicsEqSelect" style="width:100%; margin-bottom:0.6rem; background:#0f1a2e; border-color:var(--accent-gold); border-radius:2rem; padding:0.5rem;">
+                    <option value="F=ma">F = m × a (Newton's 2nd)</option>
+                    <option value="KE">KE = ½mv² (Kinetic Energy)</option>
+                    <option value="PE">PE = mgh (GPE)</option>
+                    <option value="V=IR">V = I × R (Ohm's Law)</option>
+                    <option value="v=fλ">v = fλ (Wave Speed)</option>
+                    <option value="p=mv">p = m × v (Momentum)</option>
+                    <option value="W=Fd">W = F × d (Work)</option>
+                    <option value="P=Wt">P = W / t (Power)</option>
+                    <option value="rho=mV">ρ = m / V (Density)</option>
+                </select>
+                <div id="eqFormulaDisplay" style="text-align:center; background:rgba(0,0,0,0.4); border-radius:1.2rem; padding:0.4rem;">F = m × a</div>
+                <div id="eqInputsContainer"></div>
+                <button id="eqCalcBtn" class="eq-calc-btn">Calculate</button>
+                <div id="eqResult" style="margin-top:0.5rem; background:rgba(0,0,0,0.4); border-radius:1rem; padding:0.6rem;"></div>
+            </div>
+
+            <!-- Chemistry Lab -->
+            <div class="glass-card">
+                <div class="card-header"><i class="fas fa-flask"></i> Chemistry Lab</div>
+                <div>
+                    <span class="chem-tab active" data-panel="molesPanel">🧮 Moles & Mass</span>
+                    <span class="chem-tab" data-panel="concPanel">🧪 Concentration</span>
+                    <span class="chem-tab" data-panel="dilutionPanel">💧 Dilution</span>
+                    <span class="chem-tab" data-panel="phpPanel">⚗️ pH</span>
+                </div>
+                <div id="molesPanel" class="chem-panel active">
+                    <div class="eq-input-group"><label>Mass (g):</label><input type="number" id="molesMass" value="10"></div>
+                    <div class="eq-input-group"><label>Molar Mass (g/mol):</label><input type="number" id="molesMolarMass" value="58.44"></div>
+                    <button id="molesCalcBtn" class="eq-calc-btn">Calculate Moles</button>
+                    <div id="molesResult" class="eq-result">n = m/M</div>
+                </div>
+                <div id="concPanel" class="chem-panel">
+                    <div class="eq-input-group"><label>Solute (mol):</label><input type="number" id="concMoles" value="0.5"></div>
+                    <div class="eq-input-group"><label>Volume (L):</label><input type="number" id="concVolume" value="1"></div>
+                    <button id="concCalcBtn" class="eq-calc-btn">Concentration</button>
+                    <div id="concResult" class="eq-result">C = n/V</div>
+                </div>
+                <div id="dilutionPanel" class="chem-panel">
+                    <div class="eq-input-group"><label>C₁ (M):</label><input type="number" id="dilC1" value="2"></div>
+                    <div class="eq-input-group"><label>V₁ (L):</label><input type="number" id="dilV1" value="0.1"></div>
+                    <div class="eq-input-group"><label>C₂ (M):</label><input type="number" id="dilC2" value="0.5"></div>
+                    <button id="dilCalcBtn" class="eq-calc-btn">Find V₂</button>
+                    <div id="dilResult" class="eq-result">C₁V₁ = C₂V₂</div>
+                </div>
+                <div id="phpPanel" class="chem-panel">
+                    <div class="eq-input-group"><label>[H⁺] (M):</label><input type="number" id="phHplus" value="0.0001"></div>
+                    <button id="phCalcBtn" class="eq-calc-btn">Calculate pH</button>
+                    <div id="phResult" class="eq-result">pH = -log[H⁺]</div>
+                </div>
             </div>
 
             <!-- Unit Converter -->
-            <div class="glass-card"><div class="card-header"><i class="fas fa-weight-hanging"></i> Lab Converter</div>
-            <div class="conv-row"><span>⚖️ Mass:</span><input type="number" id="massInput" value="1"><select id="massFrom"><option value="kg">kg</option><option value="g">g</option><option value="mg">mg</option></select> → <select id="massTo"><option value="kg">kg</option><option value="g" selected>g</option><option value="mg">mg</option></select><span id="massResult" class="result-badge">--</span></div>
-            <div class="conv-row"><span>📏 Length:</span><input type="number" id="lengthInput" value="1"><select id="lengthFrom"><option value="m">m</option><option value="cm">cm</option><option value="mm">mm</option></select> → <select id="lengthTo"><option value="m">m</option><option value="cm" selected>cm</option><option value="mm">mm</option></select><span id="lengthResult" class="result-badge">--</span></div>
+            <div class="glass-card">
+                <div class="card-header"><i class="fas fa-weight-hanging"></i> Lab Converter</div>
+                <div class="conv-row"><span>⚖️ Mass:</span><input type="number" id="massInput" value="1"><select id="massFrom"><option value="kg">kg</option><option value="g">g</option><option value="mg">mg</option></select> → <select id="massTo"><option value="kg">kg</option><option value="g" selected>g</option><option value="mg">mg</option></select><span id="massResult" class="result-badge">--</span></div>
+                <div class="conv-row"><span>📏 Length:</span><input type="number" id="lengthInput" value="1"><select id="lengthFrom"><option value="m">m</option><option value="cm">cm</option><option value="mm">mm</option></select> → <select id="lengthTo"><option value="m">m</option><option value="cm" selected>cm</option><option value="mm">mm</option></select><span id="lengthResult" class="result-badge">--</span></div>
             </div>
 
             <!-- Grade Predictor -->
-            <div class="glass-card"><div class="card-header"><i class="fas fa-chart-pie"></i> Grade Predictor</div>
-            <div class="grade-input-row"><label>📊 Current %:</label><input type="number" id="gradeCurrent" value="75"></div>
-            <div class="grade-input-row"><label>🎯 Desired %:</label><input type="number" id="gradeDesired" value="85"></div>
-            <div class="grade-input-row"><label>📝 Final Weight %:</label><input type="number" id="gradeWeight" value="30"></div>
-            <button id="gradeCalcBtn" class="eq-calc-btn">Calculate Required Score</button>
-            <div id="gradeResult" class="grade-result-big" style="background:rgba(0,0,0,0.4); border-radius:1.2rem; padding:0.8rem; text-align:center;">Enter values</div>
+            <div class="glass-card">
+                <div class="card-header"><i class="fas fa-chart-pie"></i> Grade Predictor</div>
+                <div class="grade-input-row"><label>📊 Current %:</label><input type="number" id="gradeCurrent" value="75"></div>
+                <div class="grade-input-row"><label>🎯 Desired %:</label><input type="number" id="gradeDesired" value="85"></div>
+                <div class="grade-input-row"><label>📝 Final Weight %:</label><input type="number" id="gradeWeight" value="30"></div>
+                <button id="gradeCalcBtn" class="eq-calc-btn">Calculate Required Score</button>
+                <div id="gradeResult" class="grade-result-big" style="background:rgba(0,0,0,0.4); border-radius:1.2rem; padding:0.8rem; text-align:center;">Enter values</div>
             </div>
 
-            <!-- Formula Reference (collapsible details) -->
-            <div class="glass-card"><div class="card-header"><i class="fas fa-book"></i> Quick Formula Reference</div>
-            <details class="formula-section" open><summary>📐 Physics Formulas</summary><div class="formula-item">v = u + at — Kinematics</div><div class="formula-item">F = ma — Newton's 2nd</div><div class="formula-item">KE = ½mv² — Kinetic Energy</div><div class="formula-item">PE = mgh — Gravitational Potential</div><div class="formula-item">V = IR — Ohm's Law</div><div class="formula-item">v = fλ — Wave Speed</div><div class="formula-item">ρ = m/V — Density</div></details>
-            <details class="formula-section"><summary>🧪 Chemistry Formulas</summary><div class="formula-item">n = m/M — Moles</div><div class="formula-item">C = n/V — Molarity</div><div class="formula-item">C₁V₁ = C₂V₂ — Dilution</div><div class="formula-item">pH = -log[H⁺]</div><div class="formula-item">% yield = (actual/theoretical)×100</div></details>
-            <details class="formula-section"><summary>⚡ Constants</summary><div class="formula-item">g = 9.81 m/s²</div><div class="formula-item">c = 3.00×10⁸ m/s</div><div class="formula-item">R = 8.314 J/(mol·K)</div><div class="formula-item">Nₐ = 6.022×10²³</div></details>
+            <!-- Formula Reference - Improved categories -->
+            <div class="glass-card">
+                <div class="card-header"><i class="fas fa-book"></i> Quick Formula Reference</div>
+                <details class="formula-section" open>
+                    <summary><i class="fas fa-magnet"></i> Physics Formulas</summary>
+                    <div class="formula-item"><span class="f-eq">v = u + at</span><span class="f-desc">Kinematics</span></div>
+                    <div class="formula-item"><span class="f-eq">F = ma</span><span class="f-desc">Newton's 2nd Law</span></div>
+                    <div class="formula-item"><span class="f-eq">KE = ½mv²</span><span class="f-desc">Kinetic Energy</span></div>
+                    <div class="formula-item"><span class="f-eq">PE = mgh</span><span class="f-desc">Gravitational Potential</span></div>
+                    <div class="formula-item"><span class="f-eq">V = IR</span><span class="f-desc">Ohm's Law</span></div>
+                    <div class="formula-item"><span class="f-eq">v = fλ</span><span class="f-desc">Wave Speed</span></div>
+                    <div class="formula-item"><span class="f-eq">ρ = m/V</span><span class="f-desc">Density</span></div>
+                </details>
+                <details class="formula-section">
+                    <summary><i class="fas fa-vial"></i> Chemistry Formulas</summary>
+                    <div class="formula-item"><span class="f-eq">n = m/M</span><span class="f-desc">Moles from mass</span></div>
+                    <div class="formula-item"><span class="f-eq">C = n/V</span><span class="f-desc">Molarity</span></div>
+                    <div class="formula-item"><span class="f-eq">C₁V₁ = C₂V₂</span><span class="f-desc">Dilution</span></div>
+                    <div class="formula-item"><span class="f-eq">PV = nRT</span><span class="f-desc">Ideal Gas Law</span></div>
+                    <div class="formula-item"><span class="f-eq">pH = -log[H⁺]</span><span class="f-desc">pH Scale</span></div>
+                    <div class="formula-item"><span class="f-eq">% yield = (actual/theoretical)×100</span><span class="f-desc">Percent Yield</span></div>
+                </details>
+                <details class="formula-section">
+                    <summary><i class="fas fa-greek-capital"></i> Useful Constants</summary>
+                    <div class="formula-item"><span class="f-eq">g = 9.81 m/s²</span><span class="f-desc">Gravity</span></div>
+                    <div class="formula-item"><span class="f-eq">c = 3.00×10⁸ m/s</span><span class="f-desc">Speed of light</span></div>
+                    <div class="formula-item"><span class="f-eq">R = 8.314 J/(mol·K)</span><span class="f-desc">Gas constant</span></div>
+                    <div class="formula-item"><span class="f-eq">Nₐ = 6.022×10²³</span><span class="f-desc">Avogadro's number</span></div>
+                </details>
             </div>
         </div>
     </div>
 
-    <!-- CALENDAR PAGE (proper month grids) -->
-    <div id="calendarPage" class="page"><div class="glass-card"><div class="card-header"><i class="fas fa-calendar-alt"></i> Exam & Prep Calendar</div><div id="dynamicCalendars" class="calendar-twins"></div><div class="class-note" style="margin-top:1rem; background:rgba(229,177,59,0.2); border-radius:1rem; padding:0.5rem;"><i class="fas fa-info-circle"></i> Gold = Exam day · Blue = Prep class</div></div></div>
+    <!-- CALENDAR PAGE -->
+    <div id="calendarPage" class="page">
+        <div class="glass-card">
+            <div class="card-header"><i class="fas fa-calendar-alt"></i> Exam & Prep Calendar</div>
+            <div id="dynamicCalendars" class="calendar-twins"></div>
+            <div class="class-note" style="margin-top:1rem; background:rgba(229,177,59,0.2); border-radius:1rem; padding:0.5rem;"><i class="fas fa-info-circle"></i> Gold = Exam day · Blue = Prep class</div>
+        </div>
+    </div>
 
     <!-- TO-DO PAGE -->
-    <div id="todoPage" class="page"><div class="glass-card"><div class="card-header"><i class="fas fa-list-check"></i> Study Sprint</div><div id="todoListContainer" class="todo-list"></div><div class="add-todo" style="display:flex; gap:0.5rem;"><input type="text" id="newTodoInput" placeholder="e.g., Review thermodynamics"><button id="addTodoBtn" style="background:var(--gradient-gold); border-radius:2rem; padding:0 1rem;">Add</button></div></div></div>
+    <div id="todoPage" class="page">
+        <div class="glass-card">
+            <div class="card-header"><i class="fas fa-list-check"></i> Study Sprint</div>
+            <div id="todoListContainer" class="todo-list"></div>
+            <div class="add-todo"><input type="text" id="newTodoInput" placeholder="e.g., Review thermodynamics"><button id="addTodoBtn" style="background:var(--gradient-gold); border:none; border-radius:2rem; padding:0 1rem;">Add</button></div>
+        </div>
+    </div>
 
     <!-- SETTINGS -->
-    <div id="settingsPage" class="page"><div class="glass-card"><div class="card-header"><i class="fas fa-cog"></i> Settings</div><p>Notification Status: <span id="permStatus">--</span></p><button onclick="requestNotificationPermission()" class="eq-calc-btn">Enable Notifications</button><p style="margin-top:1rem;">NEXON Eco-system · Divan Barnard</p></div></div>
+    <div id="settingsPage" class="page">
+        <div class="glass-card">
+            <div class="card-header"><i class="fas fa-cog"></i> Settings</div>
+            <p>Notification Status: <span id="permStatus">--</span></p>
+            <button onclick="requestNotificationPermission()" class="eq-calc-btn">Enable Notifications</button>
+            <p style="margin-top:1rem;">NEXON Eco-system · Divan Barnard</p>
+        </div>
+    </div>
 
     <nav class="bottom-nav">
         <div class="nav-item active" data-page="homePage"><i class="fas fa-home"></i><span>Home</span></div>
@@ -294,13 +715,13 @@
 </div>
 
 <script>
-    // Hide splash after 2.2s, show app
+    // Hide splash after 2.2s
     setTimeout(() => {
         document.getElementById('splashScreen').style.display = 'none';
         document.getElementById('appContent').style.opacity = '1';
     }, 2200);
 
-    // All Timers
+    // Timers
     const exam1 = new Date(2026,4,27,9), exam2 = new Date(2026,5,12,9), prep1 = new Date(2026,4,22,12,30), prep2 = new Date(2026,5,11,12);
     function fmt(diff){ if(diff<0) return "Started!"; let d=Math.floor(diff/864e5), h=Math.floor(diff%864e5/36e5), m=Math.floor(diff%36e5/6e4), s=Math.floor(diff%6e4/1e3); return `${d}d ${h}h ${m}m ${s}s`; }
     function update(){ let n=Date.now(); document.getElementById('timer1Display').innerText=fmt(exam1-n); document.getElementById('timer2Display').innerText=fmt(exam2-n); document.getElementById('prepTimer1').innerText=fmt(prep1-n); document.getElementById('prepTimer2').innerText=fmt(prep2-n); }
@@ -316,7 +737,7 @@
     }
     document.getElementById('dynamicCalendars').innerHTML = buildMonth(4,2026,[27],{22:{tooltip:"Physics Prep 12:30"}}) + buildMonth(5,2026,[12],{11:{tooltip:"Chemistry Prep 12:00"}});
 
-    // ToDo (local storage)
+    // ToDo
     let todos=[]; const todoC=document.getElementById('todoListContainer'), newTodo=document.getElementById('newTodoInput'), addBtn=document.getElementById('addTodoBtn');
     function saveTodos(){ localStorage.setItem('science_todo_list',JSON.stringify(todos)); }
     function renderTodos(){ todoC.innerHTML=''; todos.forEach((t,i)=>{ let div=document.createElement('div'); div.className='todo-item'; let cb=document.createElement('input'); cb.type='checkbox'; cb.checked=t.completed; cb.onchange=()=>{todos[i].completed=cb.checked; saveTodos(); renderTodos();}; let span=document.createElement('span'); span.className='todo-text'+(t.completed?' completed':''); span.innerText=t.text; let del=document.createElement('button'); del.innerHTML='<i class="fas fa-trash-alt"></i>'; del.style.background='none'; del.style.border='none'; del.style.color='#ffaa66'; del.onclick=()=>{todos.splice(i,1); saveTodos(); renderTodos();}; div.append(cb,span,del); todoC.appendChild(div);});}
@@ -328,7 +749,7 @@
     function convertLength(){ let v=parseFloat(document.getElementById('lengthInput').value)||0, f=document.getElementById('lengthFrom').value, t=document.getElementById('lengthTo').value; let m=f==='m'?v:(f==='cm'?v/100:v/1000); let res=t==='m'?m:(t==='cm'?m*100:m*1000); document.getElementById('lengthResult').innerHTML=res.toFixed(4)+' '+t; }
     document.getElementById('massInput').addEventListener('input',convertMass); document.getElementById('massFrom').addEventListener('change',convertMass); document.getElementById('massTo').addEventListener('change',convertMass); document.getElementById('lengthInput').addEventListener('input',convertLength); document.getElementById('lengthFrom').addEventListener('change',convertLength); document.getElementById('lengthTo').addEventListener('change',convertLength); convertMass(); convertLength();
 
-    // Physics Equation Solver Logic
+    // Physics Solver
     const eqDefs={'F=ma':{f:'F = m × a',ins:[{id:'m',l:'Mass (kg):'},{id:'a',l:'Accel (m/s²):'}],calc:(m,a)=>m*a,unit:'N'},'KE':{f:'KE = ½mv²',ins:[{id:'m',l:'Mass (kg):'},{id:'v',l:'Velocity (m/s):'}],calc:(m,v)=>0.5*m*v*v,unit:'J'},'PE':{f:'PE = mgh',ins:[{id:'m',l:'Mass (kg):'},{id:'h',l:'Height (m):'}],calc:(m,h)=>m*9.81*h,unit:'J'},'V=IR':{f:'V = I×R',ins:[{id:'i',l:'Current (A):'},{id:'r',l:'Resistance (Ω):'}],calc:(i,r)=>i*r,unit:'V'},'v=fλ':{f:'v = fλ',ins:[{id:'f',l:'Frequency (Hz):'},{id:'l',l:'Wavelength (m):'}],calc:(f,l)=>f*l,unit:'m/s'},'p=mv':{f:'p = mv',ins:[{id:'m',l:'Mass (kg):'},{id:'v',l:'Velocity (m/s):'}],calc:(m,v)=>m*v,unit:'kg·m/s'},'W=Fd':{f:'W = Fd',ins:[{id:'f',l:'Force (N):'},{id:'d',l:'Distance (m):'}],calc:(f,d)=>f*d,unit:'J'},'P=Wt':{f:'P = W/t',ins:[{id:'w',l:'Work (J):'},{id:'t',l:'Time (s):'}],calc:(w,t)=>t?w/t:0,unit:'W'},'rho=mV':{f:'ρ = m/V',ins:[{id:'m',l:'Mass (kg):'},{id:'v',l:'Volume (m³):'}],calc:(m,v)=>v?m/v:0,unit:'kg/m³'}};
     const eqSel=document.getElementById('physicsEqSelect'), formulaDiv=document.getElementById('eqFormulaDisplay'), inputsDiv=document.getElementById('eqInputsContainer'), eqCalc=document.getElementById('eqCalcBtn'), eqRes=document.getElementById('eqResult');
     function renderEq(){ let key=eqSel.value, def=eqDefs[key]; if(!def)return; formulaDiv.innerText=def.f; let html=''; def.ins.forEach(inp=>{ html+=`<div class="eq-input-group"><label>${inp.l}</label><input type="number" id="phy_${inp.id}" value="" step="any"></div>`; }); inputsDiv.innerHTML=html; eqRes.innerHTML='Enter values'; }
@@ -345,9 +766,9 @@
     document.getElementById('pomodoroTrigger')?.addEventListener('click',()=>alert('🍅 25 min focus + 5 min break. Stay locked!'));
 
     // Notifications
-    async function requestNotificationPermission(){ if(Notification.permission!=='granted') await Notification.requestPermission(); document.getElementById('permStatus').innerText=Notification.permission; if(Notification.permission==='granted') alert('Reminders active! You will receive notifications before exams and prep classes.'); }
+    async function requestNotificationPermission(){ if(Notification.permission!=='granted') await Notification.requestPermission(); document.getElementById('permStatus').innerText=Notification.permission; if(Notification.permission==='granted') alert('Reminders active!'); }
     document.getElementById('permStatus').innerText=Notification.permission||'default';
-    document.getElementById('testNotifyBtn').addEventListener('click',()=>{ if(Notification.permission==='granted') new Notification('🔔 Science Glass',{body:'Stay on track!',icon:'logo.png'}); else alert('Enable notifications in Settings.'); });
+    document.getElementById('testNotifyBtn').addEventListener('click',()=>{ if(Notification.permission==='granted') new Notification('🔔 Science Glass',{body:'Stay on track!'}); else alert('Enable notifications in Settings.'); });
     if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(e=>console.log);
 
     // Random facts
