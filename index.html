@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>NEXON · Science Glass | Premium Dashboard</title>
+    <!-- Apple PWA -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="NEXON Science">
-    <title>NEXON · Physics & Chemistry | Glass Dashboard</title>
-    <!-- Google Fonts + Font Awesome 6 -->
+    <link rel="manifest" href="manifest.json">
+    <!-- Fonts + Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="manifest" href="manifest.json">
     <style>
         * {
             margin: 0;
@@ -18,16 +19,34 @@
             box-sizing: border-box;
         }
 
-        body {
-            background: radial-gradient(ellipse at 30% 10%, #0f172a 0%, #020617 100%);
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            padding: 1.2rem;
-            min-height: 100vh;
-            color: #fff;
-            position: relative;
+        :root {
+            --bg-deep: #0A0F1C;
+            --bg-card: rgba(18, 28, 40, 0.65);
+            --accent-gold: #E5B13B;
+            --accent-gold-glow: rgba(229, 177, 59, 0.4);
+            --accent-blue: #00B4D8;
+            --text-light: #F0F4FA;
+            --text-muted: #A0B4D0;
+            --nav-bg: rgba(8, 14, 26, 0.92);
+            --gradient-gold: linear-gradient(135deg, #E5B13B, #B47C10);
+            --gradient-blue: linear-gradient(135deg, #0077B6, #00B4D8);
+            --glass-border: rgba(229, 177, 59, 0.3);
+            --danger: #ff6b6b;
+            --success: #4ade80;
         }
-        
-        /* premium glass overlay pattern */
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: radial-gradient(circle at 30% 0%, #0E1428, #03050B);
+            color: var(--text-light);
+            min-height: 100vh;
+            padding-bottom: 85px;
+            -webkit-tap-highlight-color: transparent;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Luxury grain overlay */
         body::before {
             content: "";
             position: fixed;
@@ -35,264 +54,234 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: radial-gradient(circle at 20% 40%, rgba(212, 175, 55, 0.08) 1px, transparent 1px);
+            background-image: radial-gradient(circle at 15% 30%, rgba(229, 177, 59, 0.06) 1px, transparent 1px);
             background-size: 28px 28px;
             pointer-events: none;
             z-index: 0;
         }
 
-        .dashboard {
-            max-width: 1440px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 2;
+        /* Watermark Logo (NEXON emblem) */
+        .logo-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 55vw;
+            max-width: 320px;
+            opacity: 0.035;
+            pointer-events: none;
+            z-index: 0;
+            filter: drop-shadow(0 0 8px rgba(229,177,59,0.2));
         }
 
-        /* ========= LUXURY HEADER ========= */
-        .luxury-header {
+        /* Header Premium */
+        .app-header {
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: flex-end;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-            padding: 0 0.2rem;
-        }
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        .nexon-logo {
-            background: linear-gradient(135deg, #E5B13B, #B8860B);
-            width: 52px;
-            height: 52px;
-            border-radius: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 12px 25px -8px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.3);
-        }
-        .nexon-logo i {
-            font-size: 2rem;
-            color: #0a0f1f;
-            text-shadow: 0 1px 0 rgba(255,255,200,0.3);
-        }
-        .brand-text h1 {
-            font-weight: 800;
-            font-size: 1.8rem;
-            letter-spacing: -0.5px;
-            background: linear-gradient(120deg, #FFF8E7, #E5B13B);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-        }
-        .brand-text p {
-            font-size: 0.75rem;
-            letter-spacing: 1px;
-            font-weight: 500;
-            color: #D4AF37;
-            text-transform: uppercase;
-        }
-        .date-luxury {
-            background: rgba(10, 20, 40, 0.5);
-            backdrop-filter: blur(12px);
-            padding: 0.5rem 1.2rem;
-            border-radius: 60px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            border: 0.5px solid rgba(212, 175, 55, 0.3);
-        }
-
-        /* premium glass cards (base) */
-        .glass-premium {
-            background: rgba(12, 20, 35, 0.55);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border-radius: 2rem;
-            border: 0.5px solid rgba(212, 175, 55, 0.25);
-            box-shadow: 0 25px 40px -18px rgba(0, 0, 0, 0.6), inset 0 0.5px 0 rgba(255,255,255,0.1);
-            transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-        }
-        .glass-premium:hover {
-            background: rgba(18, 30, 48, 0.7);
-            border-color: rgba(212, 175, 55, 0.5);
-            transform: translateY(-3px);
-            box-shadow: 0 28px 45px -18px black;
-        }
-
-        /* hero timers row (premium big cards) */
-        .timers-row {
-            display: flex;
-            gap: 1.8rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-        .timer-hero {
-            flex: 1;
-            background: linear-gradient(125deg, rgba(15, 25, 45, 0.7), rgba(10, 18, 32, 0.8));
+            padding: 0.9rem 1.5rem;
+            background: var(--nav-bg);
             backdrop-filter: blur(28px);
-            border-radius: 2.2rem;
-            border: 1px solid rgba(229, 177, 59, 0.35);
-            padding: 1.6rem 2rem;
-            transition: 0.3s;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.5);
+            -webkit-backdrop-filter: blur(28px);
+            border-bottom: 1px solid var(--glass-border);
+            position: sticky;
+            top: 0;
+            z-index: 20;
         }
-        .timer-hero:hover {
-            border-color: #E5B13B;
-            box-shadow: 0 25px 40px -12px rgba(229,177,59,0.15);
+        .header-logo {
+            height: 44px;
+            margin-right: 12px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
         }
-        .hero-info .exam-icon {
-            background: rgba(229, 177, 59, 0.2);
-            display: inline-block;
-            padding: 0.2rem 1rem;
+        .app-title {
+            font-weight: 800;
+            font-size: 1.5rem;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+        }
+        .icon-btn {
+            background: rgba(229, 177, 59, 0.15);
+            border: none;
+            color: var(--accent-gold);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 10px;
             border-radius: 40px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: #F5D78C;
-            margin-bottom: 0.8rem;
+            transition: 0.2s;
             backdrop-filter: blur(4px);
         }
-        .hero-info .exam-title {
-            font-size: clamp(1.4rem, 4vw, 2rem);
+        .icon-btn:hover { background: rgba(229, 177, 59, 0.35); transform: scale(1.02); }
+
+        /* Bottom Navigation - Premium Glass */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0; right: 0;
+            background: var(--nav-bg);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-top: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-around;
+            padding: 0.5rem 0 0.7rem;
+            z-index: 20;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            padding: 5px 12px;
+            border-radius: 40px;
+            background: transparent;
+        }
+        .nav-item i { font-size: 1.5rem; margin-bottom: 2px; transition: 0.2s; }
+        .nav-item.active { color: var(--accent-gold); background: rgba(229, 177, 59, 0.15); }
+        .nav-item:hover { color: var(--accent-gold); transform: translateY(-2px); }
+
+        /* Pages */
+        .page { display: none; padding: 1.4rem 1.5rem 2rem; position: relative; z-index: 2; }
+        .page.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Cards - Premium Glass Morphism */
+        .glass-card, .timer-horiz-card, .small-timer-card, .drive-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 2rem;
+            border: 0.5px solid var(--glass-border);
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.5), inset 0 0.5px 0 rgba(255,255,255,0.05);
+            transition: all 0.25s ease-out;
+        }
+        .glass-card:hover, .timer-horiz-card:hover, .small-timer-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent-gold);
+            box-shadow: 0 28px 40px -14px rgba(0,0,0,0.6), 0 0 0 1px rgba(229,177,59,0.2);
+        }
+
+        /* Hero Timers */
+        .timer-horiz-card {
+            padding: 1.5rem 1.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            flex: 1;
+        }
+        .dday-badge {
+            background: var(--gradient-gold);
+            color: #0A0F1C;
+            font-weight: 800;
+            font-size: 0.7rem;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            display: inline-block;
+            margin-bottom: 0.6rem;
+            letter-spacing: 0.5px;
+        }
+        .exam-title {
+            font-size: clamp(1.2rem, 5vw, 1.8rem);
             font-weight: 700;
-            letter-spacing: -0.3px;
-            background: linear-gradient(to right, #ffffff, #ffe6b3);
+            background: linear-gradient(135deg, #FFF, #E5B13B);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
         }
-        .hero-date {
-            font-size: 0.85rem;
-            color: #BDC9F0;
-            margin-top: 0.4rem;
-        }
-        .timer-gold {
-            text-align: right;
-        }
         .timer-digits-large {
-            font-size: clamp(2rem, 6vw, 3.2rem);
+            font-size: clamp(1.8rem, 6vw, 2.8rem);
             font-weight: 800;
-            font-family: 'Inter', monospace;
-            background: linear-gradient(135deg, #FFE9C7, #F5C542);
+            font-family: monospace;
+            background: linear-gradient(135deg, #FFFFFF, #F7D98C);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
             letter-spacing: 2px;
         }
-        .timer-unit {
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: #F0D895;
-            letter-spacing: 0.5px;
-        }
+        .timer-clock { text-align: right; min-width: 210px; }
 
-        /* prep classes (elegant secondary) */
-        .small-timers-row {
-            display: flex;
-            gap: 1.5rem;
-            margin-bottom: 2.5rem;
-            flex-wrap: wrap;
-        }
-        .prep-card {
-            flex: 1;
-            background: rgba(12, 22, 40, 0.65);
-            backdrop-filter: blur(18px);
-            border-radius: 1.6rem;
-            border: 0.5px solid rgba(229, 177, 59, 0.4);
+        /* Small prep cards */
+        .small-timer-card {
             padding: 1rem 1.5rem;
-            transition: all 0.25s;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 1rem;
+            gap: 0.8rem;
+            flex: 1;
         }
-        .prep-card:hover {
-            background: rgba(25, 40, 62, 0.8);
-            border-color: #E5B13B;
-        }
-        .prep-badge-lux {
-            background: rgba(212, 175, 55, 0.25);
+        .prep-badge {
+            background: rgba(0, 180, 216, 0.3);
+            color: #D4F1FF;
             font-size: 0.65rem;
-            font-weight: 700;
-            padding: 0.2rem 0.9rem;
             border-radius: 40px;
-            color: #FAD974;
+            padding: 0.2rem 0.8rem;
             display: inline-block;
         }
-        .prep-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: white;
-        }
         .timer-digits-small {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 700;
-            font-family: monospace;
-            background: linear-gradient(135deg, #FDE5B4, #E5B13B);
+            background: var(--gradient-blue);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
         }
 
-        /* GRID: beautiful 2/3 columns responsive */
-        .premium-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-            gap: 2rem;
-            margin-top: 0.2rem;
+        /* Grid layout */
+        .timers-row, .small-timers-row {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
         }
-        .card-header-lux {
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 1.8rem;
+            margin-top: 0.8rem;
+        }
+        .card-header {
             display: flex;
             align-items: center;
             gap: 12px;
             font-weight: 700;
-            font-size: 1.35rem;
-            color: #F5DEB3;
-            border-bottom: 1.5px solid rgba(229, 177, 59, 0.35);
-            padding-bottom: 0.9rem;
-            margin-bottom: 1.3rem;
+            font-size: 1.3rem;
+            border-bottom: 1.5px solid rgba(229, 177, 59, 0.4);
+            padding-bottom: 0.7rem;
+            margin-bottom: 1.2rem;
         }
-        .card-header-lux i {
-            font-size: 1.6rem;
-            color: #E5B13B;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
-        }
+        .card-header i { font-size: 1.6rem; color: var(--accent-gold); }
 
-        /* drive card premium */
-        .drive-premium {
-            background: linear-gradient(125deg, rgba(25, 35, 55, 0.65), rgba(10, 20, 35, 0.7));
-            border-radius: 1.5rem;
+        /* Drive Card Luxury */
+        .drive-card {
+            background: linear-gradient(125deg, rgba(20, 30, 48, 0.7), rgba(12, 20, 35, 0.8));
             padding: 1.2rem;
-            margin: 0.5rem 0 1rem;
-            border: 0.5px solid rgba(212, 175, 55, 0.3);
         }
-        .drive-link a {
-            color: #FADB85;
-            word-break: break-all;
-            font-size: 0.75rem;
-        }
+        .drive-link a { color: #FFDFA5; font-size: 0.75rem; word-break: break-all; }
         .open-drive-btn {
-            background: linear-gradient(105deg, #E5B13B, #C9921E);
+            background: var(--gradient-gold);
             border: none;
             border-radius: 2rem;
-            padding: 0.5rem 1.4rem;
+            padding: 0.5rem 1.3rem;
             font-weight: 700;
-            color: #121212;
+            color: #0A0F1C;
             transition: 0.2s;
         }
+        .open-drive-btn:hover { transform: scale(1.02); filter: brightness(1.05); }
 
-        /* tools grid glossy */
+        /* Tools Grid */
         .tools-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
-            gap: 14px;
+            gap: 12px;
             margin: 1rem 0;
         }
         .tool-item {
@@ -300,462 +289,346 @@
             backdrop-filter: blur(8px);
             border: 0.5px solid rgba(229, 177, 59, 0.3);
             border-radius: 1.4rem;
-            padding: 0.7rem 0.3rem;
+            padding: 0.7rem 0.2rem;
             text-align: center;
             transition: all 0.2s;
-        }
-        .tool-item:hover {
-            background: rgba(229, 177, 59, 0.2);
-            transform: translateY(-5px);
-            border-color: #E5B13B;
-        }
-        .tool-item i {
-            font-size: 1.6rem;
-            color: #F7CD7C;
-        }
-
-        /* calendar enhanced */
-        .calendar-twins {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.2rem;
-        }
-        .month-card {
-            background: rgba(0, 0, 0, 0.35);
-            border-radius: 1.6rem;
-            padding: 0.9rem;
-            flex: 1;
-            backdrop-filter: blur(4px);
-        }
-        .cal-day {
-            font-size: 0.7rem;
-            padding: 5px 0;
-            border-radius: 30px;
-        }
-        .cal-day.highlight-exam {
-            background: linear-gradient(145deg, #E5B13B, #B47C10);
-            color: #0A0A0A;
-            font-weight: 800;
-            box-shadow: 0 0 6px rgba(229,177,59,0.7);
-        }
-        .cal-day.highlight-class {
-            background: #2C5F8A;
             color: white;
-            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
         }
+        .tool-item i { font-size: 1.5rem; color: var(--accent-gold); }
+        .tool-item:hover { background: rgba(229, 177, 59, 0.2); transform: translateY(-5px); border-color: var(--accent-gold); }
 
-        /* todo list refinements */
+        /* Calendar */
+        .calendar-twins { display: flex; flex-wrap: wrap; gap: 1rem; }
+        .month-card {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 1.5rem;
+            padding: 0.8rem;
+            flex: 1;
+        }
+        .cal-day.highlight-exam { background: var(--gradient-gold); color: #0A0F1C; font-weight: 800; }
+        .cal-day.highlight-class { background: #2C5F8A; color: white; }
+
+        /* Todo & Converter */
         .todo-item {
             background: rgba(0, 0, 0, 0.4);
             border-radius: 3rem;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             padding: 0.7rem 1rem;
-            backdrop-filter: blur(4px);
         }
         .add-todo input {
-            background: #0a1022e5;
-            border: 1px solid #E5B13B;
-            border-radius: 3rem;
-            padding: 0.7rem 1rem;
+            background: #0a1225e5;
+            border: 1px solid var(--accent-gold);
+            border-radius: 2rem;
+            padding: 0.6rem 1rem;
             color: white;
         }
-        .add-todo button {
-            background: #E5B13B;
-            border-radius: 3rem;
-            font-weight: bold;
-        }
-
-        /* converter & facts */
+        .add-todo button { background: var(--gradient-gold); font-weight: bold; }
         .conv-row {
             background: rgba(0, 0, 0, 0.35);
-            border-radius: 2rem;
-            padding: 0.7rem;
+            border-radius: 1.5rem;
+            padding: 0.6rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-items: center;
         }
         .science-fact {
             background: rgba(0, 0, 0, 0.3);
-            border-left: 4px solid #E5B13B;
+            border-left: 4px solid var(--accent-gold);
+            border-radius: 1rem;
+            padding: 0.7rem;
         }
-        footer {
-            margin-top: 3rem;
-            text-align: center;
-            font-size: 0.7rem;
-            font-weight: 400;
-            color: #c9b37c;
-            letter-spacing: 1px;
-        }
-
-        /* responsive superior */
-        @media (max-width: 800px) {
-            body {
-                padding: 0.9rem;
-            }
-            .timers-row, .small-timers-row {
-                flex-direction: column;
-            }
-            .timer-hero, .prep-card {
-                width: 100%;
-            }
-            .timer-hero {
-                flex-direction: column;
-                align-items: flex-start;
-                text-align: left;
-            }
-            .timer-gold {
-                text-align: left;
-                width: 100%;
-            }
-            .premium-grid {
-                grid-template-columns: 1fr;
-                gap: 1.3rem;
-            }
-            .card-header-lux {
-                font-size: 1.2rem;
-            }
-            .tools-grid {
-                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-            }
-        }
-        @media (max-width: 480px) {
-            .brand-text h1 {
-                font-size: 1.3rem;
-            }
-            .timer-digits-small {
-                font-size: 1.1rem;
-            }
-        }
-        /* custom scroll */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0e1a24;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #E5B13B;
-            border-radius: 10px;
-        }
-        button, .tool-item, .open-drive-btn {
+        .eq-calc-btn {
+            background: var(--gradient-gold);
+            border: none;
+            border-radius: 2rem;
+            padding: 0.6rem;
+            font-weight: 700;
+            color: #0A0F1C;
+            width: 100%;
+            margin-top: 0.5rem;
             cursor: pointer;
         }
-        .prep-card, .timer-hero, .glass-premium {
-            transition: all 0.25s ease-out;
+        .chem-tab.active {
+            background: var(--gradient-gold);
+            color: #0A0F1C;
         }
+        .grade-result-big .big-num {
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--gradient-gold);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        /* Responsive fixes */
+        @media (max-width: 750px) {
+            .page { padding: 1rem; }
+            .timer-horiz-card, .small-timer-card { flex-direction: column; align-items: flex-start; }
+            .timer-clock, .small-clock { text-align: left; width: 100%; }
+            .timers-row, .small-timers-row { flex-direction: column; gap: 1rem; }
+            .grid { grid-template-columns: 1fr; }
+            .tools-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+            .app-title { font-size: 1.2rem; }
+            .header-logo { height: 36px; }
+        }
+        @media (max-width: 480px) {
+            .nav-item i { font-size: 1.2rem; }
+            .nav-item span { font-size: 0.6rem; }
+        }
+        button, .tool-item, .open-drive-btn { cursor: pointer; }
+        .formula-item { padding: 0.3rem 1rem; display: flex; justify-content: space-between; flex-wrap: wrap; }
+        .eq-input-group { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 0.7rem; align-items: center; }
+        .eq-input-group input { flex: 1; background: #0f1a2ed9; border: 1px solid var(--accent-gold); border-radius: 2rem; padding: 0.5rem 1rem; color: white; }
+        hr { border-color: rgba(229,177,59,0.2); }
+        footer { margin-top: 2rem; text-align: center; font-size: 0.7rem; color: #9AB0D0; }
     </style>
 </head>
 <body>
-<div class="dashboard">
-    <!-- luxury header inspired by NEXON logo -->
-    <div class="luxury-header">
-        <div class="brand">
-            <div class="nexon-logo">
-                <i class="fas fa-flask"></i>
-            </div>
-            <div class="brand-text">
-                <h1>NEXON · SCIENCE</h1>
-                <p>PHYSICS & CHEMISTRY · ELITE DASH</p>
-            </div>
-        </div>
-        <div class="date-luxury">
-            <i class="fas fa-star-of-life"></i> 2026 FINALS PREP
-        </div>
-    </div>
+    <!-- NEXON Logo Watermark (premium subtle) -->
+    <img src="logo.png" alt="NEXON" class="logo-watermark" onerror="this.style.display='none'">
 
-    <!-- Hero timers: Physics / Chemistry main exams -->
-    <div class="timers-row">
-        <div class="timer-hero">
-            <div class="hero-info">
-                <div class="exam-icon"><i class="fas fa-skull-crosswalk"></i> D-DAY · PAPER 1</div>
-                <div class="exam-title">📘 Physics Final</div>
-                <div class="hero-date">🗓️ May 27, 2026 · 9:00 AM</div>
-            </div>
-            <div class="timer-gold">
-                <div class="timer-digits-large" id="timer1Display">--d --h --m --s</div>
-                <div class="timer-unit">until exam</div>
-            </div>
+    <!-- Header with NEXON logo -->
+    <header class="app-header">
+        <div style="display: flex; align-items: center;">
+            <img src="logo.png" alt="NEXON" class="header-logo" onerror="this.src='https://placehold.co/44x44?text=N'">
+            <span class="app-title">NEXON Science</span>
         </div>
-        <div class="timer-hero">
-            <div class="hero-info">
-                <div class="exam-icon"><i class="fas fa-flask"></i> D-DAY · PAPER 2</div>
-                <div class="exam-title">🧪 Chemistry Final</div>
-                <div class="hero-date">🗓️ June 12, 2026 · 9:00 AM</div>
-            </div>
-            <div class="timer-gold">
-                <div class="timer-digits-large" id="timer2Display">--d --h --m --s</div>
-                <div class="timer-unit">until exam</div>
-            </div>
-        </div>
-    </div>
+        <button class="icon-btn" id="testNotifyBtn" title="Reminders"><i class="fas fa-bell"></i></button>
+    </header>
 
-    <!-- Prep classes (refined layout) -->
-    <div class="small-timers-row">
-        <div class="prep-card">
-            <div>
-                <div class="prep-badge-lux"><i class="fas fa-chalkboard-user"></i> PREP · PHYSICS CRAM</div>
-                <div class="prep-title">⚡ Exam Focus: Mechanics & Waves</div>
-                <div class="hero-date" style="font-size:0.7rem;">🗓️ May 22, 2026 · 12:30 – 14:30</div>
-            </div>
-            <div>
-                <div class="timer-digits-small" id="prepTimer1">--d --h --m --s</div>
-                <div class="timer-unit" style="font-size:0.65rem;">until session</div>
-            </div>
-        </div>
-        <div class="prep-card">
-            <div>
-                <div class="prep-badge-lux"><i class="fas fa-chalkboard-user"></i> PREP · CHEMISTRY BOOST</div>
-                <div class="prep-title">🧬 Stoichiometry & Kinetics</div>
-                <div class="hero-date" style="font-size:0.7rem;">🗓️ June 11, 2026 · 12:00 – 14:00</div>
-            </div>
-            <div>
-                <div class="timer-digits-small" id="prepTimer2">--d --h --m --s</div>
-                <div class="timer-unit" style="font-size:0.65rem;">until session</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- main premium grid -->
-    <div class="premium-grid">
-        <!-- Calendar + details card -->
-        <div class="glass-premium">
-            <div class="card-header-lux"><i class="fas fa-calendar-alt"></i> Academic Horizon</div>
-            <div id="dynamicCalendars" class="calendar-twins"></div>
-            <div class="class-note" style="margin-top: 1rem; font-size:0.7rem; background: rgba(212,175,55,0.15); border-radius: 1rem; padding: 0.5rem;">
-                <i class="fas fa-info-circle"></i> Prep sessions: Physics May 22 & Chemistry June 11 (blue highlight). Exams in radiant gold.
-            </div>
-            <div class="science-fact" style="margin-top: 1rem;">
-                <i class="fas fa-chart-line"></i> Paper 1 = Physics · Paper 2 = Chemistry · 2hrs each
-            </div>
-        </div>
-
-        <!-- Google Drive Vault (luxury) -->
-        <div class="glass-premium">
-            <div class="card-header-lux"><i class="fab fa-google-drive"></i> Class Drive Vault</div>
-            <div class="drive-premium">
-                <div style="display:flex; gap:1rem; align-items:center; margin-bottom:1rem;">
-                    <div style="background:rgba(212,175,55,0.2); border-radius: 30px; padding:0.6rem;"><i class="fas fa-folder-open" style="font-size:1.7rem; color:#E5B13B;"></i></div>
-                    <div><h3 style="font-weight:700;">NEXON Science Core</h3><p style="font-size:0.7rem;">All notes, lab worksheets & past papers</p></div>
+    <!-- ===================== PAGES ===================== -->
+    <div id="homePage" class="page active">
+        <div class="timers-row">
+            <div class="timer-horiz-card">
+                <div class="timer-info">
+                    <div class="dday-badge"><i class="fas fa-skull-crosswalk"></i> D-DAY 1 · PHYSICS</div>
+                    <div class="exam-title">📘 Physics Final · Paper 1</div>
+                    <div class="exam-date">🗓️ May 27, 2026 · 9:00 AM</div>
                 </div>
-                <div class="folder-stats" style="display: flex; gap: 12px; font-size:0.7rem; background: rgba(0,0,0,0.4); border-radius: 40px; padding: 0.3rem 1rem;">
-                    <span><i class="fas fa-file-alt"></i> Mock exams</span>
-                    <span><i class="fas fa-chalkboard"></i> Slides</span>
-                    <span><i class="fas fa-dna"></i> Labs</span>
+                <div class="timer-clock">
+                    <div class="timer-digits-large" id="timer1Display">--d --h --m --s</div>
+                    <div class="timer-unit">until exam</div>
                 </div>
-                <div class="drive-link" style="background: #0a1022a0; border-radius: 1rem; padding:0.7rem; margin-top: 1rem; display: flex; justify-content: space-between; flex-wrap:wrap; gap: 0.5rem;">
-                    <a href="https://drive.google.com/drive/folders/1xcCQcmYHC4Tr8Gm9P40BwNqDALL7SLwQ?usp=drive_link" target="_blank" style="font-size:0.7rem; flex:1;">drive.google.com/nexon_science</a>
+            </div>
+            <div class="timer-horiz-card">
+                <div class="timer-info">
+                    <div class="dday-badge"><i class="fas fa-flask"></i> D-DAY 2 · CHEMISTRY</div>
+                    <div class="exam-title">🧪 Chemistry Final · Paper 2</div>
+                    <div class="exam-date">🗓️ June 12, 2026 · 9:00 AM</div>
+                </div>
+                <div class="timer-clock">
+                    <div class="timer-digits-large" id="timer2Display">--d --h --m --s</div>
+                    <div class="timer-unit">until exam</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="small-timers-row">
+            <div class="small-timer-card">
+                <div><div class="prep-badge"><i class="fas fa-chalkboard"></i> PREP · PHYSICS</div>
+                <div class="exam-title" style="font-size:1rem;">⚡ Exam Cram Physics</div>
+                <div class="exam-date">🗓️ May 22, 2026 · 12:30</div></div>
+                <div><div class="timer-digits-small" id="prepTimer1">--d --h --m --s</div><div class="timer-unit">until session</div></div>
+            </div>
+            <div class="small-timer-card">
+                <div><div class="prep-badge"><i class="fas fa-chalkboard"></i> PREP · CHEMISTRY</div>
+                <div class="exam-title" style="font-size:1rem;">🧪 Final Review Chem</div>
+                <div class="exam-date">🗓️ June 11, 2026 · 12:00</div></div>
+                <div><div class="timer-digits-small" id="prepTimer2">--d --h --m --s</div><div class="timer-unit">until session</div></div>
+            </div>
+        </div>
+
+        <!-- Drive Vault -->
+        <div class="glass-card" style="margin-bottom: 1.5rem;">
+            <div class="card-header"><i class="fab fa-google-drive"></i> Class Drive Vault</div>
+            <div class="drive-card">
+                <div style="display:flex; gap:1rem; align-items:center;">
+                    <div style="background:rgba(229,177,59,0.2); border-radius:30px; padding:0.6rem;"><i class="fas fa-folder-open" style="font-size:1.7rem; color:var(--accent-gold);"></i></div>
+                    <div><h3>📁 NEXON Science Core</h3><p style="font-size:0.7rem;">All notes, labs & past papers</p></div>
+                </div>
+                <div class="folder-stats" style="display:flex; gap:12px; margin:0.8rem 0; background:rgba(0,0,0,0.4); border-radius:40px; padding:0.3rem 1rem;"><span><i class="fas fa-file-alt"></i> Mock exams</span><span><i class="fas fa-chalkboard-user"></i> Slides</span><span><i class="fas fa-flask"></i> Labs</span></div>
+                <div class="drive-link" style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; background:#0a1022a0; border-radius:1.2rem; padding:0.7rem;">
+                    <a href="https://drive.google.com/drive/folders/1xcCQcmYHC4Tr8Gm9P40BwNqDALL7SLwQ?usp=drive_link" target="_blank">drive.google.com/nexon_science</a>
                     <button class="open-drive-btn" onclick="window.open('https://drive.google.com/drive/folders/1xcCQcmYHC4Tr8Gm9P40BwNqDALL7SLwQ?usp=drive_link', '_blank')"><i class="fas fa-external-link-alt"></i> Open Vault</button>
                 </div>
             </div>
-            <div class="science-fact" style="margin-top: 0.5rem;"><i class="fas fa-cloud-upload-alt"></i> 40+ resources · Updated weekly</div>
         </div>
+        <button class="eq-calc-btn" onclick="requestNotificationPermission()" style="margin: 0 0 0.5rem 0;"><i class="fas fa-bell"></i> Enable Reminders</button>
+    </div>
 
-        <!-- Toolkit + fact + pomodoro -->
-        <div class="glass-premium">
-            <div class="card-header-lux"><i class="fas fa-toolbox"></i> Science Arsenal</div>
-            <div class="tools-grid">
-                <a href="https://zperiod.app/" target="_blank" class="tool-item"><i class="fas fa-chart-line"></i><span>Z-period</span></a>
-                <a href="https://phet.colorado.edu/" target="_blank" class="tool-item"><i class="fas fa-atom"></i><span>PhET Sims</span></a>
-                <a href="https://www.desmos.com/scientific" target="_blank" class="tool-item"><i class="fas fa-calculator"></i><span>Desmos</span></a>
-                <a href="https://www.khanacademy.org/science" target="_blank" class="tool-item"><i class="fas fa-graduation-cap"></i><span>Khan Acad</span></a>
-                <a href="https://ptable.com/" target="_blank" class="tool-item"><i class="fas fa-border-all"></i><span>Periodic</span></a>
-                <a href="https://quizlet.com/" target="_blank" class="tool-item"><i class="fas fa-cards-blank"></i><span>Quizlet</span></a>
-                <a href="https://www.wolframalpha.com/" target="_blank" class="tool-item"><i class="fas fa-robot"></i><span>Wolfram</span></a>
-                <div id="pomodoroTrigger" class="tool-item" style="cursor:pointer;"><i class="fas fa-hourglass-half"></i><span>🍅 Pomodoro</span></div>
-            </div>
-            <div class="science-fact" style="margin-top:0.6rem;"><i class="fas fa-lightbulb"></i> <span id="randomFactText">loading insight...</span></div>
-        </div>
-
-        <!-- To-Do: Study sprint -->
-        <div class="glass-premium">
-            <div class="card-header-lux"><i class="fas fa-list-check"></i> Study Sprint</div>
-            <div class="todo-list" id="todoListContainer"></div>
-            <div class="add-todo" style="display: flex; gap: 0.5rem;">
-                <input type="text" id="newTodoInput" placeholder="Add a task ...">
-                <button id="addTodoBtn"><i class="fas fa-plus"></i> Add</button>
-            </div>
-            <div style="font-size:0.7rem; margin-top: 1rem; color:#e0cba0;"><i class="fas fa-save"></i> tasks saved locally</div>
-        </div>
-
-        <!-- Lab converter premium -->
-        <div class="glass-premium">
-            <div class="card-header-lux"><i class="fas fa-weight-hanging"></i> Lab Converter</div>
-            <div class="converter">
-                <div class="conv-row" style="display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center;">
-                    <span>⚖️ Mass</span>
-                    <input type="number" id="massInput" value="1" style="width:80px;">
-                    <select id="massFrom"><option value="kg">kg</option><option value="g">g</option><option value="mg">mg</option></select> → 
-                    <select id="massTo"><option value="kg">kg</option><option value="g" selected>g</option><option value="mg">mg</option></select>
-                    <span id="massResult" class="result-badge" style="background:#1f2b46;">--</span>
+    <!-- TOOLS PAGE (Physics Solver, Chemistry, Converter, Grade, Formulas) -->
+    <div id="toolsPage" class="page">
+        <div class="grid">
+            <div class="glass-card">
+                <div class="card-header"><i class="fas fa-toolbox"></i> Science Toolkit</div>
+                <div class="tools-grid">
+                    <a href="https://zperiod.app/" target="_blank" class="tool-item"><i class="fas fa-chart-line"></i><span>Z-period</span></a>
+                    <a href="https://phet.colorado.edu/" target="_blank" class="tool-item"><i class="fas fa-atom"></i><span>PhET Sims</span></a>
+                    <a href="https://www.desmos.com/scientific" target="_blank" class="tool-item"><i class="fas fa-calculator"></i><span>Desmos Sci</span></a>
+                    <a href="https://www.khanacademy.org/science" target="_blank" class="tool-item"><i class="fas fa-graduation-cap"></i><span>Khan Academy</span></a>
+                    <a href="https://ptable.com/" target="_blank" class="tool-item"><i class="fas fa-border-all"></i><span>Periodic Table</span></a>
+                    <a href="https://quizlet.com/" target="_blank" class="tool-item"><i class="fas fa-cards-blank"></i><span>Quizlet</span></a>
+                    <a href="https://www.wolframalpha.com/" target="_blank" class="tool-item"><i class="fas fa-robot"></i><span>Wolfram</span></a>
+                    <div id="pomodoroTrigger" class="tool-item" style="cursor:pointer;"><i class="fas fa-hourglass-half"></i><span>🍅 Pomodoro</span></div>
                 </div>
-                <div class="conv-row" style="display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center;">
-                    <span>📏 Length</span>
-                    <input type="number" id="lengthInput" value="1" style="width:80px;">
-                    <select id="lengthFrom"><option value="m">m</option><option value="cm">cm</option><option value="mm">mm</option></select> → 
-                    <select id="lengthTo"><option value="m">m</option><option value="cm" selected>cm</option><option value="mm">mm</option></select>
-                    <span id="lengthResult" class="result-badge">--</span>
-                </div>
+                <div class="science-fact"><i class="fas fa-lightbulb"></i> <span id="randomFactText">loading fact...</span></div>
             </div>
-            <div class="science-fact" style="margin-top: 1rem;">density = mass/volume | speed = distance/time</div>
+
+            <!-- Physics Equation Solver -->
+            <div class="glass-card">
+                <div class="card-header"><i class="fas fa-calculator"></i> Physics Solver</div>
+                <select class="eq-select" id="physicsEqSelect" style="background:#0f1a2e; border:1px solid var(--accent-gold); border-radius:2rem; padding:0.6rem; width:100%; margin-bottom:0.8rem; color:white;">
+                    <option value="F=ma">F = m × a (Newton's 2nd)</option>
+                    <option value="KE">KE = ½mv² (Kinetic Energy)</option>
+                    <option value="PE">PE = mgh (GPE)</option>
+                    <option value="V=IR">V = I × R (Ohm's Law)</option>
+                    <option value="v=fλ">v = fλ (Wave Speed)</option>
+                    <option value="p=mv">p = m × v (Momentum)</option>
+                    <option value="W=Fd">W = F × d (Work)</option>
+                </select>
+                <div class="eq-formula-display" id="eqFormulaDisplay" style="background:rgba(0,0,0,0.4); border-radius:1.2rem; padding:0.4rem; text-align:center;">F = m × a</div>
+                <div id="eqInputsContainer"></div>
+                <button class="eq-calc-btn" id="eqCalcBtn">Calculate</button>
+                <div class="eq-result" id="eqResult" style="margin-top:0.5rem; background:rgba(0,0,0,0.4); border-radius:1.2rem; padding:0.6rem; text-align:center;"></div>
+            </div>
+
+            <!-- Chemistry Lab -->
+            <div class="glass-card">
+                <div class="card-header"><i class="fas fa-flask"></i> Chemistry Lab</div>
+                <div class="chem-tabs" style="display:flex; gap:5px; flex-wrap:wrap;">
+                    <div class="chem-tab active" data-chem-panel="molesPanel">🧮 Moles</div>
+                    <div class="chem-tab" data-chem-panel="concPanel">🧪 Conc.</div>
+                    <div class="chem-tab" data-chem-panel="dilutionPanel">💧 Dilution</div>
+                    <div class="chem-tab" data-chem-panel="phpPanel">⚗️ pH</div>
+                </div>
+                <div class="chem-panel active" id="molesPanel"><div class="eq-input-group"><label>Mass (g):</label><input type="number" id="molesMass" value="10"></div><div class="eq-input-group"><label>Molar mass (g/mol):</label><input type="number" id="molesMolarMass" value="58.44"></div><button class="eq-calc-btn" id="molesCalcBtn">Calculate Moles</button><div class="eq-result" id="molesResult">n = m/M</div></div>
+                <div class="chem-panel" id="concPanel"><div class="eq-input-group"><label>Solute (mol):</label><input type="number" id="concMoles" value="0.5"></div><div class="eq-input-group"><label>Volume (L):</label><input type="number" id="concVolume" value="1"></div><button class="eq-calc-btn" id="concCalcBtn">Concentration</button><div class="eq-result" id="concResult">C = n/V</div></div>
+                <div class="chem-panel" id="dilutionPanel"><div class="eq-input-group"><label>C₁ (M):</label><input type="number" id="dilC1" value="2"></div><div class="eq-input-group"><label>V₁ (L):</label><input type="number" id="dilV1" value="0.1"></div><div class="eq-input-group"><label>C₂ (M):</label><input type="number" id="dilC2" value="0.5"></div><button class="eq-calc-btn" id="dilCalcBtn">Find V₂</button><div class="eq-result" id="dilResult">C₁V₁ = C₂V₂</div></div>
+                <div class="chem-panel" id="phpPanel"><div class="eq-input-group"><label>[H⁺] (M):</label><input type="number" id="phHplus" value="0.0001"></div><button class="eq-calc-btn" id="phCalcBtn">Calculate pH</button><div class="eq-result" id="phResult">pH = -log[H⁺]</div></div>
+            </div>
+
+            <!-- Unit Converter & Grade Predictor -->
+            <div class="glass-card">
+                <div class="card-header"><i class="fas fa-weight-hanging"></i> Lab Converter</div>
+                <div class="converter"><div class="conv-row"><span>⚖️ Mass:</span><input type="number" id="massInput" value="1"><select id="massFrom"><option value="kg">kg</option><option value="g">g</option><option value="mg">mg</option></select> → <select id="massTo"><option value="kg">kg</option><option value="g" selected>g</option><option value="mg">mg</option></select><span id="massResult" class="result-badge">--</span></div>
+                <div class="conv-row"><span>📏 Length:</span><input type="number" id="lengthInput" value="1"><select id="lengthFrom"><option value="m">m</option><option value="cm">cm</option><option value="mm">mm</option></select> → <select id="lengthTo"><option value="m">m</option><option value="cm" selected>cm</option><option value="mm">mm</option></select><span id="lengthResult" class="result-badge">--</span></div></div>
+            </div>
+            <div class="glass-card">
+                <div class="card-header"><i class="fas fa-chart-pie"></i> Grade Predictor</div>
+                <div class="grade-input-row"><label>📊 Current %:</label><input type="number" id="gradeCurrent" value="75"></div>
+                <div class="grade-input-row"><label>🎯 Desired %:</label><input type="number" id="gradeDesired" value="85"></div>
+                <div class="grade-input-row"><label>📝 Final Weight %:</label><input type="number" id="gradeWeight" value="30"></div>
+                <button class="eq-calc-btn" id="gradeCalcBtn">Calculate Required</button>
+                <div class="grade-result-big" id="gradeResult" style="background:rgba(0,0,0,0.4); border-radius:1.2rem; padding:0.8rem; text-align:center;">Enter values</div>
+            </div>
         </div>
     </div>
-    <footer>NEXON Eco-system by Divan Barnard · <i class="fas fa-microchip"></i> iOS 26 Glass Morph</footer>
-</div>
 
-<script>
-    // ---------- TIMER LOGIC (exact same dates, premium UI) ----------
-    const examDate1 = new Date(2026, 4, 27, 9, 0, 0);
-    const examDate2 = new Date(2026, 5, 12, 9, 0, 0);
-    const prepDate1 = new Date(2026, 4, 22, 12, 30, 0);
-    const prepDate2 = new Date(2026, 5, 11, 12, 0, 0);
-    const timer1El = document.getElementById("timer1Display");
-    const timer2El = document.getElementById("timer2Display");
-    const prepTimer1El = document.getElementById("prepTimer1");
-    const prepTimer2El = document.getElementById("prepTimer2");
+    <!-- CALENDAR PAGE -->
+    <div id="calendarPage" class="page">
+        <div class="glass-card">
+            <div class="card-header"><i class="fas fa-calendar-alt"></i> Exam & Prep Calendar</div>
+            <div class="calendar-twins" id="dynamicCalendars"></div>
+            <div class="class-note" style="margin-top:1rem; background:rgba(229,177,59,0.15); border-radius:1rem; padding:0.5rem;"><i class="fas fa-info-circle"></i> Prep sessions: May 22 (Physics) & June 11 (Chemistry) — blue. Exams in gold.</div>
+        </div>
+    </div>
 
-    function formatCountdown(distance) {
-        if (distance < 0) return "⚡ Active now!";
-        const days = Math.floor(distance / (1000*60*60*24));
-        const hours = Math.floor((distance % (86400000)) / 3600000);
-        const mins = Math.floor((distance % 3600000) / 60000);
-        const secs = Math.floor((distance % 60000) / 1000);
-        return `${days}d ${hours}h ${mins}m ${secs}s`;
-    }
+    <!-- TO-DO PAGE -->
+    <div id="todoPage" class="page">
+        <div class="glass-card">
+            <div class="card-header"><i class="fas fa-list-check"></i> Study Sprint</div>
+            <div class="todo-list" id="todoListContainer"></div>
+            <div class="add-todo"><input type="text" id="newTodoInput" placeholder="Add a task..."><button id="addTodoBtn"><i class="fas fa-plus"></i> Add</button></div>
+        </div>
+    </div>
 
-    function updateAllTimers() {
-        const now = new Date().getTime();
-        if(timer1El) timer1El.innerText = formatCountdown(examDate1.getTime() - now);
-        if(timer2El) timer2El.innerText = formatCountdown(examDate2.getTime() - now);
-        if(prepTimer1El) prepTimer1El.innerText = formatCountdown(prepDate1.getTime() - now);
-        if(prepTimer2El) prepTimer2El.innerText = formatCountdown(prepDate2.getTime() - now);
-    }
-    updateAllTimers();
-    setInterval(updateAllTimers, 1000);
+    <!-- SETTINGS -->
+    <div id="settingsPage" class="page">
+        <div class="glass-card">
+            <h2 style="margin-bottom:1rem;">⚙️ Preferences</h2>
+            <div style="display:flex; justify-content:space-between;"><span>Notification Status</span><span id="permStatus">--</span></div>
+            <button class="eq-calc-btn" onclick="requestNotificationPermission()">Enable Notifications</button>
+            <p style="margin-top:1rem; font-size:0.75rem;">NEXON Science Glass · Divan Barnard</p>
+        </div>
+    </div>
 
-    // ---------- CALENDAR (May & June 2026, exam + prep highlights) ----------
-    function buildMonthCalendar(monthIndex, year, examDays, prepDaysMap) {
-        const firstDay = new Date(year, monthIndex, 1);
-        const startWeek = firstDay.getDay();
-        const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
-        const monthName = firstDay.toLocaleString('default', { month: 'long' });
-        let html = `<div class="month-card"><div class="month-title" style="font-weight:700; margin-bottom:6px;">${monthName} ${year}</div>`;
-        html += `<div class="weekdays" style="display:grid; grid-template-columns:repeat(7,1fr); text-align:center; font-size:0.6rem;">Su Mo Tu We Th Fr Sa</div><div class="calendar-days" style="display:grid; grid-template-columns:repeat(7,1fr); gap:2px;">`;
-        let dayCounter = 1;
-        for (let i = 0; i < 42; i++) {
-            if (i < startWeek || dayCounter > daysInMonth) {
-                html += `<div class="cal-day"></div>`;
-            } else {
-                let isExam = examDays.includes(dayCounter);
-                let prepInfo = prepDaysMap[dayCounter];
-                let extraClass = "";
-                let tooltipAttr = "";
-                if (isExam) {
-                    extraClass = "highlight-exam";
-                    tooltipAttr = ` data-tooltip="📌 Exam Day"`;
-                } else if (prepInfo) {
-                    extraClass = "highlight-class";
-                    tooltipAttr = ` data-tooltip="${prepInfo.tooltip}"`;
-                }
-                html += `<div class="cal-day ${extraClass}"${tooltipAttr}>${dayCounter}</div>`;
-                dayCounter++;
-            }
+    <nav class="bottom-nav">
+        <div class="nav-item active" data-page="homePage"><i class="fas fa-home"></i><span>Home</span></div>
+        <div class="nav-item" data-page="toolsPage"><i class="fas fa-tools"></i><span>Tools</span></div>
+        <div class="nav-item" data-page="calendarPage"><i class="fas fa-calendar"></i><span>Calendar</span></div>
+        <div class="nav-item" data-page="todoPage"><i class="fas fa-list"></i><span>To-Do</span></div>
+        <div class="nav-item" data-page="settingsPage"><i class="fas fa-cog"></i><span>Settings</span></div>
+    </nav>
+
+    <script>
+        // ---------- TIMERS ----------
+        const examDate1 = new Date(2026, 4, 27, 9, 0, 0);
+        const examDate2 = new Date(2026, 5, 12, 9, 0, 0);
+        const prepDate1 = new Date(2026, 4, 22, 12, 30, 0);
+        const prepDate2 = new Date(2026, 5, 11, 12, 0, 0);
+        function fmt(d) { if(d<0) return "🎉 NOW!"; const days=Math.floor(d/(86400000)), hours=Math.floor((d%86400000)/3600000), mins=Math.floor((d%3600000)/60000), secs=Math.floor((d%60000)/1000); return `${days}d ${hours}h ${mins}m ${secs}s`; }
+        function updateTimers() { const n=Date.now(); document.getElementById("timer1Display").innerText=fmt(examDate1.getTime()-n); document.getElementById("timer2Display").innerText=fmt(examDate2.getTime()-n); document.getElementById("prepTimer1").innerText=fmt(prepDate1.getTime()-n); document.getElementById("prepTimer2").innerText=fmt(prepDate2.getTime()-n); }
+        updateTimers(); setInterval(updateTimers,1000);
+
+        // Calendar
+        function buildMonth(month, year, exams, prepMap){
+            const fd=new Date(year,month,1), start=fd.getDay(), days=new Date(year,month+1,0).getDate(), name=fd.toLocaleString('default',{month:'long'});
+            let html=`<div class="month-card"><div class="month-title">${name} ${year}</div><div class="weekdays" style="display:grid; grid-template-columns:repeat(7,1fr);text-align:center;">Su Mo Tu We Th Fr Sa</div><div class="calendar-days" style="display:grid; grid-template-columns:repeat(7,1fr);">`;
+            let dc=1;
+            for(let i=0;i<42;i++){ if(i<start||dc>days) html+=`<div class="cal-day"></div>`; else{ let ex=exams.includes(dc), pr=prepMap[dc]; let cls=ex?"highlight-exam":(pr?"highlight-class":""); let tip=pr?` data-tooltip="${pr.tooltip}"`:""; html+=`<div class="cal-day ${cls}"${tip}>${dc}</div>`; dc++;} }
+            html+=`</div></div>`; return html;
         }
-        html += `</div></div>`;
-        return html;
-    }
+        document.getElementById("dynamicCalendars").innerHTML = buildMonth(4,2026,[27],{22:{tooltip:"Physics Prep 12:30"}}) + buildMonth(5,2026,[12],{11:{tooltip:"Chemistry Prep 12:00"}});
 
-    function renderCalendars() {
-        const examDaysMay = [27];
-        const examDaysJune = [12];
-        const prepMay = { 22: { tooltip: "Physics Prep Class · 12:30–14:30" } };
-        const prepJune = { 11: { tooltip: "Chemistry Prep Class · 12:00–14:00" } };
-        const mayCal = buildMonthCalendar(4, 2026, examDaysMay, prepMay);
-        const juneCal = buildMonthCalendar(5, 2026, examDaysJune, prepJune);
-        const container = document.getElementById("dynamicCalendars");
-        if (container) container.innerHTML = mayCal + juneCal;
-    }
-    renderCalendars();
+        // ToDo
+        let todos=[]; const todoContainer=document.getElementById("todoListContainer"), newTodo=document.getElementById("newTodoInput"), addBtn=document.getElementById("addTodoBtn");
+        function saveTodos(){ localStorage.setItem("science_todo_list",JSON.stringify(todos)); }
+        function renderTodos(){ if(!todoContainer) return; todoContainer.innerHTML=""; todos.forEach((t,i)=>{ let d=document.createElement("div"); d.className="todo-item"; let cb=document.createElement("input"); cb.type="checkbox"; cb.checked=t.completed; cb.addEventListener("change",()=>{todos[i].completed=cb.checked; saveTodos(); renderTodos();}); let span=document.createElement("span"); span.className=`todo-text ${t.completed?"completed":""}`; span.innerText=t.text; let del=document.createElement("button"); del.innerHTML='<i class="fas fa-trash-alt"></i>'; del.style.background="none"; del.style.border="none"; del.style.color="#ffaa66"; del.addEventListener("click",()=>{todos.splice(i,1); saveTodos(); renderTodos();}); d.append(cb,span,del); todoContainer.appendChild(d);});}
+        function loadTodos(){ let s=localStorage.getItem("science_todo_list"); todos=s?JSON.parse(s):[{text:"🧪 Finish lab report",completed:false},{text:"📖 Review periodic trends",completed:false},{text:"📂 Check Google Drive",completed:true}]; saveTodos(); renderTodos();}
+        loadTodos(); addBtn.addEventListener("click",()=>{ let txt=newTodo.value.trim(); if(txt) { todos.push({text:txt,completed:false}); saveTodos(); renderTodos(); newTodo.value=""; } });
 
-    // ---------- TO-DO LIST (preserve local storage) ----------
-    let todos = [];
-    const todoContainer = document.getElementById("todoListContainer");
-    const newTodoInput = document.getElementById("newTodoInput");
-    const addTodoBtn = document.getElementById("addTodoBtn");
+        // Converter
+        function convertMass(){ let v=parseFloat(document.getElementById("massInput").value)||0; let f=document.getElementById("massFrom").value, t=document.getElementById("massTo").value; let kg=f==="kg"?v:(f==="g"?v/1000:v/1e6); let res=t==="kg"?kg:(t==="g"?kg*1000:kg*1e6); document.getElementById("massResult").innerHTML=res.toFixed(4)+" "+t; }
+        function convertLength(){ let v=parseFloat(document.getElementById("lengthInput").value)||0; let f=document.getElementById("lengthFrom").value, t=document.getElementById("lengthTo").value; let m=f==="m"?v:(f==="cm"?v/100:v/1000); let res=t==="m"?m:(t==="cm"?m*100:m*1000); document.getElementById("lengthResult").innerHTML=res.toFixed(4)+" "+t; }
+        document.getElementById("massInput").addEventListener("input",convertMass); document.getElementById("massFrom").addEventListener("change",convertMass); document.getElementById("massTo").addEventListener("change",convertMass); document.getElementById("lengthInput").addEventListener("input",convertLength); document.getElementById("lengthFrom").addEventListener("change",convertLength); document.getElementById("lengthTo").addEventListener("change",convertLength); convertMass(); convertLength();
 
-    function saveTodosLocal() { localStorage.setItem("science_todo_list", JSON.stringify(todos)); }
-    function renderTodos() {
-        if (!todoContainer) return;
-        todoContainer.innerHTML = "";
-        todos.forEach((todo, idx) => {
-            const div = document.createElement("div"); div.className = "todo-item";
-            const cb = document.createElement("input"); cb.type = "checkbox"; cb.className = "todo-check"; cb.checked = todo.completed;
-            cb.addEventListener("change", () => { todos[idx].completed = cb.checked; saveTodosLocal(); renderTodos(); });
-            const textSpan = document.createElement("span"); textSpan.className = `todo-text ${todo.completed ? "completed" : ""}`; textSpan.innerText = todo.text; textSpan.style.flex = "1"; textSpan.style.marginLeft = "8px";
-            const delBtn = document.createElement("button"); delBtn.innerHTML = '<i class="fas fa-trash-alt"></i>'; delBtn.style.background = "none"; delBtn.style.border = "none"; delBtn.style.color = "#F5CD7A"; delBtn.style.cursor = "pointer";
-            delBtn.addEventListener("click", () => { todos.splice(idx,1); saveTodosLocal(); renderTodos(); });
-            div.appendChild(cb); div.appendChild(textSpan); div.appendChild(delBtn);
-            todoContainer.appendChild(div);
-        });
-    }
-    function loadTodos() {
-        const stored = localStorage.getItem("science_todo_list");
-        if (stored) { todos = JSON.parse(stored); } 
-        else {
-            todos = [
-                { text: "🧪 Finish reaction rates lab", completed: false },
-                { text: "📖 Review periodic trends & bonding", completed: false },
-                { text: "📂 Check Google Drive mock exams", completed: true },
-                { text: "⚛️ Practice thermodynamics problems", completed: false }
-            ];
-            saveTodosLocal();
-        }
-        renderTodos();
-    }
-    loadTodos();
-    addTodoBtn.addEventListener("click", () => {
-        const text = newTodoInput.value.trim();
-        if (text === "") return;
-        todos.push({ text: text, completed: false });
-        saveTodosLocal(); renderTodos(); newTodoInput.value = "";
-    });
+        // Facts
+        const facts=["🧬 60% DNA with bananas","⚡ Lightning = 100k bulbs","🌌 Neutron star: 6B tons/teaspoon","❄️ Mpemba effect","🦑 Octopus: 3 hearts","🔬 Periodic table no J","💧 6 elements make 99% body","🧪 DNA storage 215 PB/g"];
+        setInterval(()=>{ document.getElementById("randomFactText").innerText=facts[Math.floor(Math.random()*facts.length)]; },12000);
+        document.getElementById("randomFactText").innerText=facts[0];
 
-    // Unit converter
-    function convertMass() {
-        let val = parseFloat(document.getElementById("massInput").value); if(isNaN(val)) val=0;
-        const from = document.getElementById("massFrom").value, to = document.getElementById("massTo").value;
-        let inKg = from === "kg" ? val : (from === "g" ? val/1000 : val/1e6);
-        let result = to === "kg" ? inKg : (to === "g" ? inKg*1000 : inKg*1e6);
-        document.getElementById("massResult").innerHTML = result.toFixed(4) + " " + to;
-    }
-    function convertLength() {
-        let val = parseFloat(document.getElementById("lengthInput").value); if(isNaN(val)) val=0;
-        const from = document.getElementById("lengthFrom").value, to = document.getElementById("lengthTo").value;
-        let inM = from === "m" ? val : (from === "cm" ? val/100 : val/1000);
-        let result = to === "m" ? inM : (to === "cm" ? inM*100 : inM*1000);
-        document.getElementById("lengthResult").innerHTML = result.toFixed(4) + " " + to;
-    }
-    document.getElementById("massInput").addEventListener("input", convertMass);
-    document.getElementById("massFrom").addEventListener("change", convertMass);
-    document.getElementById("massTo").addEventListener("change", convertMass);
-    document.getElementById("lengthInput").addEventListener("input", convertLength);
-    document.getElementById("lengthFrom").addEventListener("change", convertLength);
-    document.getElementById("lengthTo").addEventListener("change", convertLength);
-    convertMass(); convertLength();
+        // Physics Solver
+        const eqs={ 'F=ma':{f:'F = m × a',in:[{id:'m',l:'Mass (kg):'},{id:'a',l:'Accel (m/s²):'}],calc:(m,a)=>m*a,unit:'N'}, 'KE':{f:'KE = ½mv²',in:[{id:'m',l:'Mass (kg):'},{id:'v',l:'Velocity (m/s):'}],calc:(m,v)=>0.5*m*v*v,unit:'J'}, 'PE':{f:'PE = mgh',in:[{id:'m',l:'Mass (kg):'},{id:'h',l:'Height (m):'}],calc:(m,h)=>m*9.81*h,unit:'J'}, 'V=IR':{f:'V = I×R',in:[{id:'i',l:'Current (A):'},{id:'r',l:'Resistance (Ω):'}],calc:(i,r)=>i*r,unit:'V'}, 'v=fλ':{f:'v = fλ',in:[{id:'f',l:'Frequency (Hz):'},{id:'l',l:'Wavelength (m):'}],calc:(f,l)=>f*l,unit:'m/s'}, 'p=mv':{f:'p = mv',in:[{id:'m',l:'Mass (kg):'},{id:'v',l:'Velocity (m/s):'}],calc:(m,v)=>m*v,unit:'kg·m/s'}, 'W=Fd':{f:'W = Fd',in:[{id:'f',l:'Force (N):'},{id:'d',l:'Distance (m):'}],calc:(f,d)=>f*d,unit:'J'} };
+        const sel=document.getElementById("physicsEqSelect"), formulaDiv=document.getElementById("eqFormulaDisplay"), inputsDiv=document.getElementById("eqInputsContainer"), calcBtn=document.getElementById("eqCalcBtn"), resDiv=document.getElementById("eqResult");
+        function renderPhysics(){ let key=sel.value; let def=eqs[key]; if(!def)return; formulaDiv.innerText=def.f; let html=''; def.in.forEach(inp=>{ html+=`<div class="eq-input-group"><label>${inp.l}</label><input type="number" id="phy_${inp.id}" value="" step="any" placeholder="value"></div>`; }); inputsDiv.innerHTML=html; resDiv.innerHTML="Enter values"; }
+        function calcPhysics(){ let key=sel.value; let def=eqs[key]; let v1=parseFloat(document.getElementById(`phy_${def.in[0].id}`)?.value); let v2=parseFloat(document.getElementById(`phy_${def.in[1].id}`)?.value); if(isNaN(v1)||isNaN(v2)){ resDiv.innerHTML="⚠️ Enter both values"; return; } let r=def.calc(v1,v2); if(isNaN(r)){resDiv.innerHTML="Invalid"; return;} resDiv.innerHTML=`<strong>${r.toFixed(4)} ${def.unit}</strong>`; }
+        sel.addEventListener("change",renderPhysics); calcBtn.addEventListener("click",calcPhysics); renderPhysics();
 
-    // Science facts premium
-    const factsArray = [
-        "🧬 Humans share 60% of DNA with bananas.", "⚡ A lightning bolt could power 100k bulbs.", "🌌 Neutron star: 6 billion tons per teaspoon.", "❄️ Hot water freezes faster (Mpemba effect).", "🦑 Octopuses have three hearts & blue blood.", "🔬 Periodic table excludes letter J.", "💧 99% of body made of 6 elements.", "🧪 DNA can store 215 petabytes per gram."
-    ];
-    function updateRandomFact() {
-        const factSpan = document.getElementById("randomFactText");
-        if (factSpan) factSpan.innerText = factsArray[Math.floor(Math.random() * factsArray.length)];
-    }
-    updateRandomFact(); setInterval(updateRandomFact, 15000);
+        // Chemistry panels & calculators
+        document.querySelectorAll('.chem-tab').forEach(t=>{ t.addEventListener('click',()=>{ let pid=t.getAttribute('data-chem-panel'); document.querySelectorAll('.chem-tab').forEach(tt=>tt.classList.remove('active')); t.classList.add('active'); document.querySelectorAll('.chem-panel').forEach(p=>p.classList.remove('active')); document.getElementById(pid).classList.add('active'); }); });
+        document.getElementById("molesCalcBtn").onclick=()=>{ let m=parseFloat(document.getElementById("molesMass").value), mm=parseFloat(document.getElementById("molesMolarMass").value); if(mm) document.getElementById("molesResult").innerHTML=`<strong>${(m/mm).toFixed(4)} mol</strong>`; else document.getElementById("molesResult").innerHTML="Invalid"; };
+        document.getElementById("concCalcBtn").onclick=()=>{ let n=parseFloat(document.getElementById("concMoles").value), v=parseFloat(document.getElementById("concVolume").value); if(v) document.getElementById("concResult").innerHTML=`<strong>${(n/v).toFixed(4)} mol/L</strong>`; };
+        document.getElementById("dilCalcBtn").onclick=()=>{ let c1=parseFloat(document.getElementById("dilC1").value), v1=parseFloat(document.getElementById("dilV1").value), c2=parseFloat(document.getElementById("dilC2").value); if(c2) document.getElementById("dilResult").innerHTML=`<strong>V₂ = ${(c1*v1/c2).toFixed(4)} L</strong>`; };
+        document.getElementById("phCalcBtn").onclick=()=>{ let h=parseFloat(document.getElementById("phHplus").value); if(h>0) document.getElementById("phResult").innerHTML=`<strong>pH = ${(-Math.log10(h)).toFixed(2)}</strong>`; };
+        document.getElementById("gradeCalcBtn").onclick=()=>{ let cur=parseFloat(document.getElementById("gradeCurrent").value), des=parseFloat(document.getElementById("gradeDesired").value), w=parseFloat(document.getElementById("gradeWeight").value); if(w>0&&w<=100){ let need=(des - cur*(1-w/100))/(w/100); if(need>100) document.getElementById("gradeResult").innerHTML=`<span class="big-num">${need.toFixed(1)}%</span><br>Impossible`; else if(need<0) document.getElementById("gradeResult").innerHTML=`<span class="big-num">0%</span><br>Already secured`; else document.getElementById("gradeResult").innerHTML=`<span class="big-num">${need.toFixed(1)}%</span><br>needed on final`; } };
+        document.getElementById("pomodoroTrigger")?.addEventListener("click",()=>alert("🍅 25 min focus + 5 min break. Stay locked!"));
 
-    // Pomodoro handler
-    document.getElementById("pomodoroTrigger")?.addEventListener("click", () => alert("🍅 25 min deep focus + 5 min break. Stay locked for science finals!"));
+        // Notifications
+        async function requestNotificationPermission(){ if(Notification.permission!=="granted") await Notification.requestPermission(); updatePermStatus(); if(Notification.permission==="granted") alert("Reminders active! You'll receive notifications before exams and prep classes."); }
+        function updatePermStatus(){ document.getElementById("permStatus").innerText=Notification.permission||"default"; }
+        updatePermStatus();
+        document.getElementById("testNotifyBtn").addEventListener("click",()=>{ if(Notification.permission==="granted") new Notification("🔔 Science Glass",{body:"Stay on track!",icon:"logo.png"}); else alert("Enable notifications in Settings."); });
+        if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(e=>console.log);
 
-    // service worker register
-    if ("serviceWorker" in navigator) {
-        window.addEventListener("load", () => { navigator.serviceWorker.register("sw.js").catch(e=>console.log("SW:",e)); });
-    }
-</script>
+        // Navigation
+        document.querySelectorAll('.nav-item').forEach(nav=>{ nav.addEventListener('click',()=>{ let pageId=nav.dataset.page; document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active')); nav.classList.add('active'); document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); document.getElementById(pageId).classList.add('active'); }); });
+    </script>
 </body>
 </html>
